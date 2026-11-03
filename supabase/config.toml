@@ -1,0 +1,4 @@
+project_id = "irkzwaprydcvmvikglfm"
+
+[functions.qr-redirect]
+verify_jwt = false

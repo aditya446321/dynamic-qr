@@ -1,0 +1,10 @@
+Existing Qraft Supabase project migration history (already applied to project irkzwaprydcvmvikglfm):
+20261103150453 create_dynamic_qr_core_tables
+20261103150516 harden_rls_and_function_search_path
+20261103152346 expand_qr_payloads_and_styling
+20261103152418 add_extended_qr_content_types
+20261103154514 add_qr_pdf_upload_bucket
+20261103154522 allow_qr_pdf_owner_select_for_replacement
+20261103155606 add_public_restaurant_menu_assets_and_read_policy
+
+The original migration SQL source files were not present in the AppDeploy source snapshot. A current schema/policy reference is provided as supabase/schema-reference.sql. Do not re-run this reference script against the already-migrated production database.

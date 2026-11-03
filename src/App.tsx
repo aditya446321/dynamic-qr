@@ -1,0 +1,235 @@
+import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
+import { createClient, type User } from '@supabase/supabase-js';
+import QRCodeStyling from 'qr-code-styling';
+import { jsPDF } from 'jspdf';
+import {
+  Activity, ArrowDownToLine, ArrowUpRight, BarChart3, Check, ChevronDown,
+  ChevronRight, Eye, EyeOff, FileText, Globe2, LayoutDashboard,
+  LoaderCircle, LogOut, Menu, Pencil, Plus, QrCode, Search, ShieldCheck,
+  Smartphone, Trash2, X, Wifi, Mail, Phone, MessageSquare, MapPin, CreditCard,
+  Contact, CalendarDays, Package, Share2, FileImage
+} from 'lucide-react';
+import './index.css';
+import PublicMenuView from './PublicMenu';
+import RestaurantMenuBuilder from './RestaurantMenuBuilder';
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+if (!SUPABASE_URL || !SUPABASE_KEY) throw new Error('Missing Supabase config. Copy .env.example to .env and set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.');
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+const linkBase = () => `${window.location.origin}/r/`;
+
+type QRType = 'website'|'text'|'email'|'phone'|'sms'|'whatsapp'|'wifi'|'vcard'|'event'|'location'|'upi'|'product'|'social'|'pdf'|'menu'|'app'|'review';
+type QRRecord = {
+  id:string; user_id:string; title:string; slug:string; target_url:string|null;
+  qr_type:QRType; payload:Record<string,any>; design:QRDesign;
+  is_dynamic:boolean; is_active:boolean; created_at:string;
+};
+type ScanRecord = { id:number; qr_code_id:string; scanned_at:string; referrer:string|null; device_type:string };
+type MenuItem = {id:string;name:string;description:string;price:string;imageUrl?:string;imageFile?:File;available:boolean;diet:'veg'|'nonveg'};
+type MenuSection = {id:string;name:string;items:MenuItem[]};
+type QRDesign = { foreground:string; background:string; cornerColor:string; dots:string; corners:string; logoUrl?:string; logoSize?:number; margin?:number };
+const defaultDesign:QRDesign = {foreground:'#18202f',background:'#ffffff',cornerColor:'#6758d8',dots:'rounded',corners:'extra-rounded',logoSize:.22,margin:16};
+const makeId=()=>crypto.randomUUID().slice(0,8);
+const newMenuSection=():MenuSection=>({id:makeId(),name:'Starters',items:[{id:makeId(),name:'',description:'',price:'',available:true,diet:'veg'}]});
+const linkTypes:QRType[] = ['website','pdf','menu','app','review','social'];
+const typeInfo:{type:QRType;label:string;description:string;icon:typeof Globe2}[] = [
+  {type:'website',label:'Website',description:'Open any web page',icon:Globe2},
+  {type:'text',label:'Plain text',description:'Share a message or note',icon:FileText},
+  {type:'email',label:'Email',description:'Pre-fill recipient and message',icon:Mail},
+  {type:'phone',label:'Phone',description:'Call a number',icon:Phone},
+  {type:'sms',label:'SMS',description:'Pre-fill a text message',icon:MessageSquare},
+  {type:'whatsapp',label:'WhatsApp',description:'Open a chat with a message',icon:MessageSquare},
+  {type:'wifi',label:'Wi-Fi',description:'Share network access',icon:Wifi},
+  {type:'vcard',label:'Contact card',description:'Save contact details',icon:Contact},
+  {type:'event',label:'Event',description:'Share calendar details',icon:CalendarDays},
+  {type:'location',label:'Location',description:'Open a map location',icon:MapPin},
+  {type:'upi',label:'UPI payment',description:'Encode UPI payment details',icon:CreditCard},
+  {type:'product',label:'Product & price',description:'Share product information',icon:Package},
+  {type:'social',label:'Social profile',description:'Share a social profile',icon:Share2},
+  {type:'pdf',label:'PDF / document',description:'Open a hosted file',icon:FileImage},
+  {type:'menu',label:'Restaurant menu',description:'Open a digital menu',icon:FileText},
+  {type:'app',label:'App download',description:'Open a Play Store or App Store link',icon:Smartphone},
+  {type:'review',label:'Review page',description:'Open a review or feedback page',icon:Check}
+];
+const fieldMap:Record<QRType,{key:string;label:string;placeholder:string;kind?:string;required?:boolean;multi?:boolean}[]> = {
+  website:[{key:'url',label:'Website URL',placeholder:'https://example.com',required:true}],
+  pdf:[], menu:[],
+  app:[{key:'url',label:'App download / Play Store / App Store link',placeholder:'Paste your app store link',required:true}],
+  review:[{key:'url',label:'Review page URL',placeholder:'https://example.com/review',required:true}],
+  social:[],
+  text:[{key:'text',label:'Add message',placeholder:'Write anything you want to share...',multi:true,required:true}],
+  email:[{key:'email',label:'Email address',placeholder:'hello@example.com',required:true},{key:'subject',label:'Subject',placeholder:'Hello'},{key:'body',label:'Message',placeholder:'Your message...',multi:true}],
+  phone:[{key:'phone',label:'Phone number',placeholder:'+91 98765 43210',required:true}],
+  sms:[{key:'phone',label:'Phone number',placeholder:'+91 98765 43210',required:true},{key:'message',label:'Message',placeholder:'Write your SMS message...',multi:true}],
+  whatsapp:[{key:'phone',label:'WhatsApp number',placeholder:'919876543210',required:true},{key:'message',label:'Message',placeholder:'Hello!'}],
+  wifi:[{key:'ssid',label:'Network name (SSID)',placeholder:'My Wi-Fi',required:true},{key:'password',label:'Password',placeholder:'Wi-Fi password'},{key:'encryption',label:'Security',placeholder:'WPA',kind:'select'}],
+  vcard:[{key:'firstName',label:'First name',placeholder:'First name',required:true},{key:'lastName',label:'Last name',placeholder:'Last name'},{key:'title',label:'Job title',placeholder:'e.g. Founder, Manager'},{key:'organization',label:'Company / organization',placeholder:'Company name'},{key:'phone',label:'Phone number',placeholder:'+91 98765 43210'},{key:'email',label:'Email address',placeholder:'hello@example.com',kind:'email'},{key:'website',label:'Website',placeholder:'https://example.com'},{key:'address',label:'Address',placeholder:'Street, city, state'}],
+  event:[{key:'name',label:'Event name',placeholder:'Product launch',required:true},{key:'start',label:'Start date and time',placeholder:'',kind:'datetime-local',required:true},{key:'end',label:'End date and time',placeholder:'',kind:'datetime-local'},{key:'location',label:'Location',placeholder:'Venue or address'},{key:'description',label:'Description',placeholder:'Event details',multi:true}],
+  location:[{key:'latitude',label:'Latitude',placeholder:'19.0760',required:true},{key:'longitude',label:'Longitude',placeholder:'72.8777',required:true},{key:'label',label:'Place name',placeholder:'Mumbai'}],
+  upi:[{key:'upiId',label:'UPI ID',placeholder:'name@bank',required:true},{key:'payee',label:'Payee name',placeholder:'Business name',required:true},{key:'amount',label:'Amount (INR)',placeholder:'499.00'},{key:'note',label:'Payment note',placeholder:'Order payment'}],
+  product:[{key:'name',label:'Product name',placeholder:'Product name',required:true},{key:'price',label:'Price',placeholder:'499.00',required:true},{key:'currency',label:'Currency',placeholder:'INR'},{key:'sku',label:'SKU / product code',placeholder:'SKU-001'},{key:'url',label:'Product page (optional)',placeholder:'https://example.com/product'}]
+};
+const formatNumber=(n:number)=>new Intl.NumberFormat('en-IN').format(n);
+const validUrl=(s:string)=>{try{const u=new URL(s);return u.protocol==='https:'||u.protocol==='http:';}catch{return false;}};
+const slug=()=>crypto.randomUUID().replaceAll('-','').slice(0,12);
+const escWifi=(s:string)=>s.replace(/([\\;,:])/g,'\\$1');
+const safeName=(s:string)=>s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'qraft-code';
+
+function buildPayload(type:QRType,p:Record<string,string>):string {
+  const enc=encodeURIComponent;
+  switch(type){
+    case 'website':case 'pdf':case 'app':case 'review':case 'social':return p.url||'https://example.com';
+    case 'menu':return window.location.origin+'/#/menu/'+(p.slug||'preview-menu-123');
+    case 'text':return p.text||'';
+    case 'email':return `mailto:${p.email||''}?subject=${enc(p.subject||'')}&body=${enc(p.body||'')}`;
+    case 'phone':return `tel:${p.phone||''}`;
+    case 'sms':return `sms:${p.phone||''}?body=${enc(p.message||'')}`;
+    case 'whatsapp':return `https://wa.me/${(p.phone||'').replace(/\\D/g,'')}?text=${enc(p.message||'')}`;
+    case 'wifi':return `WIFI:T:${p.encryption||'WPA'};S:${escWifi(p.ssid||'')};P:${escWifi(p.password||'')};;`;
+    case 'vcard':{const fullName=[p.firstName,p.lastName].filter(Boolean).join(' ');return ['BEGIN:VCARD','VERSION:3.0',`N:${p.lastName||''};${p.firstName||''};;;`,`FN:${fullName}`,`TITLE:${p.title||''}`,`ORG:${p.organization||''}`,`TEL:${p.phone||''}`,`EMAIL:${p.email||''}`,`URL:${p.website||''}`,`ADR:;;${p.address||''};;;;`,'END:VCARD'].join('\\n');}
+    case 'event':return ['BEGIN:VCALENDAR','VERSION:2.0','BEGIN:VEVENT',`SUMMARY:${p.name||''}`,`DTSTART:${(p.start||'').replace(/[-:T]/g,'')}`,`DTEND:${(p.end||'').replace(/[-:T]/g,'')}`,`LOCATION:${p.location||''}`,`DESCRIPTION:${p.description||''}`,'END:VEVENT','END:VCALENDAR'].join('\\n');
+    case 'location':return `geo:${p.latitude||'0'},${p.longitude||'0'}?q=${enc(p.label||'')}`;
+    case 'upi':{const q=new URLSearchParams({pa:p.upiId||'',pn:p.payee||'',cu:'INR'});if(p.amount)q.set('am',p.amount);if(p.note)q.set('tn',p.note);return `upi://pay?${q.toString()}`;}
+    case 'product':return [`Product: ${p.name||''}`,`Price: ${p.currency||'INR'} ${p.price||''}`,p.sku?`SKU: ${p.sku}`:'',p.url?`Product page: ${p.url}`:'' ].filter(Boolean).join('\\n');
+  }
+}
+
+function createQr(data:string,design:QRDesign,size=1200){
+  return new QRCodeStyling({width:size,height:size,type:'svg',data,margin:design.margin??16,qrOptions:{errorCorrectionLevel:'H'},dotsOptions:{color:design.foreground,type:design.dots as 'square'|'dots'|'rounded'|'extra-rounded'|'classy'|'classy-rounded'},cornersSquareOptions:{color:design.cornerColor,type:design.corners as 'square'|'dot'|'extra-rounded'},cornersDotOptions:{color:design.cornerColor,type:'dot'},backgroundOptions:{color:design.background},image:design.logoUrl||undefined,imageOptions:{crossOrigin:'anonymous',margin:5,imageSize:design.logoSize||.22,hideBackgroundDots:true}});
+}
+function QrPreview({value,design,className=''}:{value:string;design:QRDesign;className?:string}){
+  const ref=useRef<HTMLDivElement>(null);
+  useEffect(()=>{if(!ref.current)return;ref.current.replaceChildren();const qr=createQr(value||'Qraft',design,230);qr.append(ref.current);return()=>{ref.current?.replaceChildren();};},[value,design]);
+  return <div ref={ref} className={className}/>;
+}
+function App(){
+  const [user,setUser]=useState<User|null>(null); const [authReady,setAuthReady]=useState(false);
+  const [authMode,setAuthMode]=useState<'signin'|'signup'>('signin'); const [email,setEmail]=useState(''); const [password,setPassword]=useState('');
+  const [showPassword,setShowPassword]=useState(false); const [authError,setAuthError]=useState(''); const [authMessage,setAuthMessage]=useState(''); const [authBusy,setAuthBusy]=useState(false);
+  const [codes,setCodes]=useState<QRRecord[]>([]); const [scans,setScans]=useState<ScanRecord[]>([]); const [loading,setLoading]=useState(false); const [search,setSearch]=useState('');
+  const [modal,setModal]=useState<'create'|'edit'|'analytics'|'preview'|null>(null); const [selected,setSelected]=useState<QRRecord|null>(null);
+  const [qrType,setQrType]=useState<QRType>('website'); const [title,setTitle]=useState(''); const [fields,setFields]=useState<Record<string,string>>({}); const [dynamic,setDynamic]=useState(true);
+  const [design,setDesign]=useState<QRDesign>(defaultDesign); const [logoFile,setLogoFile]=useState<File|null>(null); const [pdfFile,setPdfFile]=useState<File|null>(null);
+  const [logoPreview,setLogoPreview]=useState(''); const [formError,setFormError]=useState(''); const [saving,setSaving]=useState(false); const [toast,setToast]=useState('');
+  const [mobileNav,setMobileNav]=useState(false); const [menuSections,setMenuSections]=useState<MenuSection[]>([]); const [publicMenu,setPublicMenu]=useState<QRRecord|null>(null);
+  const [publicMenuLoading,setPublicMenuLoading]=useState(false); const [profileName,setProfileName]=useState(''); const [profileModal,setProfileModal]=useState(false);
+
+  useEffect(()=>{
+    supabase.auth.getSession().then(({data})=>{setUser(data.session?.user??null);setProfileName(String(data.session?.user?.user_metadata?.full_name||''));setAuthReady(true);});
+    const {data:listener}=supabase.auth.onAuthStateChange((_event,session)=>{setUser(session?.user??null);setProfileName(String(session?.user?.user_metadata?.full_name||''));});
+    return()=>listener.subscription.unsubscribe();
+  },[]);
+  useEffect(()=>{const match=window.location.hash.match(/^#\/menu\/([A-Za-z0-9_-]{6,32})$/);if(!match)return;setPublicMenuLoading(true);supabase.from('qr_codes').select('*').eq('slug',match[1]).eq('qr_type','menu').eq('is_active',true).maybeSingle().then(({data})=>{setPublicMenu(data as QRRecord|null);setPublicMenuLoading(false);});},[]);
+  useEffect(()=>{if(user)loadDashboard();else{setCodes([]);setScans([]);}},[user]);
+  async function loadDashboard(){setLoading(true);const [a,b]=await Promise.all([supabase.from('qr_codes').select('*').order('created_at',{ascending:false}),supabase.from('qr_scans').select('id,qr_code_id,scanned_at,referrer,device_type').order('scanned_at',{ascending:false}).limit(1500)]);if(a.error)notify(a.error.message);else setCodes((a.data||[]) as QRRecord[]);if(!b.error)setScans((b.data||[]) as ScanRecord[]);setLoading(false);}
+  function notify(s:string){setToast(s);window.setTimeout(()=>setToast(''),3000);}
+  async function handleAuth(e:FormEvent){e.preventDefault();setAuthError('');setAuthMessage('');if(password.length<8){setAuthError('Use a password with at least 8 characters.');return;}setAuthBusy(true);const r=authMode==='signup'?await supabase.auth.signUp({email:email.trim(),password,options:{data:{full_name:profileName.trim()}}}):await supabase.auth.signInWithPassword({email:email.trim(),password});if(r.error)setAuthError(r.error.message);else if(authMode==='signup'&&!r.data.session){setAuthMessage('Account created. Confirm your email, then sign in.');setAuthMode('signin');}setAuthBusy(false);}
+  async function signOut(){await supabase.auth.signOut();setUser(null);}
+  function resetForm(type:QRType='website'){setSelected(null);setQrType(type);setTitle('');setFields({});setDynamic(linkTypes.includes(type));setPdfFile(null);setMenuSections(type==='menu'?[newMenuSection()]:[]);setDesign(defaultDesign);setLogoFile(null);setLogoPreview('');setFormError('');setModal('create');}
+  function editCode(c:QRRecord){setSelected(c);setQrType(c.qr_type);setTitle(c.title);setFields(c.payload||{});setPdfFile(null);setMenuSections(c.qr_type==='menu'&&Array.isArray(c.payload?.sections)?c.payload.sections:c.qr_type==='menu'?[newMenuSection()]:[]);setDynamic(c.is_dynamic);setDesign({...defaultDesign,...(c.design||{})});setLogoFile(null);setLogoPreview(c.design?.logoUrl||'');setFormError('');setModal('edit');}
+  function setField(k:string,v:any){setFields(old=>({...old,[k]:v}));}
+  async function uploadMenuImages(codeSlug:string){if(!user)return menuSections;const out:MenuSection[]=[];for(const section of menuSections){const items:MenuItem[]=[];for(const item of section.items){let imageUrl=item.imageUrl;if(item.imageFile){if(!['image/jpeg','image/png','image/webp'].includes(item.imageFile.type)||item.imageFile.size>5*1024*1024)throw new Error('Menu photos must be JPG, PNG or WebP and under 5 MB.');const ext=item.imageFile.type==='image/jpeg'?'jpg':item.imageFile.type==='image/webp'?'webp':'png';const path=user.id+'/'+codeSlug+'/'+item.id+'.'+ext;const {error}=await supabase.storage.from('qr-menu-assets').upload(path,item.imageFile,{upsert:true,contentType:item.imageFile.type});if(error)throw error;imageUrl=supabase.storage.from('qr-menu-assets').getPublicUrl(path).data.publicUrl;}const {imageFile,...clean}=item;items.push({...clean,imageUrl});}out.push({...section,items});}return out;}
+  const previewData=useMemo(()=>{if(qrType==='menu')return window.location.origin+'/#/menu/'+(selected?.slug||'preview-menu-123');if(dynamic&&linkTypes.includes(qrType))return linkBase()+(selected?.slug||'preview-'+qrType);try{return buildPayload(qrType,fields);}catch{return 'Qraft';}},[qrType,fields,dynamic,selected]);
+  async function uploadPdf(codeSlug:string):Promise<string|undefined>{if(!pdfFile||!user)return fields.url;if(pdfFile.type!=='application/pdf'||pdfFile.size>20*1024*1024)throw new Error('Choose a PDF file smaller than 20 MB.');const path=`${user.id}/${codeSlug}.pdf`;const {error}=await supabase.storage.from('qr-pdfs').upload(path,pdfFile,{upsert:true,contentType:'application/pdf'});if(error)throw error;return supabase.storage.from('qr-pdfs').getPublicUrl(path).data.publicUrl;}
+  async function uploadLogo(codeSlug:string):Promise<string|undefined>{if(!logoFile||!user)return design.logoUrl;const ext=logoFile.type==='image/jpeg'?'jpg':logoFile.type==='image/webp'?'webp':'png';const path=`${user.id}/${codeSlug}.${ext}`;const {error}=await supabase.storage.from('qr-logos').upload(path,logoFile,{upsert:true,contentType:logoFile.type});if(error)throw error;return supabase.storage.from('qr-logos').getPublicUrl(path).data.publicUrl;}
+  async function saveCode(e:FormEvent){
+    e.preventDefault();setFormError('');if(!title.trim())return setFormError('Enter a name for this QR code.');const defs=fieldMap[qrType]||[];
+    for(const f of defs){if(f.required&&!fields[f.key]?.trim())return setFormError(`${f.label} is required.`);}
+    if(linkTypes.includes(qrType)&&!['pdf','menu'].includes(qrType)&&!validUrl(fields.url||''))return setFormError('Enter a complete URL starting with https:// or http://.');
+    if(qrType==='menu'&&!fields.restaurantName?.trim())return setFormError('Add the restaurant name.');
+    if(qrType==='menu'&&!menuSections.some(s=>s.items.some(i=>i.name.trim()&&i.price.trim())))return setFormError('Add at least one menu item with a name and price.');
+    if(qrType==='pdf'&&!pdfFile&&!validUrl(fields.url||''))return setFormError('Upload a PDF file to create its QR code.');
+    if(qrType==='pdf'&&pdfFile&&(pdfFile.type!=='application/pdf'||pdfFile.size>20*1024*1024))return setFormError('Choose a PDF file smaller than 20 MB.');
+    if(qrType==='social'&&!validUrl(fields.url||''))return setFormError('Enter a valid profile, page, channel or group link.');
+    if(qrType==='social'&&!fields.platform)return setFormError('Choose a social platform.');
+    if(qrType==='social'&&fields.platform==='Telegram'&&!fields.telegramType)return setFormError('Choose Telegram channel or group.');
+    if(qrType==='upi'&&!/^[\w.-]+@[\w.-]+$/.test(fields.upiId||''))return setFormError('Enter a valid UPI ID.');
+    if(qrType==='location'&&(!Number.isFinite(Number(fields.latitude))||!Number.isFinite(Number(fields.longitude))))return setFormError('Enter valid latitude and longitude.');
+    if(qrType==='product'&&fields.url&&!validUrl(fields.url))return setFormError('Product page must be a valid http(s) URL.');
+    if(logoFile&&(!['image/png','image/jpeg','image/webp'].includes(logoFile.type)||logoFile.size>1024*1024))return setFormError('Logo must be PNG, JPG or WebP and under 1 MB.');
+    setSaving(true);
+    try{
+      const codeSlug=selected?.slug||slug();const logoUrl=await uploadLogo(codeSlug);const pdfUrl=qrType==='pdf'?await uploadPdf(codeSlug):undefined;const savedMenu=qrType==='menu'?await uploadMenuImages(codeSlug):undefined;
+      const savedFields=qrType==='pdf'&&pdfUrl?{...fields,url:pdfUrl}:qrType==='menu'?{...fields,sections:savedMenu,slug:codeSlug}:fields;
+      const savedDesign={...design,logoUrl};const isDynamic=linkTypes.includes(qrType)&&dynamic;
+      const record={title:title.trim(),qr_type:qrType,payload:savedFields,design:savedDesign,is_dynamic:isDynamic,target_url:linkTypes.includes(qrType)&&qrType!=='menu'?(savedFields.url||'').trim()||null:null};
+      const result=selected?await supabase.from('qr_codes').update(record).eq('id',selected.id):await supabase.from('qr_codes').insert({...record,user_id:user!.id,slug:codeSlug});
+      if(result.error)throw result.error;setModal(null);notify(selected?'QR code updated. The QR link stays the same.':'QR code created successfully.');await loadDashboard();
+    }catch(err){setFormError(err instanceof Error?err.message:'Could not save this QR code.');}setSaving(false);
+  }
+  async function toggleActive(c:QRRecord){const {error}=await supabase.from('qr_codes').update({is_active:!c.is_active}).eq('id',c.id);if(error)notify(error.message);else{notify(c.is_active?'QR code paused.':'QR code activated.');await loadDashboard();}}
+  async function deleteCode(c:QRRecord){if(!window.confirm(`Delete "${c.title}"? This cannot be undone.`))return;const {error}=await supabase.from('qr_codes').delete().eq('id',c.id);if(error)notify(error.message);else{setModal(null);notify('QR code deleted.');await loadDashboard();}}
+  async function download(c:QRRecord,format:'png'|'svg'|'pdf'){
+    try{
+      const data=c.qr_type==='menu'?window.location.origin+'/#/menu/'+c.slug:c.is_dynamic&&linkTypes.includes(c.qr_type)?linkBase()+c.slug:buildPayload(c.qr_type,c.payload||{});
+      const qr=createQr(data,{...defaultDesign,...(c.design||{})});const filename=safeName(c.title);
+      if(format==='pdf'){
+        const blob=await qr.getRawData('png');if(!blob)throw new Error('QR image could not be created');
+        const dataUrl=await new Promise<string>((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result));reader.onerror=reject;reader.readAsDataURL(blob);});
+        const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});pdf.setFontSize(18);pdf.text(c.title,105,25,{align:'center'});pdf.addImage(dataUrl,'PNG',35,45,140,140);pdf.setFontSize(9);pdf.text(data,105,198,{align:'center',maxWidth:170});pdf.save(`${filename}.pdf`);
+      }else{const blob=await qr.getRawData(format);if(!blob)throw new Error('QR image could not be created');const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`${filename}.${format}`;a.click();URL.revokeObjectURL(url);}
+      notify(`${format.toUpperCase()} downloaded.`);
+    }catch(err){notify(err instanceof Error?err.message:'Could not export QR code.');}
+  }
+  const filtered=codes.filter(c=>c.title.toLowerCase().includes(search.toLowerCase())||(c.target_url||'').toLowerCase().includes(search.toLowerCase())||c.qr_type.includes(search.toLowerCase()));
+  const activeCount=codes.filter(c=>c.is_active).length;const totalScans=scans.length;
+  const todayScans=scans.filter(s=>new Date(s.scanned_at).toDateString()===new Date().toDateString()).length;
+  const selectedScans=selected?scans.filter(s=>s.qr_code_id===selected.id):scans;
+
+  if(window.location.hash.startsWith('#/menu/'))return <PublicMenuView record={publicMenu} loading={publicMenuLoading}/>;
+  if(!authReady)return <div className="loading-screen"><LoaderCircle className="spin"/> Loading Qraft...</div>;
+  if(!user)return <main className="auth-shell">
+    <section className="auth-visual"><div className="brand"><div className="brand-mark"><QrCode size={21}/></div><span>Qraft<span className="brand-dot">.</span></span></div>
+      <div className="auth-copy"><div className="eyebrow">DYNAMIC QR MANAGEMENT</div><h1>One code.<br/><span>More ways to connect.</span></h1><p>Create QR codes for links, text, Wi-Fi, contacts, events, products, payments and more. Customize every detail and keep dynamic links up to date.</p>
+        <div className="auth-feature-list"><span><Check size={15}/> 17 QR formats in one workspace</span><span><Check size={15}/> Custom designs and branded links</span><span><Check size={15}/> Live scan activity and restaurant menus</span></div>
+      </div><div className="auth-foot">Your QR codes. Your style. Your destination.</div>
+    </section>
+    <section className="auth-panel"><div className="auth-panel-top"><span>YOUR WORKSPACE</span><span>QRAFT</span></div><div className="auth-form-wrap"><div className="form-icon"><ShieldCheck size={22}/></div><h2>{authMode==='signin'?'Welcome back':'Create your account'}</h2><p className="muted">Sign in to manage your QR codes and scan activity.</p>
+      <form className="auth-form" onSubmit={handleAuth}>{authMode==='signup'&&<><label>Your name</label><input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder="Your name" maxLength={60}/></>}<label>Email address</label><input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" required/><label>Password</label><div className="password-field"><input type={showPassword?'text':'password'} value={password} onChange={e=>setPassword(e.target.value)} minLength={8} required placeholder="At least 8 characters"/><button type="button" className="icon-button" onClick={()=>setShowPassword(!showPassword)}>{showPassword?<EyeOff size={17}/>:<Eye size={17}/>}</button></div>
+        {authError&&<div className="form-alert error">{authError}</div>}{authMessage&&<div className="form-alert success">{authMessage}</div>}
+        <button className="primary-button full-button" disabled={authBusy}>{authBusy&&<LoaderCircle className="spin" size={16}/ >}{authMode==='signin'?'Sign in':'Create account'}<ArrowUpRight size={17}/></button></form>
+      <div className="auth-switch">{authMode==='signin'?"Don't have an account?":'Already registered?'}<button onClick={()=>{setAuthMode(authMode==='signin'?'signup':'signin');setAuthError('');setAuthMessage('');}}>{authMode==='signin'?'Create one':'Sign in'}</button></div><div className="secure-note"><ShieldCheck size={14}/> Your codes and analytics are private to your account.</div></div><div className="auth-copyright">© 2026 Qraft · Dynamic QR management</div></section>
+  </main>;
+
+  return <div className="app-shell">
+    <aside className={`sidebar ${mobileNav?'sidebar-open':''}`}><div className="brand sidebar-brand"><div className="brand-mark"><QrCode size={21}/></div><span>Qraft<span className="brand-dot">.</span></span></div><div className="workspace-label">WORKSPACE</div><div className="workspace-switch"><div className="workspace-avatar">{(user.email?.[0]||'U').toUpperCase()}</div><div><strong>My workspace</strong><small>Personal account</small></div><ChevronDown size={15}/></div><div className="nav-label">MENU</div>
+      <button className="nav-item active" onClick={()=>{setSearch('');setMobileNav(false);}}><LayoutDashboard size={18}/> Overview</button><button className="nav-item" onClick={()=>{resetForm();setMobileNav(false);}}><Plus size={18}/> Create QR code</button><button className="nav-item" onClick={()=>{setSearch('menu');setMobileNav(false);}}><FileText size={18}/> Restaurant menus</button><button className="nav-item" onClick={()=>{setSelected(null);setModal('analytics');setMobileNav(false);}}><BarChart3 size={18}/> Analytics</button><button className="nav-item" onClick={()=>{resetForm('website');setMobileNav(false);}}><QrCode size={18}/> QR templates</button><button className="nav-item" onClick={()=>{setProfileModal(true);setMobileNav(false);}}><Pencil size={18}/> Settings</button>
+      <div className="sidebar-bottom"><div className="help-card"><div className="help-icon"><QrCode size={17}/></div><strong>One QR, many formats</strong><p>Create QR codes for websites, Wi-Fi, contacts, events, products and more.</p></div><button className="nav-item" onClick={signOut}><LogOut size={18}/> Sign out</button><div className="profile-row"><div className="profile-avatar">{(user.email?.[0]||'U').toUpperCase()}</div><div className="profile-info"><strong>{profileName||user.email?.split('@')[0]}</strong><small>{user.email}</small></div><button className="icon-button" title="Edit profile" onClick={()=>setProfileModal(true)}><Pencil size={14}/></button></div></div>
+    </aside>
+    <main className="main-content"><header className="topbar"><button className="mobile-menu icon-button" onClick={()=>setMobileNav(!mobileNav)}><Menu size={20}/></button><div className="breadcrumb">Workspace <ChevronRight size={14}/><strong>Overview</strong></div><div className="topbar-right"><span className="secure-pill">Personal workspace</span><div className="top-avatar">{(user.email?.[0]||'U').toUpperCase()}</div></div></header>
+      <div className="page-wrap"><section className="page-heading"><div><div className="eyebrow dark-eyebrow">YOUR QR WORKSPACE</div><h1>All your QR codes, in one place.</h1><p>Create, customize, download and manage every kind of QR code.</p></div><button className="primary-button" onClick={()=>resetForm()}><Plus size={18}/> Create QR code</button></section>
+        <section className="stats-grid"><div className="stat-card"><div className="stat-top">Total tracked scans <span className="stat-icon purple"><Activity size={18}/></span></div><div className="stat-value">{formatNumber(totalScans)}</div><div className="stat-foot">Dynamic QR codes only</div></div><div className="stat-card"><div className="stat-top">Active QR codes <span className="stat-icon green"><QrCode size={18}/></span></div><div className="stat-value">{formatNumber(activeCount)}</div><div className="stat-foot">Of {formatNumber(codes.length)} created</div></div><div className="stat-card"><div className="stat-top">Scans today <span className="stat-icon orange"><BarChart3 size={18}/></span></div><div className="stat-value">{formatNumber(todayScans)}</div><div className="stat-foot">Since midnight, local time</div></div></section>
+        <section className="section-card"><div className="section-header"><div><h2>Your QR codes</h2><p>Static codes work offline; dynamic links can be edited anytime.</p></div><div className="table-actions"><div className="search-box"><Search size={16}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search name, type or URL..."/></div><button className="secondary-button" onClick={loadDashboard}><Activity size={15}/> Refresh</button></div></div>
+          {loading?<div className="empty-state"><LoaderCircle className="spin"/> Loading QR codes...</div>:filtered.length===0?<div className="empty-state"><div className="empty-icon"><QrCode size={28}/></div><h3>{search?'No matches found':'Create your first QR code'}</h3><p>{search?'Try another search.':'Choose from 17 QR formats and customize the design.'}</p>{!search&&<button className="primary-button" onClick={()=>resetForm()}><Plus size={16}/> Create QR code</button>}</div>:<div className="table-wrap"><table><thead><tr><th>NAME</th><th>TYPE</th><th>DESTINATION / CONTENT</th><th>SCANS</th><th>MODE</th><th>STATUS</th><th>ACTIONS</th></tr></thead><tbody>{filtered.map(c=>{const n=scans.filter(s=>s.qr_code_id===c.id).length;return <tr key={c.id}><td><div className="qr-name-cell"><div className="mini-qr"><QrPreview value={c.qr_type==='menu'?window.location.origin+'/#/menu/'+c.slug:c.is_dynamic&&linkTypes.includes(c.qr_type)?linkBase()+c.slug:buildPayload(c.qr_type,c.payload||{})} design={{...defaultDesign,...(c.design||{})}} className="mini-qr-preview"/></div><div><strong>{c.title}</strong><small>/{c.slug}</small></div></div></td><td><span className="type-chip">{typeInfo.find(t=>t.type===c.qr_type)?.label||c.qr_type}</span></td><td className="destination-cell">{c.target_url||c.payload?.text||c.payload?.name||c.payload?.ssid||c.payload?.upiId||'QR content'}</td><td><strong>{formatNumber(n)}</strong></td><td>{c.is_dynamic?<span className="mode dynamic">Dynamic</span>:<span className="mode static">Static</span>}</td><td><span className={`status-pill ${c.is_active?'is-active':'is-paused'}`}><span/>{c.is_active?'Active':'Paused'}</span></td><td><div className="row-actions"><button title="Preview QR" onClick={()=>{setSelected(c);setModal('preview');}}><Eye size={16}/></button><button title="Edit" onClick={()=>editCode(c)}><Pencil size={16}/></button><button title="Download PNG" onClick={()=>download(c,'png')}><ArrowDownToLine size={16}/></button><button title="More actions" onClick={()=>toggleActive(c)}>{c.is_active?<EyeOff size={16}/>:<Eye size={16}/>}</button><button title="Delete" onClick={()=>deleteCode(c)}><Trash2 size={16}/></button></div></td></tr>;})}</tbody></table></div>}
+          <div className="table-footer"><span>Showing {filtered.length} of {codes.length} QR codes</span><span><ShieldCheck size={14}/> Account-protected data</span></div>
+        </section>
+        <section className="bottom-grid"><div className="insight-card"><div className="insight-heading"><div className="stat-icon purple"><BarChart3 size={17}/></div><span>SCAN ACTIVITY</span></div><h3>{formatNumber(totalScans)} <small>tracked scans</small></h3><p>Only dynamic URL-based QR codes record scans. Static QR codes contain their data directly.</p><div className="activity-bars">{[22,36,29,54,41,70,48,82,60,94,72,100].map((h,i)=><div key={i} style={{height:`${h}%`}}/>)}</div></div><div className="tip-card"><div className="tip-icon"><QrCode size={19}/></div><div><span>QR FORMAT GUIDE</span><h3>Choose the right QR type.</h3><p>Use dynamic links when you need to change the destination later. Use static QR formats for Wi-Fi, vCards, UPI, text and device actions.</p></div></div></section>
+        <footer className="page-footer"><span>Qraft · Dynamic QR management</span><span>Static and dynamic QR tools</span></footer>
+      </div>
+    </main>
+    {mobileNav&&<button className="mobile-backdrop" onClick={()=>setMobileNav(false)}/>}
+    {modal&&<div className="modal-backdrop" onMouseDown={e=>{if(e.target===e.currentTarget)setModal(null);}}><div className="builder-modal">
+      <div className="modal-head"><div><span className="modal-kicker">{modal==='create'?'QR CODE BUILDER':modal==='edit'?'EDIT QR CODE':'SCAN ANALYTICS'}</span><h2>{modal==='create'?'Create a QR code':modal==='edit'?'Edit your QR code':selected?.title}</h2></div><button className="icon-button" onClick={()=>setModal(null)}><X size={20}/></button></div>
+      {modal==='preview'?<div className="qr-preview-modal"><div className="qr-preview-large"><QrPreview value={selected?(selected.qr_type==='menu'?window.location.origin+'/#/menu/'+selected.slug:selected.is_dynamic&&linkTypes.includes(selected.qr_type)?linkBase()+selected.slug:buildPayload(selected.qr_type,selected.payload||{})):'Qraft'} design={{...defaultDesign,...(selected?.design||{})}}/></div><h3>{selected?.title}</h3><p>{selected?.qr_type==='menu'?'Scan to open this restaurant menu':selected?.target_url||selected?.payload?.text||'Your QR content'}</p><div className="preview-export-row"><button className="secondary-button" onClick={()=>selected&&download(selected,'png')} type="button">Download PNG</button><button className="secondary-button" onClick={()=>selected&&download(selected,'svg')} type="button">Download SVG</button><button className="primary-button" onClick={()=>selected&&download(selected,'pdf')} type="button">Download PDF</button></div></div>:modal==='create'||modal==='edit'?<form className="builder-body" onSubmit={saveCode}>
+        <div className="builder-left"><label className="field-label">1. Choose QR type</label><div className="type-grid">{typeInfo.map(t=>{const Icon=t.icon;return <button type="button" key={t.type} className={`type-option ${qrType===t.type?'selected':''}`} onClick={()=>{if(modal==='edit'&&selected)return;setQrType(t.type);setFields({});setDynamic(linkTypes.includes(t.type));}}><Icon size={18}/><strong>{t.label}</strong></button>;})}</div>
+          <label className="field-label">2. Content</label><label className="input-label">QR code name</label><input className="builder-input" value={title} onChange={e=>setTitle(e.target.value)} placeholder="e.g. Store menu / Product details" maxLength={80}/>
+          {qrType==='menu'&&<RestaurantMenuBuilder value={fields} onChange={setFields} sections={menuSections} onSectionsChange={setMenuSections}/>}
+          {qrType==='pdf'&&<div className="special-field"><label className="input-label">Upload PDF file *</label><label className="upload-button"><FileText size={15}/> {pdfFile?.name||'Choose PDF file'}<input type="file" accept="application/pdf,.pdf" onChange={e=>setPdfFile(e.target.files?.[0]||null)}/></label><small className="muted">PDF only · Maximum 20 MB. The uploaded document opens when someone scans the QR code.</small>{pdfFile&&<div className="logo-selected"><FileText size={18}/><span>{pdfFile.name}</span><button type="button" onClick={()=>setPdfFile(null)}>Remove</button></div>}{!pdfFile&&fields.url&&<small className="muted">An uploaded PDF is already linked. Upload another file to replace it.</small>}</div>}
+          {qrType==='social'&&<div className="special-field"><label className="input-label">Choose social platform *</label><div className="type-grid social-platform-grid">{['Facebook','Instagram','LinkedIn','WhatsApp','YouTube','Spotify','Google','Telegram','Messenger','Discord','Snapchat'].map(platform=><button type="button" key={platform} className={`type-option ${fields.platform===platform?'selected':''}`} onClick={()=>{setField('platform',platform);setField('url','');setField('telegramType','');}}><strong>{platform}</strong></button>)}</div>{fields.platform==='Telegram'&&<><label className="input-label">Open Telegram *</label><select className="builder-input" value={fields.telegramType||''} onChange={e=>setField('telegramType',e.target.value)}><option value="">Choose destination</option><option value="Channel">Telegram channel</option><option value="Group">Telegram group</option></select></>}<label className="input-label">{fields.platform==='Telegram'&&fields.telegramType?`Telegram ${fields.telegramType} link *`:fields.platform?`${fields.platform} link *`:'Profile / page / channel / group link *'}</label><input className="builder-input" type="url" value={fields.url||''} onChange={e=>setField('url',e.target.value)} placeholder={fields.platform==='Telegram'?'https://t.me/yourchannel':fields.platform==='WhatsApp'?'https://wa.me/919876543210':fields.platform==='YouTube'?'https://youtube.com/@yourchannel':`Paste your ${fields.platform||'social'} link`}/><small className="muted">The QR opens the selected platform destination. No account or file upload is required.</small></div>}
+          {(fieldMap[qrType]||[]).map(f=><div key={f.key}><label className="input-label">{f.label}{f.required?' *':''}</label>{f.kind==='select'?<select className="builder-input" value={fields[f.key]||'WPA'} onChange={e=>setField(f.key,e.target.value)}><option value="WPA">WPA / WPA2</option><option value="WEP">WEP</option><option value="nopass">No password</option></select>:f.multi?<textarea className="builder-input textarea" value={fields[f.key]||''} onChange={e=>setField(f.key,e.target.value)} placeholder={f.placeholder}/>:<input className="builder-input" type={f.kind||'text'} value={fields[f.key]||''} onChange={e=>setField(f.key,e.target.value)} placeholder={f.placeholder}/>}</div>)}
+          {linkTypes.includes(qrType)&&<label className="dynamic-toggle"><input type="checkbox" checked={dynamic} onChange={e=>setDynamic(e.target.checked)}/><span><strong>Dynamic QR</strong><small>Change this destination later without reprinting. The scan uses a short redirect link.</small></span></label>}
+          <label className="field-label">3. Customize appearance</label><div className="design-grid"><div><label className="input-label">QR colour</label><div className="color-field"><input type="color" value={design.foreground} onChange={e=>setDesign({...design,foreground:e.target.value})}/><code>{design.foreground}</code></div></div><div><label className="input-label">Background</label><div className="color-field"><input type="color" value={design.background} onChange={e=>setDesign({...design,background:e.target.value})}/><code>{design.background}</code></div></div><div><label className="input-label">Corner colour</label><div className="color-field"><input type="color" value={design.cornerColor} onChange={e=>setDesign({...design,cornerColor:e.target.value})}/><code>{design.cornerColor}</code></div></div><div><label className="input-label">Dot pattern</label><select className="builder-input" value={design.dots} onChange={e=>setDesign({...design,dots:e.target.value})}><option value="square">Square</option><option value="dots">Dots</option><option value="rounded">Rounded</option><option value="extra-rounded">Extra rounded</option><option value="classy">Classy</option><option value="classy-rounded">Classy rounded</option></select></div><div><label className="input-label">Corner shape</label><select className="builder-input" value={design.corners} onChange={e=>setDesign({...design,corners:e.target.value})}><option value="square">Square</option><option value="dot">Circle</option><option value="extra-rounded">Rounded</option></select></div></div>
+          <label className="input-label">Center logo (PNG, JPG or WebP · max 1 MB)</label><label className="upload-button"><FileImage size={15}/> {logoFile?.name||'Choose center logo'}<input type="file" accept="image/png,image/jpeg,image/webp" onChange={e=>{const f=e.target.files?.[0]||null;setLogoFile(f);if(f)setLogoPreview(URL.createObjectURL(f));}}/></label>
+          {logoPreview&&<div className="logo-selected"><img src={logoPreview} alt="Selected QR logo"/><span>Logo selected</span><button type="button" onClick={()=>{setLogoFile(null);setLogoPreview('');setDesign({...design,logoUrl:undefined});}}>Remove</button></div>}
+          {formError&&<div className="form-alert error">{formError}</div>}
+          <div className="builder-actions"><button type="button" className="secondary-button" onClick={()=>setModal(null)}>Cancel</button><button className="primary-button" disabled={saving}>{saving?<LoaderCircle className="spin" size={16}/>:<Check size={16}/>} {modal==='create'?'Create QR code':'Save changes'}</button></div>
+        </div>
+        <aside className="builder-preview"><span className="preview-label">LIVE PREVIEW</span><div className="preview-paper"><QrPreview value={previewData} design={design} className="preview-qr"/></div><strong>{title||'Your QR code'}</strong><small>{typeInfo.find(t=>t.type===qrType)?.label} · {dynamic&&linkTypes.includes(qrType)?'Dynamic':'Static'}</small><div className="preview-note"><ShieldCheck size={15}/>{dynamic&&linkTypes.includes(qrType)?'Destination can be updated later.':'Content is encoded directly in the QR.'}</div></aside>
+      </form>:<div className="analytics-panel"><div className="analytics-total"><span>Tracked scans</span><strong>{formatNumber(selectedScans.length)}</strong></div><h3>Recent activity</h3>{selectedScans.length===0?<p>No scan data recorded yet. Static QR codes do not track scans.</p>:selectedScans.slice(0,10).map(s=><div className="scan-row" key={s.id}><Activity size={16}/><span>{s.device_type} · {s.referrer||'Direct'}</span><time>{new Date(s.scanned_at).toLocaleString('en-IN')}</time></div>)}</div>}
+    </div></div>}
+    {profileModal&&<div className="modal-backdrop" onMouseDown={e=>{if(e.target===e.currentTarget)setProfileModal(false);}}><div className="builder-modal profile-modal"><div className="modal-head"><div><span className="modal-kicker">ACCOUNT SETTINGS</span><h2>Edit your profile</h2></div><button className="icon-button" onClick={()=>setProfileModal(false)}><X size={20}/></button></div><form className="profile-settings" onSubmit={async e=>{e.preventDefault();const {error}=await supabase.auth.updateUser({data:{full_name:profileName.trim()}});if(error)notify(error.message);else{setProfileModal(false);notify('Profile name updated.');}}}><label className="input-label">Display name</label><input className="builder-input" value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder="Your name" maxLength={60}/><label className="input-label">Email address</label><input className="builder-input" value={user.email||''} disabled/><div className="builder-actions"><button type="button" className="secondary-button" onClick={()=>setProfileModal(false)}>Cancel</button><button className="primary-button">Save profile</button></div></form></div></div>}
+    {toast&&<div className="toast"><Check size={16}/>{toast}</div>}
+  </div>;
+}
+export default App;

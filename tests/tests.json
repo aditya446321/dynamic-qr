@@ -1,0 +1,43 @@
+[
+  {
+    "name": "Sign-up form validates account details",
+    "sanity": true,
+    "viewport": "desktop",
+    "covers": ["authentication form validation", "password length guardrail"],
+    "description": "Verifies the sign-up form blocks short passwords before account submission.",
+    "steps": ["Open the sign-in screen", "Switch to Create account", "Enter a valid email and a password shorter than eight characters", "Submit the form"],
+    "expected": "The form blocks submission and displays the password length requirement."
+  },
+  {
+    "name": "Create dynamic website and uploaded PDF QR codes",
+    "viewport": "desktop",
+    "covers": ["dynamic website QR creation", "PDF file upload to Storage", "PDF QR destination and branded redirect", "QR design preview", "PNG SVG and PDF exports"],
+    "description": "Verifies a website QR and a real uploaded PDF QR can be created and exported.",
+    "steps": ["Sign in", "Create a Website QR named Campaign with destination https://example.com/campaign and save it", "Create a PDF QR and upload a PDF smaller than 20 MB", "Save it and download PNG, SVG and PDF exports"],
+    "expected": "The website QR uses its branded redirect and the PDF QR opens the uploaded PDF file."
+  },
+  {
+    "name": "Create contact, text, email and SMS QR payloads",
+    "viewport": "desktop",
+    "covers": ["contact vCard fields", "plain text message payload", "email recipient subject and message", "SMS phone and message"],
+    "description": "Verifies common non-URL QR formats show the right fields and encode their supplied data.",
+    "steps": ["Create a Contact QR with first name, last name, job title, phone and email", "Create a Plain text QR with a message", "Create an Email QR with recipient, subject and message", "Create an SMS QR with phone number and message"],
+    "expected": "Each QR type presents its own relevant fields and saves a static payload without asking for a generic URL."
+  },
+  {
+    "name": "Choose a social platform and Telegram destination",
+    "viewport": "desktop",
+    "covers": ["social platform selector", "supported platform links", "Telegram channel and group selection", "social QR redirect"],
+    "description": "Verifies social QR creation is platform-specific and Telegram lets the user choose a channel or group.",
+    "steps": ["Open the QR builder and select Social profile", "Choose Telegram from the platform buttons", "Choose Telegram channel", "Enter a channel link and save", "Edit or create another social QR and choose Instagram"],
+    "expected": "The QR form retains the selected platform and destination link, with Telegram channel/group options."
+  },
+  {
+    "name": "Validate required data and use the builder on mobile",
+    "viewport": "mobile",
+    "covers": ["required PDF upload validation", "social destination validation", "mobile responsive QR builder", "dynamic and static mode distinction"],
+    "description": "Verifies missing PDF/social data is rejected and the type-specific forms remain usable on mobile.",
+    "steps": ["Open the QR builder on mobile and select PDF", "Submit without uploading a PDF and verify validation", "Select Social profile and choose Instagram", "Submit without a destination link and verify validation"],
+    "expected": "Invalid submissions are blocked with clear messages and the mobile builder remains usable."
+  }
+]
