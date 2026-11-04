@@ -209,3 +209,34 @@ body{background:#f7f7fa;color:#202331;font-family:Inter,ui-sans-serif,system-ui,
  .auth-panel{padding:22px 17px}
  .auth-form-wrap h2{font-size:24px}
 }
+
+
+/* Desktop-only login composition. Keep the existing compact phone login untouched. */
+@media(min-width:761px){
+ .auth-shell{min-height:100svh;grid-template-columns:minmax(0,1.08fr) minmax(420px,.82fr);gap:clamp(36px,6vw,90px);place-items:stretch center;padding:clamp(34px,5vw,76px);background:radial-gradient(ellipse at 12% 12%,#e7e5ff 0,transparent 43%),linear-gradient(135deg,#f7f8fc,#f0f1f8)}
+ .desktop-auth-visual{display:flex!important;min-height:660px;width:100%;max-width:720px;position:relative;flex-direction:column;justify-content:space-between;overflow:hidden;padding:clamp(34px,4.2vw,62px);border:1px solid #ffffff80;border-radius:30px;background:radial-gradient(ellipse at 80% 10%,#8779f26b,transparent 34%),radial-gradient(ellipse at 10% 90%,#5b50c54a,transparent 42%),linear-gradient(145deg,#171a2d 0%,#242443 56%,#343064 100%);box-shadow:0 30px 90px #28234c20;color:#fff}
+ .auth-brand-lockup{display:flex;align-items:center;gap:12px;color:#fff;font-size:20px;font-weight:800;letter-spacing:-.6px}
+ .auth-brand-icon{width:42px;height:42px;display:grid;place-items:center;border:1px solid #ffffff36;border-radius:13px;background:#ffffff17;color:#c8c2ff}
+ .desktop-auth-copy{max-width:570px;padding:52px 0}
+ .desktop-auth-kicker{display:inline-flex;padding:8px 11px;border:1px solid #ffffff2b;border-radius:30px;color:#c9c5ff;font-size:9px;font-weight:800;letter-spacing:1.7px}
+ .desktop-auth-copy h1{margin:23px 0 18px;color:#fff;font-size:clamp(38px,4.2vw,62px);line-height:1.04;letter-spacing:-2.8px;font-weight:800}
+ .desktop-auth-copy h1 em{color:#aaa1ff;font-style:normal}
+ .desktop-auth-copy p{max-width:475px;margin:0;color:#d0d0e1;font-size:14px;line-height:1.85}
+ .desktop-auth-points{display:grid;gap:14px;margin-top:30px;color:#f0efff;font-size:12px;font-weight:600}
+ .desktop-auth-points span{display:flex;align-items:center;gap:10px}
+ .desktop-auth-points svg{color:#a69dff}
+ .desktop-auth-foot{display:flex;justify-content:space-between;gap:12px;color:#aaa9c8;font-size:8px;font-weight:800;letter-spacing:1.7px}
+ .auth-panel{width:100%;max-width:510px;align-self:center;justify-self:center;padding:clamp(34px,4vw,54px);border-radius:25px;box-shadow:0 24px 75px #24274712}
+ .auth-form-wrap{max-width:100%}
+}
+@media(max-width:760px){
+ .desktop-auth-visual{display:none!important}
+ .auth-shell{grid-template-columns:1fr}
+}
+.template-sample{flex:0 0 58px;box-shadow:0 7px 18px #18202f0b}
+.template-sample>svg{width:25px;height:25px}
+.template-sample i{position:absolute;right:8px;bottom:8px;width:8px;height:8px;border-radius:50%;box-shadow:0 0 0 2px #fff}
+.template-category-chip.active{border-color:#b9b1f4;background:#f0efff;color:#5143c4}
+.template-load-more{display:flex;align-items:center;justify-content:center;gap:12px;width:min(100%,360px);min-height:44px;margin:24px auto 4px;border:1px solid #e1e4ef;border-radius:11px;background:#fff;color:#4e49a8;font-size:11px;font-weight:800}
+.template-load-more span{color:#98a0af;font-size:9px;font-weight:600}
+@media(max-width:760px){.template-load-more{width:100%}}
