@@ -249,7 +249,7 @@ function App(){
     <section className="auth-visual desktop-auth-visual">
       <div className="auth-brand-lockup"><span className="auth-brand-icon"><QrCode size={22}/></span><strong>KinetiQR</strong></div>
       <div className="login-visual-content"><span className="desktop-auth-kicker">SMARTER CONNECTIONS START HERE</span><h1>One scan.<br/><em>A world of possibilities.</em></h1><p>Everything you need to create beautiful QR experiences, connect with your audience and understand what works.</p>
-        <div className="login-visual-stage"><div className="login-glow login-glow-one"/><div className="login-glow login-glow-two"/><div className="login-qr-card"><div className="login-qr-top"><span/><span/><span/></div><QrCode size={112} strokeWidth={1.25}/><strong>KINETIQR</strong><small>SCAN • CONNECT • GROW</small></div><div className="login-float-card login-float-one"><Activity size={15}/><span><b>Live insights</b><small>Every scan tells a story</small></span></div><div className="login-float-card login-float-two"><Check size={15}/><span><b>Made to be simple</b><small>Manage all your QR codes</small></span></div></div>
+        <div className="login-visual-stage"><img className="login-art-image" src="/kinetiqr-login-art.svg" alt="KinetiQR QR code and analytics illustration"/></div>
       </div>
       <div className="desktop-auth-foot"><span>BUILT FOR BUSINESSES THAT MOVE</span><span>01 / 03</span></div>
     </section>
