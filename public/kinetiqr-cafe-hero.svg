@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 760" fill="none">
+<defs>
+ <linearGradient id="wall" x1="230" y1="80" x2="770" y2="650" gradientUnits="userSpaceOnUse"><stop stop-color="#FFF7EA"/><stop offset="1" stop-color="#F8C99B"/></linearGradient>
+ <linearGradient id="glass" x1="450" y1="280" x2="780" y2="610" gradientUnits="userSpaceOnUse"><stop stop-color="#FFD99C"/><stop offset="1" stop-color="#B85A22"/></linearGradient>
+ <linearGradient id="awning" x1="390" y1="140" x2="800" y2="310" gradientUnits="userSpaceOnUse"><stop stop-color="#FFB64F"/><stop offset="1" stop-color="#F06B12"/></linearGradient>
+ <filter id="shadow" x="100" y="60" width="850" height="720" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="22"/></filter>
+</defs>
+<ellipse cx="555" cy="675" rx="320" ry="40" fill="#B65B22" opacity=".18" filter="url(#shadow)"/>
+<!-- leafy canopy -->
+<path d="M730 0c20 65 86 53 112 104 26 51-9 85 37 119M770 0c-8 54-48 70-36 116M832 0c-3 47 39 60 68 74" stroke="#547A32" stroke-width="7" stroke-linecap="round"/>
+<g fill="#79A83C"><ellipse cx="735" cy="32" rx="24" ry="47" transform="rotate(-42 735 32)"/><ellipse cx="790" cy="68" rx="24" ry="48" transform="rotate(36 790 68)"/><ellipse cx="865" cy="30" rx="25" ry="49" transform="rotate(-35 865 30)"/><ellipse cx="840" cy="126" rx="23" ry="43" transform="rotate(45 840 126)"/></g>
+<!-- shop -->
+<path d="M310 172 755 108l105 73v425H310z" fill="url(#wall)" stroke="#D89A62" stroke-width="4"/>
+<path d="m300 168 464-67 111 77-461 72z" fill="#FFE6C9" stroke="#D99C66" stroke-width="5"/>
+<path d="m307 215 469-66 90 34-470 71z" fill="#A34D24"/>
+<path d="m310 242 478-67 93 34v60l-95 14-1-61-95 13v61l-95 13v-61l-95 14v61l-95 13z" fill="url(#awning)"/>
+<path d="m310 242 95-13v61q-48 35-95 13zM500 216l95-13v61q-48 35-95 13zM690 189l95-14v61q-48 35-95 13z" fill="#FFF0D9"/>
+<path d="m405 229 95-13v61q-48 35-95 13zM595 203l95-14v61q-48 35-95 13zM785 175l96-14v62q-48 35-96 13z" fill="#F47B19"/>
+<!-- windows -->
+<rect x="390" y="300" width="440" height="295" rx="8" fill="#39251D" stroke="#8C4D2B" stroke-width="8"/>
+<rect x="408" y="318" width="404" height="259" fill="url(#glass)"/>
+<path d="M540 318v259M674 318v259" stroke="#57311F" stroke-width="12"/>
+<path d="M408 468h404" stroke="#57311F" stroke-width="10"/>
+<g fill="#FFF0BF"><circle cx="470" cy="365" r="8"/><circle cx="603" cy="365" r="8"/><circle cx="742" cy="365" r="8"/></g>
+<path d="M452 390q20-50 40 0M585 390q20-50 40 0M724 390q20-50 40 0" stroke="#FFF0BF" stroke-width="5" stroke-linecap="round"/>
+<!-- counter and shelves -->
+<path d="M425 490h370v55H425z" fill="#7B3D20"/><path d="M438 445h330v18H438z" fill="#F3A13E"/>
+<g fill="#D98B36"><rect x="452" y="420" width="32" height="25" rx="4"/><rect x="505" y="415" width="28" height="30" rx="4"/><rect x="632" y="416" width="30" height="29" rx="4"/><rect x="697" y="420" width="38" height="25" rx="4"/></g>
+<!-- outdoor table + chairs -->
+<path d="M630 600v70M565 584h145" stroke="#4B3024" stroke-width="12" stroke-linecap="round"/>
+<ellipse cx="638" cy="580" rx="93" ry="19" fill="#F4D2A7" stroke="#9D633C" stroke-width="4"/>
+<path d="M530 608v72m0-72q-45 0-45 35v37m245-72v72m0-72q45 0 45 35v37" stroke="#E77B19" stroke-width="13" stroke-linecap="round"/>
+<!-- potted plants -->
+<path d="M330 642h78l-10 54h-58z" fill="#E98B2F"/><path d="M367 641q-62-85-77-23 34 17 77 23m0 0q-12-105 39-83 0 45-39 83m-2 0q42-67 79-32-20 36-79 32" fill="#6E9C3E"/>
+<path d="M810 643h62l-8 50h-46z" fill="#FFF1DC"/><path d="M841 643q-42-58-57-20 18 22 57 20m0 0q-3-72 33-59 2 34-33 59" fill="#6D9A3C"/>
+<!-- QR A-frame sign -->
+<path d="m300 470 160-25 31 210-167 26z" fill="#4A3026"/><path d="m315 482 133-20 25 176-138 21z" fill="#FFF9EF" stroke="#EABF91" stroke-width="5"/>
+<path d="m339 510 18-3v18m76-30 18-3v18m-86 119-18 3v-18m88 5 18-3v-18" stroke="#F07819" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+<g fill="#241E1A"><path d="M365 520h24v24h-24zM395 520h24v24h-24zM365 550h24v24h-24zM400 551h15v15h-15zM425 550h17v17h-17zM390 580h20v20h-20zM420 580h20v20h-20zM360 590h18v18h-18zM420 615h18v18h-18z"/></g>
+<path d="m305 655 24 45m168-45-24 46" stroke="#39251D" stroke-width="11" stroke-linecap="round"/>
+<path d="M70 715h770" stroke="#E9B98D" stroke-width="3" stroke-linecap="round" opacity=".55"/>
+<path d="M160 720 210 690m90 30 50-30m90 30 50-30m90 30 50-30m90 30 50-30" stroke="#EBC49F" stroke-width="2" opacity=".55"/>
+</svg>
