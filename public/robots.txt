@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /signup
+Disallow: /forgot-password
+Disallow: /overview
+Disallow: /qr-codes
+Disallow: /restaurant-menus
+Disallow: /restaurant-analytics
+Disallow: /qr-templates
+Disallow: /customization
+Disallow: /create-qr
+Disallow: /settings
+Disallow: /api/
+Disallow: /r/
+Sitemap: https://YOUR-DOMAIN.com/sitemap.xml
