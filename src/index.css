@@ -929,3 +929,10 @@ body:has(.app-shell){background:radial-gradient(circle at 2% 4%,#FDBE8440 0 11re
   main.kineti-login .kl-card{padding:17px 14px}
   main.kineti-login .kl-row{align-items:flex-start}
 }
+
+.audience-strip{max-width:1180px;margin:0 auto;padding:4px 6.5% 54px;text-align:center}
+.audience-strip>p{margin:0 0 22px;color:#9A806D;font-size:10px;font-weight:800;letter-spacing:1.8px}
+.audience-strip>div{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.audience-strip span{display:flex;align-items:center;justify-content:center;gap:9px;min-height:54px;padding:10px 12px;border:1px solid #fff;border-radius:16px;background:#ffffff80;color:#6D5A4B;font-size:13px;font-weight:650;box-shadow:0 8px 24px #DE8C4610}
+.audience-strip svg{color:#B56B36;flex:0 0 auto}
+@media(max-width:760px){.audience-strip{padding:0 20px 35px}.audience-strip>div{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.audience-strip span{font-size:12px;justify-content:flex-start}.audience-strip span:last-child{grid-column:1/-1}}
