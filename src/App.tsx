@@ -251,10 +251,7 @@ function App(){
       </button>}
       {authMode==='signin'&&<div className="kl-or" role="separator">or</div>}
       <form id="kineti-auth-form" onSubmit={handleAuth}>
-        {authMode==='signup'&&<div className="kl-field">
-          <svg className="kl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
-          <input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder="Your name" aria-label="Your name" autoComplete="name" maxLength={60} required/>
-        </div>}
+        {authMode==='signup'&&<><div className="kl-field"><svg className="kl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder="Your name" aria-label="Your name" autoComplete="name" maxLength={60} required/></div><div className="kl-field"><svg className="kl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 10h1m4 0h1M9 14h1m4 0h1M10 21v-4h4v4"/></svg><input value={businessName} onChange={e=>setBusinessName(e.target.value)} placeholder="Business name" aria-label="Business name" autoComplete="organization" maxLength={80} required/></div></>}
         {authMode!=='reset'&&<div className="kl-field">
           <svg className="kl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3 7l9 6.5L21 7"/></svg>
           <input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email address" autoComplete="email" aria-label="Email address" required/>
