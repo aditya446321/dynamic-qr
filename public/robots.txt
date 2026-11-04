@@ -13,4 +13,4 @@ Disallow: /create-qr
 Disallow: /settings
 Disallow: /api/
 Disallow: /r/
-Sitemap: https://YOUR-DOMAIN.com/sitemap.xml
+Sitemap: https://kineti-qr.vercel.app/sitemap.xml
