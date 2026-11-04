@@ -1436,3 +1436,50 @@ body:has(.app-shell){background:radial-gradient(circle at 2% 4%,#FDBE8440 0 11re
   .template-preview-actions{display:grid;grid-template-columns:1fr}
   .template-preview-actions button{width:100%;min-height:44px}
 }
+
+
+/* KinetiQR responsive refinement */
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-optical-sizing:auto}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.marketing-site main>section{content-visibility:auto;contain-intrinsic-size:auto 640px}
+.component-loading{padding:22px;border:1px solid #eee5dc;border-radius:12px;background:#fffaf5;color:#7b8491;font-size:13px}
+.type-more-option{align-items:center;justify-content:center;border-style:dashed;background:#fff8f1;color:#d65d0b}
+.type-more-option strong{color:#b9500b}
+.builder-preview{width:100%;min-width:0;padding:22px 18px;border-color:#f0e3d8;background:linear-gradient(145deg,#fffaf5,#fff 72%);border-radius:18px}
+.builder-preview .preview-label{font-size:10px;letter-spacing:1.6px;color:#929ba8}
+.builder-preview .preview-paper{width:min(100%,410px);min-height:250px;padding:22px;margin:14px 0 12px;border:1px solid #f1e7de;border-radius:16px;background:#fff;box-shadow:0 10px 28px #6d43200b}
+.builder-preview .preview-qr{width:100%;min-height:210px}
+.builder-preview .preview-qr>div{width:100%!important;display:grid;place-items:center}
+.builder-preview .preview-qr svg,.builder-preview .preview-qr canvas{display:block;width:min(100%,360px)!important;height:auto!important;max-width:360px!important;aspect-ratio:1}
+.builder-preview>strong{font-size:16px;color:#252d3b}
+.builder-preview>small{font-size:12px;color:#7d8796}
+.builder-preview .preview-note{max-width:410px;width:100%;font-size:11px;line-height:1.55}
+.premium-template{display:flex;flex-direction:column;gap:0;min-height:0;padding:18px;border-color:#eee6df;border-radius:18px;background:linear-gradient(155deg,#fff 0%,#fffdfb 100%);box-shadow:0 8px 24px #3d2a1708}
+.premium-template .template-card-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.premium-template .template-sample{width:52px;height:52px;display:grid;place-items:center;position:relative;border:1px solid;border-radius:15px;box-shadow:inset 0 0 0 4px #ffffffb8}
+.premium-template .template-sample i{position:absolute;right:7px;bottom:7px;width:7px;height:7px;border-radius:50%;border:2px solid #fff}
+.premium-template h3{margin:15px 0 5px;font-size:17px;letter-spacing:-.35px}
+.premium-template p{min-height:42px;margin:0 0 13px;font-size:12px;line-height:1.55}
+.premium-template .template-card-meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:auto;margin-bottom:14px}
+.premium-template .template-card-meta span{display:inline-flex;align-items:center;gap:5px;padding:6px 8px;border:1px solid #eceef2;border-radius:8px;background:#f8f9fb;color:#667181;font-size:10px;font-weight:600}
+.premium-template .template-card-meta span:last-child{background:#f0f8f3;border-color:#dcefe2;color:#43815e}
+.premium-template .template-use-button{width:100%;min-height:44px;display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:11px;background:linear-gradient(100deg,#ff8517,#f2680b);color:#fff;font-size:12px;font-weight:800;box-shadow:0 7px 16px #f26a0a24}
+.premium-template .template-use-button:hover{filter:brightness(.97);transform:translateY(-1px)}
+@media(max-width:760px){
+  .mobile-backdrop{display:block!important;position:fixed;inset:0;z-index:10!important;width:100%;height:100%;padding:0;border:0;background:#15192355;touch-action:manipulation}
+  .sidebar{z-index:11!important;overscroll-behavior:contain}
+  .builder-preview{grid-row:1;width:100%;padding:15px 12px}
+  .builder-preview .preview-paper{width:100%;min-height:270px;padding:16px;margin:10px 0}
+  .builder-preview .preview-qr{min-height:235px}
+  .builder-preview .preview-qr svg,.builder-preview .preview-qr canvas{width:min(100%,330px)!important;max-width:330px!important}
+  .builder-preview>strong{font-size:16px}
+  .builder-preview>small{font-size:11px}
+  .builder-preview .preview-note{font-size:10px}
+  .type-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .type-option{min-height:68px;padding:11px;border-radius:12px}
+  .type-option strong{font-size:12px}
+  .premium-template{padding:15px;border-radius:16px}
+  .premium-template h3{font-size:16px}
+  .premium-template p{font-size:11px;min-height:0}
+  .premium-template .template-use-button{min-height:46px;font-size:12px}
+}
