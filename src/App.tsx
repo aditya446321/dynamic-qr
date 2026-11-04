@@ -248,8 +248,8 @@ function App(){
     </section>
     <section className="auth-visual desktop-auth-visual">
       <div className="auth-brand-lockup"><span className="auth-brand-icon"><QrCode size={22}/></span><strong>KinetiQR</strong></div>
-      <div className="login-visual-content"><span className="desktop-auth-kicker">SMARTER CONNECTIONS START HERE</span><h1>One scan.<br/><em>A world of possibilities.</em></h1><p>Everything you need to create beautiful QR experiences, connect with your audience and understand what works.</p>
-        <div className="login-visual-stage"><img className="login-art-image" src="/kinetiqr-login-art.svg" alt="KinetiQR QR code and analytics illustration"/></div>
+      <div className="login-visual-content"><span className="desktop-auth-kicker">MADE FOR YOUR NEXT BIG IDEA</span><h1>Bring your business<br/><em>closer to everyone.</em></h1><p>Create QR codes for your café, store or brand. Share menus, links and experiences with one simple scan.</p>
+        <div className="login-visual-stage"><img className="login-art-image" src="/kinetiqr-cafe-hero.svg" alt="Illustration of a warm café storefront with a KinetiQR menu QR code"/></div>
       </div>
       <div className="desktop-auth-foot"><span>BUILT FOR BUSINESSES THAT MOVE</span><span>01 / 03</span></div>
     </section>
