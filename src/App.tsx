@@ -168,10 +168,10 @@ function App(){
       const data=c.qr_type==='menu'?window.location.origin+'/menu/'+c.slug:c.is_dynamic&&linkTypes.includes(c.qr_type)?linkBase()+c.slug:buildPayload(c.qr_type,c.payload||{});
       const qr=createQr(data,{...defaultDesign,...(c.design||{})});const filename=safeName(c.title);
       if(format==='pdf'){
-        const blob=await qr.getRawData('png');if(!blob)throw new Error('QR image could not be created');
+        const raw=await qr.getRawData('png');if(!raw)throw new Error('QR image could not be created');const blob:Blob=raw instanceof Blob?raw:new Blob([raw as unknown as BlobPart],{type:'image/png'});
         const dataUrl=await new Promise<string>((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result));reader.onerror=reject;reader.readAsDataURL(blob);});
         const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});pdf.setFontSize(18);pdf.text(c.title,105,25,{align:'center'});pdf.addImage(dataUrl,'PNG',35,45,140,140);pdf.setFontSize(9);pdf.text(data,105,198,{align:'center',maxWidth:170});pdf.save(`${filename}.pdf`);
-      }else{const blob=await qr.getRawData(format);if(!blob)throw new Error('QR image could not be created');const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`${filename}.${format}`;a.click();URL.revokeObjectURL(url);}
+      }else{const raw=await qr.getRawData(format);if(!raw)throw new Error('QR image could not be created');const blob:Blob=raw instanceof Blob?raw:new Blob([raw as unknown as BlobPart],{type:format==='svg'?'image/svg+xml':'image/png'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`${filename}.${format}`;a.click();window.setTimeout(()=>URL.revokeObjectURL(url),1000);}
       notify(`${format.toUpperCase()} downloaded.`);
     }catch(err){notify(err instanceof Error?err.message:'Could not export QR code.');}
   }
