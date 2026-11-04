@@ -238,7 +238,7 @@ function App(){
     <svg className="abs mark" viewBox="0 0 52 50" aria-hidden="true"><g fill="none" stroke="#f26a0a" strokeWidth="6.5" strokeLinejoin="round"><rect x="3.5" y="3" width="16" height="15.5" rx="4"/><rect x="31.5" y="3" width="16" height="15.5" rx="4"/><rect x="3.5" y="31" width="16" height="15.5" rx="4"/><rect x="31.5" y="31" width="16" height="15.5" rx="4"/></g></svg>
     <p className="abs name">KinetiQR</p>
   </div>
-  <h1 className="abs">{authMode==='signin'?<>Welcome <span>back</span></>:authMode==='signup'?<>Create <span>account</span></>:authMode==='forgot'?<>Forgot <span>password?</span>:<>New <span>password</span></>}</h1>
+  <h1 className="abs">{authMode==='signin'?<>Welcome <span>back</span></>:authMode==='signup'?<>Create <span>account</span></>:authMode==='forgot'?<>Forgot <span>password?</span></>:<>New <span>password</span></>}</h1>
   <p className="abs sub">{authMode==='signin'?'Sign in to your account':authMode==='signup'?'Create your KinetiQR account':authMode==='forgot'?'Enter your email to receive a reset link':'Choose a new password for your account'}</p>
   <div className="abs card"></div>
   <div className="box">
