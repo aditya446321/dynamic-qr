@@ -232,48 +232,51 @@ function App(){
   const visibleTemplates=filteredTemplates.slice(0,(templatePage+1)*24);
   if(window.location.hash.startsWith('#/menu/'))return <PublicMenuView record={publicMenu} loading={publicMenuLoading}/>;
   if(!authReady)return <div className="loading-screen"><LoaderCircle className="spin"/> Loading KinetiQR...</div>;
-  if(!user||authMode==='reset')return <main className="page kineti-auth-page">
-  <section className="content">
-    <p className="brand">
+  if(!user||authMode==='reset')return <main className="kineti-login">
+  <section className="kl-content">
+    <div className="kl-brand">
       <svg viewBox="0 0 52 50" aria-hidden="true"><g fill="none" stroke="#f26a0a" strokeWidth="6.5" strokeLinejoin="round"><rect x="3.5" y="3" width="16" height="15.5" rx="4"/><rect x="31.5" y="3" width="16" height="15.5" rx="4"/><rect x="3.5" y="31" width="16" height="15.5" rx="4"/><rect x="31.5" y="31" width="16" height="15.5" rx="4"/></g></svg>
-      KinetiQR
-    </p>
+      <span>KinetiQR</span>
+    </div>
     <h1>{authMode==='signin'?<>Welcome <span>back</span></>:authMode==='signup'?<>Create <span>account</span></>:authMode==='forgot'?<>Forgot <span>password?</span></>:<>New <span>password</span></>}</h1>
-    <p className="sub">{authMode==='signin'?'Sign in to your account':authMode==='signup'?'Create your KinetiQR account':authMode==='forgot'?'Enter your email to receive a reset link':'Choose a new password for your account'}</p>
-    <div className="card">
-      {authMode==='signin'&&<button type="button" className="google" onClick={handleGoogleAuth} disabled={googleBusy||authBusy}>
+    <p className="kl-sub">{authMode==='signin'?'Sign in to your account':authMode==='signup'?'Create your KinetiQR account':authMode==='forgot'?'Enter your email to receive a reset link':'Choose a new password for your account'}</p>
+    <div className="kl-card">
+      {authMode==='signin'&&<button type="button" className="kl-google" onClick={handleGoogleAuth} disabled={googleBusy||authBusy}>
         <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.4-4.1 7-10.1 7-17.6z"/><path fill="#FBBC05" d="M10.5 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.9-4.7l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
         {googleBusy?'Connecting to Google...':'Continue with Google'}
       </button>}
-      {authMode==='signin'&&<div className="divider" role="separator">or</div>}
-      <form id="kineti-auth-form" noValidate onSubmit={handleAuth}>
-        {authMode==='signup'&&<div className="field"><input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder="Your name" aria-label="Your name" maxLength={60} required/></div>}
-        {authMode!=='reset'&&<div className="field">
-          <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3 7l9 6.5L21 7"/></svg>
+      {authMode==='signin'&&<div className="kl-or" role="separator">or</div>}
+      <form id="kineti-auth-form" onSubmit={handleAuth}>
+        {authMode==='signup'&&<div className="kl-field">
+          <svg className="kl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          <input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder="Your name" aria-label="Your name" autoComplete="name" maxLength={60} required/>
+        </div>}
+        {authMode!=='reset'&&<div className="kl-field">
+          <svg className="kl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3 7l9 6.5L21 7"/></svg>
           <input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email address" autoComplete="email" aria-label="Email address" required/>
         </div>}
-        {authMode!=='forgot'&&<div className="field">
-          <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10.5" rx="3"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="15.7" r="1.2" fill="currentColor"/></svg>
+        {authMode!=='forgot'&&<div className="kl-field">
+          <svg className="kl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10.5" rx="3"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="15.7" r="1.2" fill="currentColor"/></svg>
           <input type={showPassword?'text':'password'} value={password} onChange={e=>setPassword(e.target.value)} minLength={8} required placeholder={authMode==='reset'?'New password':'Password'} autoComplete={authMode==='reset'||authMode==='signup'?'new-password':'current-password'} aria-label={authMode==='reset'?'New password':'Password'}/>
-          <button type="button" className="eye" onClick={()=>setShowPassword(!showPassword)} aria-label={showPassword?'Hide password':'Show password'} aria-pressed={showPassword}>
-            {showPassword?<EyeOff size={21}/>:<Eye size={21}/>}
+          <button type="button" className="kl-eye" onClick={()=>setShowPassword(!showPassword)} aria-label={showPassword?'Hide password':'Show password'} aria-pressed={showPassword}>
+            {showPassword?<EyeOff size={22}/>:<Eye size={22}/>}
           </button>
         </div>}
-        {authMode==='signin'&&<div className="row">
-          <label className="check"><input type="checkbox"/> Remember me</label>
-          <button type="button" className="forgot-link" onClick={()=>{setAuthMode('forgot');setAuthError('');setAuthMessage('');}}>Forgot password?</button>
+        {authMode==='signin'&&<div className="kl-row">
+          <label className="kl-check"><input type="checkbox"/> Remember me</label>
+          <button type="button" className="kl-link" onClick={()=>{setAuthMode('forgot');setAuthError('');setAuthMessage('');}}>Forgot password?</button>
         </div>}
-        {authError&&<p className="msg error" role="alert">{authError}</p>}
-        {authMessage&&<p className="msg ok" role="status">{authMessage}</p>}
-        <button type="submit" className="signin" disabled={authBusy||googleBusy}>
-          {authBusy?(authMode==='forgot'?'Sending...':'Please wait...'):authMode==='forgot'?'Send reset link':authMode==='reset'?'Update password':authMode==='signup'?'Create account':'Sign in'}
+        {authError&&<div className="auth-inline-message error" role="alert">{authError}</div>}
+        {authMessage&&<div className="auth-inline-message success" role="status">{authMessage}</div>}
+        <button type="submit" className="kl-submit" disabled={authBusy||googleBusy}>
+          {authBusy?(authMode==='forgot'?'Sending...':'Please wait...'):authMode==='forgot'?'Send reset link':authMode==='reset'?'Update password':authMode==='signup'?'Create account':'Sign In'}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
         </button>
       </form>
-      <p className="foot">{authMode==='signin'?"Don’t have an account?":authMode==='signup'?'Already have an account?':'Remembered your password?'} <a href={authMode==='signin'?'#signup':'#signin'} onClick={e=>{e.preventDefault();setAuthMode(authMode==='signin'?'signup':'signin');setAuthError('');setAuthMessage('');setPassword('');}}>{authMode==='signin'?'Sign up':'Sign in'}</a></p>
+      <p className="kl-foot">{authMode==='signin'?"Don’t have an account?":authMode==='signup'?'Already have an account?':'Remembered your password?'} <a href={authMode==='signin'?'#signup':'#signin'} onClick={e=>{e.preventDefault();setAuthMode(authMode==='signin'?'signup':'signin');setAuthError('');setAuthMessage('');setPassword('');}}>{authMode==='signin'?'Sign up':'Sign in'}</a></p>
     </div>
   </section>
-  <div className="art"><img src="/kinetiqr-cafe-hero.jpg" onError={e=>{e.currentTarget.onerror=null;e.currentTarget.src='/kinetiqr-cafe-hero.svg';}} width="932" height="941" fetchPriority="high" alt="" draggable="false"/></div>
+  <div className="kl-art"><img src="/kinetiqr-cafe-hero.jpg" width="932" height="941" alt="" draggable="false" fetchPriority="high"/></div>
 </main>;
 
   return <div className="app-shell">

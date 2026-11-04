@@ -784,105 +784,61 @@ html:has(.auth-shell),body:has(.auth-shell),#root:has(.auth-shell){height:100%;m
 }
 
 
-/* KinetiQR supplied sign-in reference — isolated from dashboard styles */
-main.kineti-login{--ink:#0d1030;--muted:#4a4e63;--orange:#f26a0a;--ph:#686c7c;--bg:#fdeee1;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-main.kineti-login *,main.kineti-login *:before,main.kineti-login *:after{box-sizing:border-box}
-body:has(main.kineti-login){margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow-x:hidden;background:var(--bg);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink)}
-main.kineti-login.stage{--u:calc(100cqw / 1672);container-type:inline-size;position:relative;width:min(100vw,calc(100vh * 1672 / 941));aspect-ratio:1672/941;overflow:hidden;background:radial-gradient(circle at 0 0,#fde8d6 0 7%,transparent 7.2%),linear-gradient(120deg,#fff7ef,#fdeee1 55%,#fde5d1)}
-main.kineti-login .art{position:absolute;left:calc(var(--u)*740);top:0;width:calc(var(--u)*932);height:100%;object-fit:cover;mask-image:linear-gradient(90deg,transparent,#000 7%);user-select:none}
-main.kineti-login .abs{position:absolute}
-main.kineti-login .mark{left:calc(var(--u)*185);top:calc(var(--u)*67);width:calc(var(--u)*52);height:calc(var(--u)*50)}
-main.kineti-login .name{left:calc(var(--u)*256);top:calc(var(--u)*62);font-size:calc(var(--u)*41);font-weight:700;letter-spacing:-.02em;line-height:1.2;margin:0}
-main.kineti-login h1{left:calc(var(--u)*185);top:calc(var(--u)*152);margin:0;font-size:calc(var(--u)*72);font-weight:800;letter-spacing:-.035em;line-height:1.15;white-space:nowrap}
+/* KinetiQR sign-in — responsive layout (scoped to main.kineti-login) */
+main.kineti-login{--ink:#0d1030;--muted:#4a4e63;--orange:#f26a0a;--orange-light:#ff8c1a;--ph:#686c7c;--bg:#fdeee1;--line:#e5dcd3;
+  box-sizing:border-box;min-height:100svh;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0);
+  background:radial-gradient(ellipse 22% 30% at 0% 100%,#fde0c6 0 98%,transparent 100%),linear-gradient(120deg,#fff7ef 0%,#fdeee1 55%,#fde5d1 100%)}
+main.kineti-login *,main.kineti-login *::before,main.kineti-login *::after{box-sizing:border-box}
+body:has(main.kineti-login){margin:0;background:var(--bg,#fdeee1);overflow-x:hidden}
+main.kineti-login .kl-content{display:flex;flex-direction:column;justify-content:center;position:relative;z-index:1;padding:clamp(24px,5vw,72px) clamp(20px,8vw,150px)}
+main.kineti-login .kl-art{position:relative;overflow:hidden}
+main.kineti-login .kl-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:30% center;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 12%);mask-image:linear-gradient(90deg,transparent 0,#000 12%);user-select:none;-webkit-user-drag:none}
+main.kineti-login .kl-brand{display:flex;align-items:center;gap:14px;margin:0 0 clamp(28px,5vh,56px);font-weight:700;font-size:clamp(26px,2.5vw,34px);letter-spacing:-.02em}
+main.kineti-login .kl-brand svg{width:clamp(36px,3.2vw,46px);height:auto}
+main.kineti-login h1{margin:0;font-size:clamp(40px,5vw,72px);line-height:1.1;font-weight:800;letter-spacing:-.035em;color:var(--ink)}
 main.kineti-login h1 span{color:var(--orange)}
-main.kineti-login .sub{left:calc(var(--u)*185);top:calc(var(--u)*240);margin:0;font-size:calc(var(--u)*28);color:var(--muted);white-space:nowrap}
-main.kineti-login .card{left:calc(var(--u)*150);top:calc(var(--u)*313);width:calc(var(--u)*580);height:calc(var(--u)*537);border-radius:calc(var(--u)*50);background:linear-gradient(160deg,#ffffffd1,#fff7f0b3);border:1px solid #ffffffeb;box-shadow:0 18px 45px #de8c4629,inset 0 0 20px #ffffffb3}
-main.kineti-login .google{left:calc(var(--u)*187);top:calc(var(--u)*344);width:calc(var(--u)*506);height:calc(var(--u)*65);border-radius:999px;border:1px solid #e3dad2;background:#fff;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:calc(var(--u)*14);font:600 calc(var(--u)*23)/1 Inter,sans-serif;cursor:pointer;box-shadow:0 5px 12px #78502824}
-main.kineti-login .google svg{width:calc(var(--u)*36);height:calc(var(--u)*36)}
-main.kineti-login .or{left:calc(var(--u)*187);top:calc(var(--u)*433);width:calc(var(--u)*506);height:calc(var(--u)*24);display:flex;align-items:center;justify-content:center;font-size:calc(var(--u)*21)}
-main.kineti-login .or:before,main.kineti-login .or:after{content:"";height:1px;background:#ddd2c8;flex:1}
-main.kineti-login .or:before{margin-right:12px}main.kineti-login .or:after{margin-left:12px}
-main.kineti-login .field{left:calc(var(--u)*187);width:calc(var(--u)*506);height:calc(var(--u)*59)}
-main.kineti-login .field input{width:100%;height:100%;border-radius:calc(var(--u)*20);border:1px solid #e5dcd3;background:#fffbf7e6;color:var(--ink);padding:0 calc(var(--u)*64) 0 calc(var(--u)*71);font:400 calc(var(--u)*21) Inter,sans-serif;outline:none}
-main.kineti-login .field input:focus-visible{border-color:var(--orange);box-shadow:0 0 0 3px #f26a0a38}
-main.kineti-login .field .ic{position:absolute;left:calc(var(--u)*21);top:50%;transform:translateY(-50%);width:calc(var(--u)*30);height:calc(var(--u)*30);pointer-events:none}
-main.kineti-login .eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:46px;height:46px;border:0;background:none;cursor:pointer;display:grid;place-items:center}
-main.kineti-login .check{left:calc(var(--u)*188);top:calc(var(--u)*637);display:flex;align-items:center;gap:calc(var(--u)*17);font-size:calc(var(--u)*21);height:calc(var(--u)*30)}
-main.kineti-login .forgot{right:calc(var(--u)*979);top:calc(var(--u)*637);font-size:calc(var(--u)*21)}
-main.kineti-login a{color:var(--orange);text-decoration:none}
-main.kineti-login .signin{left:calc(var(--u)*186);top:calc(var(--u)*695);width:calc(var(--u)*508);height:calc(var(--u)*67);border:0;border-radius:calc(var(--u)*24);color:#fff;background:linear-gradient(#ff8c1a,#f26a0a);font:600 calc(var(--u)*25)/1 Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer;box-shadow:0 8px 16px #f26a0a52}
-main.kineti-login .signin svg{width:27px;height:27px}
-main.kineti-login .foot{left:calc(var(--u)*278);top:calc(var(--u)*789);margin:0;font-size:calc(var(--u)*21);color:var(--muted);white-space:nowrap}
-main.kineti-login .foot a{margin-left:15px;font-weight:700}
-main.kineti-login form{display:contents}
-main.kineti-login .auth-inline-message{position:relative;margin:8px 0;padding:8px 10px;border-radius:9px;font-size:12px}
+main.kineti-login .kl-sub{margin:10px 0 clamp(20px,3vh,32px);font-size:clamp(17px,1.7vw,24px);color:var(--muted)}
+main.kineti-login .kl-card{width:100%;max-width:540px;padding:clamp(18px,2.4vw,34px);border-radius:clamp(26px,3vw,46px);border:1px solid #ffffffe6;background:linear-gradient(160deg,#ffffffd1,#fff7f0b3);box-shadow:0 18px 45px #de8c4629,inset 0 0 20px #ffffffb3}
+main.kineti-login .kl-google{width:100%;min-height:56px;display:flex;align-items:center;justify-content:center;gap:14px;border:1px solid #e3dad2;border-radius:999px;background:#fff;color:var(--ink);font:600 clamp(16px,1.4vw,20px)/1 Inter,sans-serif;letter-spacing:-.02em;cursor:pointer;box-shadow:0 5px 12px #78502824}
+main.kineti-login .kl-google svg{width:26px;height:26px}
+main.kineti-login .kl-google:hover{background:#fffaf5}
+main.kineti-login .kl-or{display:flex;align-items:center;gap:14px;margin:clamp(14px,2vh,22px) 0;color:var(--muted);font-weight:500;font-size:15px}
+main.kineti-login .kl-or::before,main.kineti-login .kl-or::after{content:"";flex:1;height:1px;background:#ddd2c8}
+main.kineti-login .kl-field{position:relative;margin-bottom:14px}
+main.kineti-login .kl-ic{position:absolute;left:18px;top:50%;transform:translateY(-50%);width:24px;height:24px;color:#1a1d33;pointer-events:none}
+main.kineti-login .kl-field input{width:100%;height:56px;padding:0 56px;border:1px solid var(--line);border-radius:18px;background:#fffbf7e6;color:var(--ink);font:400 clamp(16px,1.3vw,18px) Inter,sans-serif;outline:none;box-shadow:none;transition:border-color .15s,box-shadow .15s}
+main.kineti-login .kl-field input::placeholder{color:var(--ph)}
+main.kineti-login .kl-field input:focus-visible{border-color:var(--orange);box-shadow:0 0 0 3px #f26a0a38}
+main.kineti-login .kl-eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:42px;height:42px;display:grid;place-items:center;border:0;border-radius:50%;background:none;color:#1a1d33;cursor:pointer;padding:0}
+main.kineti-login .kl-eye:focus-visible{outline:2px solid var(--orange)}
+main.kineti-login .kl-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 20px}
+main.kineti-login .kl-check{display:flex;align-items:center;gap:12px;font-weight:500;font-size:16px;cursor:pointer;margin:0}
+main.kineti-login .kl-check input{appearance:none;-webkit-appearance:none;width:24px;height:24px;margin:0;padding:0;border:2px solid #2a2d42;border-radius:7px;background:transparent;cursor:pointer;display:grid;place-items:center}
+main.kineti-login .kl-check input:checked{background:var(--orange);border-color:var(--orange)}
+main.kineti-login .kl-check input:checked::after{content:"";width:6px;height:12px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
+main.kineti-login .kl-check input:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+main.kineti-login a,main.kineti-login .kl-link{color:var(--orange);text-decoration:none;font-weight:500}
+main.kineti-login .kl-link{border:0;background:none;padding:0;font:500 16px Inter,sans-serif;cursor:pointer}
+main.kineti-login a:hover,main.kineti-login .kl-link:hover{text-decoration:underline}
+main.kineti-login a:focus-visible,main.kineti-login .kl-link:focus-visible{outline:2px solid var(--orange);outline-offset:3px;border-radius:4px}
+main.kineti-login .kl-submit{width:100%;height:60px;display:flex;align-items:center;justify-content:center;gap:12px;border:0;border-radius:22px;color:#fff;cursor:pointer;background:linear-gradient(180deg,var(--orange-light) 0%,var(--orange) 100%);font:600 clamp(18px,1.5vw,21px)/1 Inter,sans-serif;box-shadow:0 8px 16px #f26a0a52}
+main.kineti-login .kl-submit svg{width:24px;height:24px}
+main.kineti-login .kl-submit:hover{filter:brightness(1.04)}
+main.kineti-login .kl-submit:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+main.kineti-login .kl-submit:disabled,main.kineti-login .kl-google:disabled{opacity:.7;cursor:wait}
+main.kineti-login .kl-foot{margin:22px 0 0;text-align:center;color:var(--muted);font-size:16px}
+main.kineti-login .kl-foot a{margin-left:6px;font-weight:600}
+main.kineti-login .auth-inline-message{position:relative;margin:0 0 14px;padding:11px 14px;border-radius:12px;font-size:14.5px;line-height:1.45}
 main.kineti-login .auth-inline-message.error{background:#fff0ed;color:#a12c1b}
 main.kineti-login .auth-inline-message.success{background:#edf9ef;color:#216b38}
 @media(max-width:900px){
-body:has(main.kineti-login){display:block;background:linear-gradient(160deg,#fff7ef,#fde5d1)}
-main.kineti-login.stage{--u:1px;container-type:normal;width:100%;aspect-ratio:auto;min-height:100vh;padding:28px 20px 40px;display:flex;flex-direction:column;background:none}
-main.kineti-login .art{display:none}main.kineti-login .abs{position:static}
-main.kineti-login .brand{display:flex;align-items:center;gap:12px;margin-bottom:28px}
-main.kineti-login .mark{width:40px;height:40px}main.kineti-login .name{font-size:30px}
-main.kineti-login h1{font-size:44px}main.kineti-login .sub{font-size:20px;margin:8px 0 22px;white-space:normal}
-main.kineti-login .card{display:none}
-main.kineti-login .box{display:block;padding:20px 16px;border-radius:30px;background:#ffffffbf;box-shadow:0 14px 34px #de8c462e}
-main.kineti-login .google{position:relative;left:auto;top:auto;width:100%;height:56px;font-size:18px}
-main.kineti-login .google svg{width:28px;height:28px}
-main.kineti-login .or{position:relative;left:auto;top:auto;width:100%;height:auto;margin:16px 0;font-size:16px}
-main.kineti-login .field{position:relative;left:auto;top:auto!important;width:100%;height:54px;margin-bottom:12px}
-main.kineti-login .field input{font-size:17px;padding-left:58px;border-radius:16px}
-main.kineti-login .field .ic{width:26px;height:26px;left:16px}
-main.kineti-login .rowm{position:relative;left:auto;top:auto;display:flex;justify-content:space-between;align-items:center;margin:14px 0 18px}
-main.kineti-login .check{position:static;height:auto;font-size:16px;gap:10px}
-main.kineti-login .forgot{position:static;font-size:16px}
-main.kineti-login .signin{position:relative;left:auto;top:auto;width:100%;height:58px;font-size:20px;border-radius:18px}
-main.kineti-login .foot{position:static;text-align:center;margin-top:20px;font-size:16px;white-space:normal}
-main.kineti-login .foot a{font-size:17px;margin-left:8px}
+  main.kineti-login{grid-template-columns:1fr;background:linear-gradient(160deg,#fff7ef,#fde5d1)}
+  main.kineti-login .kl-art{display:none}
+  main.kineti-login .kl-content{justify-content:flex-start;width:100%;max-width:600px;margin:0 auto;padding:28px 20px 40px}
+  main.kineti-login .kl-brand{margin-bottom:26px}
+  main.kineti-login .kl-card{max-width:none}
 }
-@media(min-width:901px){main.kineti-login .box,main.kineti-login .rowm,main.kineti-login .brand{display:contents}}
+@media(max-width:380px){main.kineti-login .kl-row{flex-direction:column;align-items:flex-start}}
 @media(prefers-reduced-motion:reduce){main.kineti-login *{transition:none!important}}
-
-
-/* KinetiQR login: faithful layout from the supplied login.html */
-body:has(.kineti-auth-page){margin:0;min-height:100svh;background:#fdeee1;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#0d1030}
-.kineti-auth-page,.kineti-auth-page *{box-sizing:border-box}
-.kineti-auth-page{min-height:100svh;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);background:radial-gradient(ellipse 22% 30% at 0% 100%,#fde0c6 0 98%,transparent 100%),linear-gradient(120deg,#fff7ef 0%,#fdeee1 55%,#fde5d1 100%)}
-.kineti-auth-page .content{display:flex;flex-direction:column;justify-content:center;padding:clamp(24px,5vw,72px) clamp(20px,8vw,150px);position:relative;z-index:1;min-width:0}
-.kineti-auth-page .art{position:relative;overflow:hidden;min-height:100svh}
-.kineti-auth-page .art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:30% center;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 12%);mask-image:linear-gradient(90deg,transparent 0,#000 12%);user-select:none;-webkit-user-drag:none}
-.kineti-auth-page .brand{display:flex;align-items:center;gap:14px;margin:0 0 clamp(28px,5vh,56px);font-weight:700;font-size:clamp(26px,2.5vw,34px);letter-spacing:-.02em;color:#0d1030}
-.kineti-auth-page .brand svg{width:clamp(36px,3.2vw,46px);height:auto;flex:none}
-.kineti-auth-page h1{margin:0;font-size:clamp(40px,5vw,72px);line-height:1.1;font-weight:800;letter-spacing:-.035em;color:#0d1030}
-.kineti-auth-page h1 span{color:#f26a0a}
-.kineti-auth-page .sub{margin:10px 0 clamp(20px,3vh,32px);font-size:clamp(17px,1.7vw,24px);color:#4a4e63}
-.kineti-auth-page .card{width:100%;max-width:540px;padding:clamp(18px,2.4vw,34px);border-radius:clamp(26px,3vw,46px);border:1px solid rgba(255,255,255,.9);background:linear-gradient(160deg,rgba(255,255,255,.82),rgba(255,247,240,.7));box-shadow:0 18px 45px rgba(222,140,70,.16),inset 0 0 20px rgba(255,255,255,.7)}
-.kineti-auth-page .google{width:100%;min-height:56px;display:flex;align-items:center;justify-content:center;gap:14px;border:1px solid #e3dad2;border-radius:999px;background:#fff;color:#0d1030;font:600 clamp(16px,1.4vw,20px)/1 Inter,sans-serif;letter-spacing:-.02em;cursor:pointer;box-shadow:0 5px 12px rgba(120,80,40,.14)}
-.kineti-auth-page .google svg{width:26px;height:26px;flex:none}
-.kineti-auth-page .google:hover{background:#fffaf5}
-.kineti-auth-page .divider{display:flex;align-items:center;gap:14px;margin:clamp(14px,2vh,22px) 0;color:#4a4e63;font-weight:500;font-size:15px}
-.kineti-auth-page .divider:before,.kineti-auth-page .divider:after{content:"";flex:1;height:1px;background:#ddd2c8}
-.kineti-auth-page .field{position:relative;margin-bottom:14px}
-.kineti-auth-page .field .ic{position:absolute;left:18px;top:50%;transform:translateY(-50%);width:24px;height:24px;color:#1a1d33;pointer-events:none}
-.kineti-auth-page .field input{width:100%;height:56px;padding:0 56px;border:1px solid #e5dcd3;border-radius:18px;background:rgba(255,251,247,.9);color:#0d1030;font:400 clamp(16px,1.3vw,18px) Inter,sans-serif;outline:none}
-.kineti-auth-page .field input::placeholder{color:#686c7c}
-.kineti-auth-page .field input:focus-visible{border-color:#f26a0a;box-shadow:0 0 0 3px rgba(242,106,10,.22)}
-.kineti-auth-page .eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:42px;height:42px;display:grid;place-items:center;border:0;border-radius:50%;background:none;color:#1a1d33;cursor:pointer}
-.kineti-auth-page .row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 20px}
-.kineti-auth-page .check{display:flex;align-items:center;gap:12px;font-weight:500;font-size:16px;cursor:pointer;color:#0d1030}
-.kineti-auth-page .check input{appearance:none;width:24px;height:24px;margin:0;border:2px solid #2a2d42;border-radius:7px;background:transparent;cursor:pointer;display:grid;place-items:center}
-.kineti-auth-page .check input:checked{background:#f26a0a;border-color:#f26a0a}
-.kineti-auth-page .check input:checked:after{content:"";width:6px;height:12px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
-.kineti-auth-page .forgot-link{border:0;background:none;color:#f26a0a;font:500 15px Inter,sans-serif;cursor:pointer;padding:0}
-.kineti-auth-page .signin{width:100%;height:60px;display:flex;align-items:center;justify-content:center;gap:12px;border:0;border-radius:22px;color:#fff;cursor:pointer;background:linear-gradient(180deg,#ff8c1a 0%,#f26a0a 100%);font:600 clamp(18px,1.5vw,21px)/1 Inter,sans-serif;box-shadow:0 8px 16px rgba(242,106,10,.32)}
-.kineti-auth-page .signin svg{width:24px;height:24px}
-.kineti-auth-page .signin:disabled,.kineti-auth-page .google:disabled{opacity:.7;cursor:wait}
-.kineti-auth-page .msg{margin:0 0 14px;padding:11px 14px;border-radius:12px;font-size:14.5px;line-height:1.45}
-.kineti-auth-page .msg.error{background:#fdecea;color:#b3261e}
-.kineti-auth-page .msg.ok{background:#e8f5ee;color:#1f7a4d}
-.kineti-auth-page .foot{margin:22px 0 0;text-align:center;color:#4a4e63;font-size:16px}
-.kineti-auth-page .foot a{margin-left:6px;color:#f26a0a;text-decoration:none;font-weight:600}
-.kineti-auth-page .foot a:hover{text-decoration:underline}
-@media(max-width:900px){.kineti-auth-page{grid-template-columns:1fr}.kineti-auth-page .art{display:none}.kineti-auth-page .content{justify-content:flex-start;padding:28px 20px 40px;max-width:600px;width:100%;margin:0 auto}.kineti-auth-page .brand{margin-bottom:26px}.kineti-auth-page .card{max-width:none}}
-@media(max-width:380px){.kineti-auth-page .row{flex-direction:column;align-items:flex-start}}
-@media(prefers-reduced-motion:reduce){.kineti-auth-page *{transition:none!important}}
