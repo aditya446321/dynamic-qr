@@ -1,0 +1,10 @@
+{
+  "name": "Qraft — QR Management",
+  "short_name": "Qraft",
+  "description": "Create, customize and manage QR codes with restaurant menus and real scan analytics.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f7fa",
+  "theme_color": "#6558d8",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

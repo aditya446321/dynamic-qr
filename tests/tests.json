@@ -3,41 +3,171 @@
     "name": "Sign-up form validates account details",
     "sanity": true,
     "viewport": "desktop",
-    "covers": ["authentication form validation", "password length guardrail"],
+    "covers": [
+      "authentication form validation",
+      "password length guardrail"
+    ],
     "description": "Verifies the sign-up form blocks short passwords before account submission.",
-    "steps": ["Open the sign-in screen", "Switch to Create account", "Enter a valid email and a password shorter than eight characters", "Submit the form"],
+    "steps": [
+      "Open the sign-in screen",
+      "Switch to Create account",
+      "Enter a valid email and a password shorter than eight characters",
+      "Submit the form"
+    ],
     "expected": "The form blocks submission and displays the password length requirement."
   },
   {
     "name": "Create dynamic website and uploaded PDF QR codes",
     "viewport": "desktop",
-    "covers": ["dynamic website QR creation", "PDF file upload to Storage", "PDF QR destination and branded redirect", "QR design preview", "PNG SVG and PDF exports"],
+    "covers": [
+      "dynamic website QR creation",
+      "PDF file upload to Storage",
+      "PDF QR destination and branded redirect",
+      "QR design preview",
+      "PNG SVG and PDF exports"
+    ],
     "description": "Verifies a website QR and a real uploaded PDF QR can be created and exported.",
-    "steps": ["Sign in", "Create a Website QR named Campaign with destination https://example.com/campaign and save it", "Create a PDF QR and upload a PDF smaller than 20 MB", "Save it and download PNG, SVG and PDF exports"],
+    "steps": [
+      "Sign in",
+      "Create a Website QR named Campaign with destination https://example.com/campaign and save it",
+      "Create a PDF QR and upload a PDF smaller than 20 MB",
+      "Save it and download PNG, SVG and PDF exports"
+    ],
     "expected": "The website QR uses its branded redirect and the PDF QR opens the uploaded PDF file."
   },
   {
     "name": "Create contact, text, email and SMS QR payloads",
     "viewport": "desktop",
-    "covers": ["contact vCard fields", "plain text message payload", "email recipient subject and message", "SMS phone and message"],
+    "covers": [
+      "contact vCard fields",
+      "plain text message payload",
+      "email recipient subject and message",
+      "SMS phone and message"
+    ],
     "description": "Verifies common non-URL QR formats show the right fields and encode their supplied data.",
-    "steps": ["Create a Contact QR with first name, last name, job title, phone and email", "Create a Plain text QR with a message", "Create an Email QR with recipient, subject and message", "Create an SMS QR with phone number and message"],
+    "steps": [
+      "Create a Contact QR with first name, last name, job title, phone and email",
+      "Create a Plain text QR with a message",
+      "Create an Email QR with recipient, subject and message",
+      "Create an SMS QR with phone number and message"
+    ],
     "expected": "Each QR type presents its own relevant fields and saves a static payload without asking for a generic URL."
   },
   {
     "name": "Choose a social platform and Telegram destination",
     "viewport": "desktop",
-    "covers": ["social platform selector", "supported platform links", "Telegram channel and group selection", "social QR redirect"],
+    "covers": [
+      "social platform selector",
+      "supported platform links",
+      "Telegram channel and group selection",
+      "social QR redirect"
+    ],
     "description": "Verifies social QR creation is platform-specific and Telegram lets the user choose a channel or group.",
-    "steps": ["Open the QR builder and select Social profile", "Choose Telegram from the platform buttons", "Choose Telegram channel", "Enter a channel link and save", "Edit or create another social QR and choose Instagram"],
+    "steps": [
+      "Open the QR builder and select Social profile",
+      "Choose Telegram from the platform buttons",
+      "Choose Telegram channel",
+      "Enter a channel link and save",
+      "Edit or create another social QR and choose Instagram"
+    ],
     "expected": "The QR form retains the selected platform and destination link, with Telegram channel/group options."
   },
   {
     "name": "Validate required data and use the builder on mobile",
     "viewport": "mobile",
-    "covers": ["required PDF upload validation", "social destination validation", "mobile responsive QR builder", "dynamic and static mode distinction"],
+    "covers": [
+      "required PDF upload validation",
+      "social destination validation",
+      "mobile responsive QR builder",
+      "dynamic and static mode distinction"
+    ],
     "description": "Verifies missing PDF/social data is rejected and the type-specific forms remain usable on mobile.",
-    "steps": ["Open the QR builder on mobile and select PDF", "Submit without uploading a PDF and verify validation", "Select Social profile and choose Instagram", "Submit without a destination link and verify validation"],
+    "steps": [
+      "Open the QR builder on mobile and select PDF",
+      "Submit without uploading a PDF and verify validation",
+      "Select Social profile and choose Instagram",
+      "Submit without a destination link and verify validation"
+    ],
     "expected": "Invalid submissions are blocked with clear messages and the mobile builder remains usable."
+  },
+  {
+    "name": "Dashboard navigation and menu filtering",
+    "sanity": true,
+    "viewport": "desktop",
+    "covers": [
+      "overview navigation",
+      "QR list navigation",
+      "restaurant menu filtering",
+      "restaurant analytics navigation",
+      "template and customization separation"
+    ],
+    "description": "Verifies each workspace destination opens its own useful page and menu filters only restaurant menu QR records.",
+    "steps": [
+      "Sign in",
+      "Open Restaurant menus and verify the menu-specific list or empty state",
+      "Open Restaurant analytics",
+      "Open QR templates",
+      "Open Customization",
+      "Open QR codes"
+    ],
+    "expected": "Each destination opens the matching page; template selection and appearance customization are separate areas."
+  },
+  {
+    "name": "Restaurant menu themes and publishing",
+    "sanity": true,
+    "viewport": "desktop",
+    "covers": [
+      "eight menu themes",
+      "menu category and item editing",
+      "public menu route",
+      "menu metadata preview"
+    ],
+    "description": "Verifies restaurant owners can choose from the expanded theme gallery, save a menu and open its public link.",
+    "steps": [
+      "Create a Restaurant menu QR",
+      "Choose Midnight Dark, Warm Cream, Fresh Sage or Fresh Shop Rose",
+      "Add a category and a dish with a price",
+      "Save the menu",
+      "Open its /menu/slug URL in a new tab"
+    ],
+    "expected": "The saved menu uses its selected theme and the share URL returns restaurant-specific Open Graph and Twitter metadata."
+  },
+  {
+    "name": "Real restaurant scan analytics without demo values",
+    "sanity": true,
+    "viewport": "mobile",
+    "covers": [
+      "server-side menu scan insertion",
+      "crawler exclusion",
+      "real analytics empty state"
+    ],
+    "description": "Verifies real menu visits are written server-side and link-preview bots do not inflate scan counts.",
+    "steps": [
+      "Configure the server-only Supabase service role environment variable",
+      "Open a published menu link from a mobile browser",
+      "Open Restaurant analytics",
+      "Fetch the same link with a social crawler user agent"
+    ],
+    "expected": "The browser visit is recorded, crawler requests are excluded, and the dashboard never displays fabricated sample activity."
+  },
+  {
+    "name": "Vercel standalone routing and metadata assets",
+    "sanity": true,
+    "viewport": "desktop",
+    "covers": [
+      "Vercel API rewrites",
+      "dynamic QR redirect proxy",
+      "favicon",
+      "robots",
+      "sitemap"
+    ],
+    "description": "Verifies the project can run without a proprietary hosting SDK and that Vercel-specific routes resolve.",
+    "steps": [
+      "Deploy the project to Vercel with Supabase environment variables",
+      "Open /favicon.svg, /robots.txt and /sitemap.xml",
+      "Open a dynamic QR /r/slug URL",
+      "Open a restaurant /menu/slug URL"
+    ],
+    "expected": "Vercel serves the SPA, QR redirect and menu metadata endpoints without any proprietary hosting runtime or scripts."
   }
 ]

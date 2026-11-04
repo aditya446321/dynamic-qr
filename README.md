@@ -1,77 +1,95 @@
-# Qraft — full source export
+# Qraft — Standalone QR management
 
-This is a local Vite + React + TypeScript source package based on the latest successful Qraft source snapshot (AppDeploy snapshot `1793721681501`). The frontend configuration has been moved to environment variables and the PDF/center-logo upload inputs use custom labels.
+Qraft is a standalone React + Vite application with Supabase Auth, database and Storage. It is a standalone project. The project is configured for Vercel hosting and includes Vercel Functions for dynamic QR redirects, restaurant menu social previews, OG artwork and menu scan recording.
 
-## Included
+## Included features
 
-- React dashboard and authentication UI
-- 17 QR formats, dynamic QR redirect support, QR styling and PNG/SVG/PDF export
-- Restaurant menu builder and public menu page
-- AppDeploy backend route for branded `/r/:slug` redirects
-- Supabase `qr-redirect` Edge Function source
-- Supabase schema/policy/storage reference SQL
-- `.env.example` and setup instructions
+- Email/password sign-in and sign-up with editable profile name
+- 17 QR formats: website, text, email, phone, SMS, WhatsApp, Wi-Fi, vCard, event, location, UPI, product, social, PDF, restaurant menu, app and review
+- QR creation, editing, pause/resume, delete, preview and PNG/SVG/PDF export
+- Custom QR colours, patterns, corner shapes and center logo upload
+- Restaurant menu builder with unlimited categories and items, dish photos, prices, descriptions, veg/non-veg and availability
+- Eight restaurant menu themes: Midnight Dark, Warm Cream, Fresh Sage, Fresh Shop Rose, Terracotta Table, Cobalt Studio, Lavender Haze and Noir & Gold
+- Public restaurant menu pages with mobile-friendly category navigation
+- Real scan analytics for dynamic redirects and menu visits (requires the server-only service role key for menu scan inserts)
+- Separate dashboard areas for Overview, QR codes, Restaurant menus, Restaurant analytics, QR templates and Customization
+- Dynamic menu link HTML metadata and 1200×630 social preview artwork for link unfurls
+- Custom favicon, robots.txt, dynamic sitemap and basic structured metadata
 
 ## Requirements
 
-- Node.js 20 or newer (Node 18.18+ may also work with this dependency set)
-- npm
-- A Supabase project
+- Node.js 20 or newer
+- A Supabase project with the Qraft schema, policies, buckets and `qr-redirect` Edge Function configured
+- A Vercel account for deployment
 
-## Run locally
+## Local setup
 
 ```bash
 npm install
 cp .env.example .env
+```
+
+Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in `.env`, then run:
+
+```bash
 npm run dev
 ```
 
-Open the local URL printed by Vite. Set the values in `.env` if you are connecting a different Supabase project.
+The Vercel API functions are served locally when using Vercel CLI:
 
-## Environment variables
+```bash
+npx vercel dev
+```
 
-The browser app reads only:
+For local menu analytics, also set `SUPABASE_URL`, `SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY` in `.env`. The service role key is strictly server-side and must never be prefixed with `VITE_`. Without it, menu pages still open but restaurant menu visits will not be recorded.
 
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_ANON_KEY` (a Supabase publishable key or legacy anon key)
+## Deploy to Vercel
 
-The `.env.example` is prefilled with the public Qraft project URL and publishable key already used by the live frontend. These are browser-visible credentials by design and are protected by Supabase RLS.
+1. Push this folder to a Git repository, or import the project folder into Vercel.
+2. Select **Vite** as the framework (Vercel also detects it automatically).
+3. Build command: `npm run build`.
+4. Output directory: `dist`.
+5. Add these environment variables in Vercel Project Settings → Environment Variables:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+   - `SUPABASE_URL`
+   - `SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY` (server-only; required for restaurant menu scan analytics)
+6. Redeploy after setting environment variables.
 
-**Never add a Supabase `service_role` key or secret API key to `.env`, source files, or any variable beginning with `VITE_`.** The `qr-redirect` Edge Function uses `SUPABASE_SERVICE_ROLE_KEY` server-side only. Supabase supplies its project environment variables to Edge Functions; verify the required server-side secret is configured in the Supabase dashboard before redeploying the function.
+`vercel.json` contains SPA fallback and API rewrites. No third-party deployment SDK or proprietary hosting scripts are required.
 
-## Supabase setup
+## Supabase configuration
 
-The existing Qraft project already has the schema, RLS policies, buckets, and Edge Function deployed. Its migration history is listed in `supabase/migration-history.txt`.
+The existing Qraft Supabase project already has the database tables, row-level security, storage buckets and `qr-redirect` Edge Function. For a fresh project, use `supabase/schema-reference.sql` as a reviewed reference, then configure the `qr-redirect` Edge Function and its server-side secrets:
 
-For a **new** Supabase project only:
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
 
-1. Create the project and enable Email authentication.
-2. Review `supabase/schema-reference.sql` and run it in the SQL Editor.
-3. Deploy `supabase/functions/qr-redirect/index.ts` as an Edge Function named `qr-redirect`.
-4. Ensure the Edge Function has server-side access to `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`.
-5. Configure an AppDeploy backend route equivalent to `backend/index.ts` if you want the branded `/r/:slug` redirect path. The included backend file imports `@appdeploy/sdk` and is intended for AppDeploy hosting, not a plain Vite dev server.
+Never put the service role key in browser code or a `VITE_` variable.
 
-Do not run the schema reference SQL on the already-configured production Qraft project; it is a schema snapshot for setup/reference, not a replay of the original seven migration files.
+## Dynamic links
 
-## Build
+- Dynamic QR destinations use `/r/:slug`, routed by `api/r.ts` to the Supabase `qr-redirect` Edge Function.
+- Restaurant menus use `/menu/:slug`, routed by `api/menu.ts`. This endpoint emits Open Graph/Twitter metadata and a redirect into the client-rendered menu page.
+- `api/menu-og.ts` renders the menu share-card as a 1200×630 PNG. Link-preview bots are excluded from scan analytics.
+- Restaurant menu visits are inserted into `qr_scans` only when `SUPABASE_SERVICE_ROLE_KEY` is configured on the server.
+
+## SEO and domain
+
+The project includes page metadata, SoftwareApplication structured data, a custom favicon, robots.txt and a host-aware sitemap. Add your final custom domain in Vercel and update the domain-specific values in `public/robots.txt` only if you choose to hardcode a sitemap host later. Dynamic menu previews derive their canonical URL from the actual request host.
+
+## Build and checks
 
 ```bash
 npm run build
-npm run preview
 ```
 
-## Important behavior and limitations
+This runs TypeScript project checks and creates the production bundle in `dist/`.
 
-- Static QR codes encode their payload directly; they do not record scans.
-- Dynamic URL-based QR codes use the Qraft `/r/:slug` route and the `qr-redirect` Edge Function for scan logging.
-- Restaurant menu QR codes currently use a client-side hash route (`/#/menu/:slug`); menu page views are not included in scan analytics.
-- The UPI QR encodes a payment intent; Qraft does not process payments.
-- Product QR codes encode product details; Qraft does not process checkout.
-- The `QR templates` navigation currently opens the QR builder rather than a separate template gallery.
-- External phone scanning and real image-upload flows should be tested in the target hosting environment before production use.
+## Security notes
 
-## Project references
-
-- Live app: https://qraft-6wjmi9.v2.appdeploy.ai/
-- Supabase project ref: `irkzwaprydcvmvikglfm`
-- Supabase region: Mumbai (`ap-south-1`)
+- Supabase browser key is the publishable/anon key and is designed for browser use with RLS enabled.
+- `SUPABASE_SERVICE_ROLE_KEY` is only read inside Vercel serverless functions.
+- Public read access to active restaurant menu rows and public menu images is intentional so customer devices can open the menu without an account.
+- Never commit `.env` or paste service role keys into frontend source.
