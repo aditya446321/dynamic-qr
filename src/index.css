@@ -1139,3 +1139,10 @@ body:has(.app-shell){background:radial-gradient(circle at 2% 4%,#FDBE8440 0 11re
   .templates-count small{font-size:10px!important;letter-spacing:.08em}
 }
 @media(min-width:761px){.builder-actions-mobile{display:none!important}}
+
+@media(max-width:760px){
+  .builder-body:has(.builder-step-panel[data-step="2"].active) .builder-preview,
+  .builder-body:has(.builder-step-panel[data-step="3"].active) .builder-preview{display:grid!important;position:relative!important;top:auto!important;order:-1!important;grid-template-columns:48px minmax(0,1fr)!important;width:100%!important;margin:0 0 12px!important;padding:8px!important;border:1px solid #f0e2d5!important;border-radius:12px!important;background:#fff!important}
+  .builder-body:has(.builder-step-panel[data-step="2"].active) .builder-preview .preview-paper,
+  .builder-body:has(.builder-step-panel[data-step="3"].active) .builder-preview .preview-paper{width:48px!important;height:48px!important;grid-column:1!important}
+}
