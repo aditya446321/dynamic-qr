@@ -240,3 +240,46 @@ body{background:#f7f7fa;color:#202331;font-family:Inter,ui-sans-serif,system-ui,
 .template-load-more{display:flex;align-items:center;justify-content:center;gap:12px;width:min(100%,360px);min-height:44px;margin:24px auto 4px;border:1px solid #e1e4ef;border-radius:11px;background:#fff;color:#4e49a8;font-size:11px;font-weight:800}
 .template-load-more span{color:#98a0af;font-size:9px;font-weight:600}
 @media(max-width:760px){.template-load-more{width:100%}}
+
+
+/* Responsive layout and rendering-cost refinements */
+@media (min-width:761px) and (max-width:1024px){
+  .page-wrap{padding:26px 22px}
+  .topbar{padding:0 22px}
+  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bottom-grid{grid-template-columns:1fr}
+  .template-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .builder-body{grid-template-columns:minmax(0,1fr) 250px;gap:16px}
+}
+@media (max-width:760px){
+  .app-shell{width:100%;max-width:100%;overflow-x:hidden}
+  .main-content{width:100%;min-width:0}
+  .topbar{gap:8px;padding-left:12px;padding-right:12px}
+  .page-wrap{width:100%;padding-left:14px;padding-right:14px}
+  .page-heading{gap:14px}
+  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat-card:first-child{grid-column:1/-1}
+  .section-card,.analytics-page,.templates-page,.customize-layout{min-width:0;max-width:100%}
+  .section-header{min-width:0}
+  .table-actions{min-width:0}
+  .table-wrap{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
+  .table-wrap table{min-width:790px}
+  .modal-backdrop{align-items:start}
+  .builder-modal{width:100%;max-width:100%;max-height:calc(100dvh - 14px);padding:15px}
+  .builder-body,.builder-left{min-width:0}
+  .builder-preview{width:100%}
+  .builder-actions{flex-wrap:wrap}
+}
+@media (max-width:420px){
+  .stats-grid{grid-template-columns:1fr}
+  .stat-card:first-child{grid-column:auto}
+  .page-wrap{padding:20px 12px}
+  .section-header{padding:14px 12px}
+  .table-wrap table{min-width:740px}
+  .template-grid{grid-template-columns:1fr}
+  .builder-modal{padding:12px}
+  .type-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
