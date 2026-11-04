@@ -1,0 +1,2 @@
+import { ArrowLeft, QrCode } from 'lucide-react';
+export default function NotFoundPage(){return <main className="kineti-not-found"><div className="not-found-card"><div className="not-found-mark"><QrCode size={38}/></div><span className="eyebrow-pill">A little detour</span><h1>We can’t find <em>that page.</em></h1><p>The link may have changed, or the page may have moved. Let’s get you back to your workspace.</p><a className="warm-button" href="/"><ArrowLeft size={17}/> Back to home</a></div></main>}
