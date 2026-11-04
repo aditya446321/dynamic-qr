@@ -1396,3 +1396,43 @@ body:has(.app-shell){background:radial-gradient(circle at 2% 4%,#FDBE8440 0 11re
     font-size:12px!important;
   }
 }
+
+
+/* Template preview shown before any template is applied or saved */
+.template-preview-modal{
+  display:grid;grid-template-columns:minmax(220px,.85fr) minmax(0,1.15fr);
+  gap:26px;align-items:center;padding:26px;
+}
+.template-preview-art{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;min-height:280px;padding:24px;border:1px solid #eee5dc;
+  border-radius:20px;background:#fffaf5;
+}
+.template-preview-qr{
+  display:grid;place-items:center;width:min(100%,220px);aspect-ratio:1;
+  padding:13px;border:1px solid #eee5dc;border-radius:16px;background:#fff;
+}
+.template-preview-qr>div{width:100%;height:100%}
+.template-preview-qr svg,.template-preview-qr canvas{width:100%!important;height:100%!important}
+.template-preview-caption{font-size:9px;font-weight:800;letter-spacing:.13em;color:#8a7c70;text-align:center}
+.template-preview-details h3{margin:12px 0 8px;font-size:25px;font-weight:750;line-height:1.2;color:#20283a}
+.template-preview-details>p{margin:0 0 16px;color:#737d8d;font-size:14px;line-height:1.5}
+.template-preview-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.template-preview-meta span{padding:7px 10px;border:1px solid #e8eaf0;border-radius:9px;background:#f6f7f9;color:#626d7d;font-size:12px;font-weight:600}
+.template-preview-colors{display:flex;align-items:center;gap:7px;margin-bottom:22px}
+.template-preview-colors i{width:22px;height:22px;border:1px solid #d9dce2;border-radius:50%}
+.template-preview-colors small{margin-left:5px;color:#7d8490;font-size:11px}
+.template-preview-actions{display:flex;flex-wrap:wrap;gap:10px}
+.template-preview-actions button{min-height:46px}
+@media(max-width:760px){
+  .template-preview-modal{grid-template-columns:1fr;gap:15px;padding:14px;overflow-y:auto}
+  .template-preview-art{min-height:0;padding:14px;gap:8px;border-radius:14px}
+  .template-preview-qr{width:150px;padding:9px;border-radius:12px}
+  .template-preview-caption{font-size:8px}
+  .template-preview-details h3{margin:8px 0 5px;font-size:20px}
+  .template-preview-details>p{font-size:13px;margin-bottom:11px}
+  .template-preview-meta{margin-bottom:11px}
+  .template-preview-colors{margin-bottom:14px}
+  .template-preview-actions{display:grid;grid-template-columns:1fr}
+  .template-preview-actions button{width:100%;min-height:44px}
+}
