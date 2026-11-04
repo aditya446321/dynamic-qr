@@ -885,3 +885,47 @@ body:has(.app-shell){background:radial-gradient(circle at 2% 4%,#FDBE8440 0 11re
 .not-found-card .warm-button{margin:auto}
 .toast{background:#FFF7EF!important;color:var(--ink)!important;border:1px solid #fff;box-shadow:0 12px 35px #DE8C4630!important;border-radius:16px!important}
 @media(max-width:600px){.not-found-card{border-radius:28px}}
+
+
+/* KinetiQR refinement: consistent account identity and mobile-first sign-in */
+.profile-avatar,.workspace-avatar,.top-avatar{background:#FCE2CE!important;color:#9C4C1B!important;font-weight:800!important;letter-spacing:-.03em}
+@media(min-width:761px){
+  main.kineti-login{grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr)}
+  main.kineti-login .kl-content{padding:clamp(30px,4.2vw,66px) clamp(34px,6vw,104px)}
+  main.kineti-login .kl-card{max-width:470px;padding:28px 30px;border-radius:28px}
+  main.kineti-login h1{font-size:clamp(42px,4.1vw,62px);letter-spacing:-.045em}
+  main.kineti-login .kl-sub{font-size:17px}
+  main.kineti-login .kl-brand{margin-bottom:clamp(22px,3.5vh,42px)}
+  main.kineti-login .kl-art img{object-position:42% center}
+}
+@media(max-width:760px){
+  body:has(main.kineti-login){overflow-x:hidden}
+  main.kineti-login{display:flex;flex-direction:column;min-height:100svh;padding:0;background:linear-gradient(180deg,#FCE7D5 0,#FFF8F1 34%,#FFF8F1 100%)}
+  main.kineti-login .kl-art{order:0;display:block;position:relative;height:clamp(150px,26svh,220px);width:100%;overflow:hidden;background:#F8DCC4}
+  main.kineti-login .kl-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 48%;-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 78%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 78%,transparent 100%)}
+  main.kineti-login .kl-content{order:1;width:100%;margin:-18px auto 0;padding:0 20px 32px;max-width:540px;justify-content:flex-start}
+  main.kineti-login .kl-brand{font-size:25px;gap:11px;margin:0 0 22px}
+  main.kineti-login .kl-brand svg{width:34px;height:34px}
+  main.kineti-login h1{font-size:clamp(35px,9vw,44px);line-height:1.06;letter-spacing:-1.8px}
+  main.kineti-login .kl-sub{font-size:15px;line-height:1.45;margin:8px 0 18px}
+  main.kineti-login .kl-card{width:100%;max-width:none;padding:20px 18px 19px;border-radius:22px;background:#ffffffed;box-shadow:0 12px 30px #9B63301A;border:1px solid #fff}
+  main.kineti-login .kl-google{min-height:50px;font-size:15px;gap:10px}
+  main.kineti-login .kl-google svg{width:21px;height:21px}
+  main.kineti-login .kl-or{font-size:13px;margin:13px 0}
+  main.kineti-login .kl-field{margin-bottom:11px}
+  main.kineti-login .kl-ic{left:14px;width:20px;height:20px}
+  main.kineti-login .kl-field input{height:51px;padding:0 46px;border-radius:13px;font-size:16px}
+  main.kineti-login .kl-eye{right:5px;width:40px;height:40px}
+  main.kineti-login .kl-row{margin:5px 0 16px;gap:10px}
+  main.kineti-login .kl-check{font-size:13px;gap:8px}
+  main.kineti-login .kl-check input{width:19px;height:19px;border-radius:5px}
+  main.kineti-login .kl-link{font-size:13px}
+  main.kineti-login .kl-submit{height:52px;border-radius:14px;font-size:16px}
+  main.kineti-login .kl-submit svg{width:20px;height:20px}
+  main.kineti-login .kl-foot{font-size:13px;margin-top:16px}
+}
+@media(max-width:380px){
+  main.kineti-login .kl-content{padding-left:15px;padding-right:15px}
+  main.kineti-login .kl-card{padding:17px 14px}
+  main.kineti-login .kl-row{align-items:flex-start}
+}
