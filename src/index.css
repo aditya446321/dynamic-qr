@@ -360,3 +360,65 @@ body{background:#f7f7fa;color:#202331;font-family:Inter,ui-sans-serif,system-ui,
  .login-intro h2{font-size:29px}
  .auth-switch{font-size:10px}
 }
+
+/* Unified KinetiQR login art direction: curved purple canvas, single hero asset */
+.auth-shell{min-height:100svh;min-height:100dvh;display:grid;grid-template-columns:minmax(420px,.88fr) minmax(0,1.12fr);gap:clamp(28px,5vw,76px);align-items:stretch;padding:clamp(18px,2.4vw,36px);overflow:hidden;background:radial-gradient(ellipse at 4% 8%,#ebe7ff 0,transparent 38%),linear-gradient(135deg,#f8f7ff 0%,#f1effb 54%,#e9e5fb 100%)}
+.auth-panel{grid-column:1;grid-row:1;min-height:calc(100svh - 2*clamp(18px,2.4vw,36px));padding:clamp(28px,4vw,64px);border:1px solid #ffffffd9;border-radius:30px;background:#ffffffed;box-shadow:0 22px 70px #37306f12;backdrop-filter:blur(14px)}
+.auth-form-wrap{max-width:405px}
+.login-brand{margin-bottom:clamp(36px,6vh,60px);color:#20223a;font-size:23px}
+.login-brand-mark{background:linear-gradient(145deg,#8d68ff,#5a3bc2);box-shadow:0 9px 22px #7054d638}
+.login-intro{margin-bottom:25px}
+.login-eyebrow{color:#7254d5}
+.login-intro h2{color:#20223a;font-size:clamp(30px,3vw,38px)}
+.login-intro p{color:#81869b}
+.google-auth-button{min-height:49px;border-color:#e5e3ef;background:#fff;color:#33364c;border-radius:11px}
+.google-auth-button:hover{background:#faf9ff;border-color:#c8baf6}
+.auth-divider{color:#a0a2b3}
+.auth-divider:before,.auth-divider:after{background:#ebe9f2}
+.auth-form label{color:#45465c}
+.auth-form input{height:49px;border-color:#e5e4ef;background:#fbfbfe;border-radius:11px;color:#282a40}
+.auth-form input:focus{border-color:#9478f0;box-shadow:0 0 0 4px #8c6cf01a}
+.login-password-hint{color:#9b9caf}
+.login-submit{background:linear-gradient(105deg,#9567f4 0%,#7049dc 52%,#5638bf 100%);box-shadow:0 10px 24px #7454d532;border-radius:11px}
+.login-submit:hover{background:linear-gradient(105deg,#8759e9,#5b3bc5)}
+.auth-switch{color:#85879a}
+.auth-switch button{color:#6848cf}
+.secure-note{color:#9899aa}
+.desktop-auth-visual{grid-column:2;grid-row:1;position:relative;isolation:isolate;display:flex!important;min-height:calc(100svh - 2*clamp(18px,2.4vw,36px));width:100%;max-width:none;justify-content:space-between;overflow:hidden;padding:clamp(30px,4vw,58px);border:1px solid #ffffff55;border-radius:clamp(38px,6vw,88px) 28px clamp(38px,6vw,88px) 28px;background:radial-gradient(ellipse at 78% 22%,#a68aff70,transparent 35%),radial-gradient(ellipse at 18% 88%,#6f51d95c,transparent 42%),linear-gradient(145deg,#17132e 0%,#24194b 50%,#4b2e9a 100%);box-shadow:0 24px 75px #35226f24}
+.desktop-auth-visual:before{content:"";position:absolute;z-index:-1;inset:0;background-image:radial-gradient(#ffffff25 .8px,transparent .8px);background-size:23px 23px;opacity:.25;mask-image:linear-gradient(130deg,transparent 8%,#000 100%)}
+.auth-brand-lockup{font-size:19px}
+.login-visual-content{position:relative;width:100%;max-width:650px;margin:auto 0;padding:clamp(28px,4vh,50px) 0 0}
+.desktop-auth-kicker{color:#d7caff;border-color:#ffffff35;background:#ffffff0a}
+.login-visual-content h1{margin:20px 0 13px;color:#fff;font-size:clamp(34px,3.4vw,51px);line-height:1.07;letter-spacing:-2px}
+.login-visual-content h1 em{color:#c2a7ff}
+.login-visual-content>p{max-width:430px;color:#d8d1f0;font-size:13px;line-height:1.8}
+.login-visual-stage{position:relative;width:100%;height:clamp(300px,42vh,460px);min-height:260px;margin:0 auto;display:flex;align-items:center;justify-content:center}
+.login-art-image{display:block;width:min(100%,690px);height:100%;object-fit:contain;filter:drop-shadow(0 22px 34px #0c062b50)}
+.desktop-auth-foot{color:#c3b5e8;font-size:8px}
+@media(min-width:1450px){.auth-shell{grid-template-columns:minmax(470px,.84fr) minmax(0,1.16fr);gap:clamp(55px,7vw,110px);padding:34px}.auth-panel{padding:64px}.desktop-auth-visual{padding:58px 64px}}
+@media(max-width:900px) and (min-width:761px){.auth-shell{grid-template-columns:minmax(360px,.95fr) minmax(0,1.05fr);gap:18px;padding:16px}.auth-panel{padding:28px}.desktop-auth-visual{padding:28px;border-radius:46px 22px 46px 22px}.login-visual-content h1{font-size:34px}.login-visual-stage{height:300px;min-height:230px}}
+@media(max-width:760px){
+ .auth-shell{display:flex;flex-direction:column;gap:12px;min-height:100svh;min-height:100dvh;padding:12px;background:linear-gradient(160deg,#f5f2ff,#fff 48%,#f3efff)}
+ .desktop-auth-visual{order:0;display:flex!important;min-height:0;width:100%;padding:18px 20px 12px;border-radius:28px 28px 54px 28px;background:radial-gradient(ellipse at 78% 28%,#9a7aff70,transparent 42%),linear-gradient(135deg,#19152f,#3b277c)}
+ .auth-brand-lockup{font-size:15px}.auth-brand-icon{width:34px;height:34px}
+ .login-visual-content{padding:10px 0 0;margin:0}
+ .login-visual-content .desktop-auth-kicker,.login-visual-content h1,.login-visual-content>p{display:none}
+ .login-visual-stage{height:clamp(155px,25vh,215px);min-height:145px;margin:0}
+ .login-art-image{width:min(100%,360px);height:100%;object-fit:contain}
+ .desktop-auth-foot{display:none}
+ .auth-panel{order:1;min-height:0;width:100%;padding:26px 20px 22px;border-radius:25px;background:#fff;box-shadow:0 14px 42px #30245e0c}
+ .auth-form-wrap{max-width:460px}
+ .login-brand{margin-bottom:27px;font-size:20px}
+ .login-brand-mark{width:38px;height:38px}
+ .login-intro{margin-bottom:21px}
+ .login-intro h2{font-size:29px}
+ .login-intro p{font-size:12px}
+ .google-auth-button{min-height:47px}
+ .auth-divider{margin:18px 0}
+ .auth-form{gap:7px}
+ .auth-form input{height:46px}
+ .login-submit{height:48px}
+ .auth-switch{margin-top:19px}
+ .secure-note{margin-top:22px}
+}
+@media(max-width:390px){.auth-shell{padding:9px;gap:9px}.desktop-auth-visual{padding:14px 16px 8px;border-radius:22px 22px 40px 22px}.login-visual-stage{height:150px}.auth-panel{padding:22px 16px 18px;border-radius:21px}.login-brand{margin-bottom:22px}.login-intro h2{font-size:27px}}
