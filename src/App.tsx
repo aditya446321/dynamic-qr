@@ -12,6 +12,7 @@ import './index.css';
 import PublicMenuView from './PublicMenu';
 import RestaurantMenuBuilder from './RestaurantMenuBuilder';
 import LandingPage from './LandingPage';
+import NotFoundPage from './NotFoundPage';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -282,7 +283,7 @@ function App(){
   <div className="kl-art"><img src="/kinetiqr-cafe-hero.jpg" width="932" height="941" alt="" draggable="false" fetchPriority="high"/></div>
 </main>;
 
-  return <div className="app-shell">
+  if(user&&!pathViews[window.location.pathname]&&window.location.pathname!=='/create-qr')return <NotFoundPage/>;\n\n  return <div className="app-shell">
     <aside className={`sidebar ${mobileNav?'sidebar-open':''}`}>
       <div className="brand sidebar-brand"><div className="brand-mark"><QrCode size={21}/></div><span>KinetiQR<span className="brand-dot">.</span></span></div>
       <div className="workspace-label">WORKSPACE</div>
