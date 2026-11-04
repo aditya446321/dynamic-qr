@@ -232,34 +232,48 @@ function App(){
   const visibleTemplates=filteredTemplates.slice(0,(templatePage+1)*24);
   if(window.location.hash.startsWith('#/menu/'))return <PublicMenuView record={publicMenu} loading={publicMenuLoading}/>;
   if(!authReady)return <div className="loading-screen"><LoaderCircle className="spin"/> Loading KinetiQR...</div>;
-  if(!user||authMode==='reset')return <main className="auth-shell">
-    <section className="auth-panel">
-      <div className="auth-form-wrap">
-        <div className="login-brand"><span className="login-brand-mark"><QrCode size={23}/></span><span>KinetiQR</span></div>
-        <div className="login-intro">
-          <h2>{authMode==='forgot'?'Forgot password?':authMode==='reset'?'Create new password':authMode==='signup'?'Create your account':'Welcome back'}{authMode==='signin'&&<span className="login-heading-accent">!</span>}</h2>
-          <p>{authMode==='forgot'?'Enter your email and we’ll send you a secure reset link.':authMode==='reset'?'Choose a strong new password for your KinetiQR account.':authMode==='signup'?'Create your account to start building QR experiences.':'Sign in to your account'}</p>
-        </div>
-        <div className="login-card">
-          {authMode==='signin'&&<button type="button" className="google-auth-button" onClick={handleGoogleAuth} disabled={googleBusy||authBusy}><span className="google-g" aria-hidden="true"><svg viewBox="0 0 24 24" role="img" focusable="false"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.99 7.28-2.66l-3.57-2.77c-.99.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.15v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.43.34-2.1V7.06H2.15A11 11 0 0 0 1 12c0 1.78.43 3.46 1.15 4.94l3.69-2.84z"/><path fill="#EA4335" d="M12 5.37c1.62 0 3.06.56 4.21 1.64l3.15-3.15A10.55 10.55 0 0 0 12 1a11 11 0 0 0-9.85 6.06l3.69 2.84C6.71 7.3 9.14 5.37 12 5.37z"/></svg></span>{googleBusy?<><LoaderCircle className="spin" size={16}/> Connecting to Google...</>:'Continue with Google'}</button>}
-          {authMode==='signin'&&<div className="auth-divider"><span>or</span></div>}
-          <form className="auth-form" onSubmit={handleAuth}>
-            {authMode==='signup'&&<><label>Your name</label><input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder="Your name" maxLength={60} required/></>}
-            {authMode!=='reset'&&<><label>Email address</label><div className="login-input-wrap"><Mail size={19}/><input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email address" required autoComplete="email"/></div></>}
-            {authMode!=='forgot'&&<><label>{authMode==='reset'?'New password':'Password'}</label><div className="password-field login-input-wrap"><ShieldCheck size={19}/><input type={showPassword?'text':'password'} value={password} onChange={e=>setPassword(e.target.value)} minLength={8} required placeholder={authMode==='reset'?'Enter new password':'Password'} autoComplete={authMode==='reset'?'new-password':authMode==='signup'?'new-password':'current-password'}/><button type="button" className="icon-button" onClick={()=>setShowPassword(!showPassword)} aria-label={showPassword?'Hide password':'Show password'}>{showPassword?<EyeOff size={17}/>:<Eye size={17}/>}</button></div></>}
-            {authMode==='signin'&&<div className="login-options"><label className="remember-option"><input type="checkbox"/> <span>Remember me</span></label><button type="button" className="forgot-link" onClick={()=>{setAuthMode('forgot');setAuthError('');setAuthMessage('');}}>Forgot password?</button></div>}
-            {authError&&<div className="form-alert error">{authError}</div>}{authMessage&&<div className="form-alert success">{authMessage}</div>}
-            <button className="primary-button full-button login-submit" disabled={authBusy||googleBusy}>{authBusy&&<LoaderCircle className="spin" size={16}/ >}{authMode==='forgot'?'Send reset link':authMode==='reset'?'Update password':authMode==='signin'?'Sign In':'Create account'}<ArrowUpRight size={17}/></button>
-          </form>
-          <div className="auth-switch"><span>{authMode==='forgot'||authMode==='reset'?'Remembered your password?':authMode==='signin'?"Don't have an account?":"Already have an account?"}</span><button type="button" onClick={()=>{setAuthMode(authMode==='signin'?'signup':'signin');setAuthError('');setAuthMessage('');setPassword('');}}>{authMode==='signin'?'Sign up': 'Sign in'}</button></div>
-        </div>
-        <div className="secure-note"><ShieldCheck size={14}/> Your QR codes and analytics stay private.</div>
-      </div>
-    </section>
-    <section className="auth-visual desktop-auth-visual">
-      <div className="login-visual-content"><div className="login-visual-stage"><img className="login-art-image" src="/kinetiqr-cafe-hero.svg" alt="Warm café storefront with a QR menu sign"/></div></div>
-    </section>
-  </main>;
+  if(!user||authMode==='reset')return <main className="kineti-login stage">
+  <img className="art" alt="" src="/kinetiqr-cafe-hero.svg" draggable="false"/>
+  <div className="brand">
+    <svg className="abs mark" viewBox="0 0 52 50" aria-hidden="true"><g fill="none" stroke="#f26a0a" strokeWidth="6.5" strokeLinejoin="round"><rect x="3.5" y="3" width="16" height="15.5" rx="4"/><rect x="31.5" y="3" width="16" height="15.5" rx="4"/><rect x="3.5" y="31" width="16" height="15.5" rx="4"/><rect x="31.5" y="31" width="16" height="15.5" rx="4"/></g></svg>
+    <p className="abs name">KinetiQR</p>
+  </div>
+  <h1 className="abs">{authMode==='signin'?<>Welcome <span>back</span></>:authMode==='signup'?<>Create <span>account</span></>:authMode==='forgot'?<>Forgot <span>password?</span>:<>New <span>password</span></>}</h1>
+  <p className="abs sub">{authMode==='signin'?'Sign in to your account':authMode==='signup'?'Create your KinetiQR account':authMode==='forgot'?'Enter your email to receive a reset link':'Choose a new password for your account'}</p>
+  <div className="abs card"></div>
+  <div className="box">
+    {authMode==='signin'&&<button type="button" className="abs google" onClick={handleGoogleAuth} disabled={googleBusy||authBusy}>
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.4-4.1 7-10.1 7-17.6z"/><path fill="#FBBC05" d="M10.5 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.9-4.7l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+      {googleBusy?'Connecting to Google...':'Continue with Google'}
+    </button>}
+    {authMode==='signin'&&<div className="abs or">or</div>}
+    <form id="kineti-auth-form" onSubmit={handleAuth}>
+      {authMode==='signup'&&<div className="abs field" style={{top:'calc(var(--u)*479)'}}><input value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder="Your name" aria-label="Your name" maxLength={60} required/></div>}
+      {authMode!=='reset'&&<div className="abs field" style={{top:authMode==='signup'?'calc(var(--u)*550)':'calc(var(--u)*479)'}}>
+        <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3 7l9 6.5L21 7"/></svg>
+        <input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email address" autoComplete="email" aria-label="Email address" required/>
+      </div>}
+      {authMode!=='forgot'&&<div className="abs field" style={{top:authMode==='reset'?'calc(var(--u)*479)':authMode==='signup'?'calc(var(--u)*625)':'calc(var(--u)*554)'}}>
+        <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10.5" rx="3"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="15.7" r="1.2" fill="currentColor"/></svg>
+        <input type={showPassword?'text':'password'} value={password} onChange={e=>setPassword(e.target.value)} minLength={8} required placeholder={authMode==='reset'?'New password':'Password'} autoComplete={authMode==='reset'||authMode==='signup'?'new-password':'current-password'} aria-label={authMode==='reset'?'New password':'Password'}/>
+        <button type="button" className="eye" onClick={()=>setShowPassword(!showPassword)} aria-label={showPassword?'Hide password':'Show password'} aria-pressed={showPassword}>
+          {showPassword?<EyeOff size={21}/>:<Eye size={21}/>}
+        </button>
+      </div>}
+      {authMode==='signin'&&<div className="rowm">
+        <label className="abs check"><input type="checkbox"/> Remember me</label>
+        <button type="button" className="abs forgot" onClick={()=>{setAuthMode('forgot');setAuthError('');setAuthMessage('');}}>Forgot password?</button>
+      </div>}
+      {authError&&<div className="auth-inline-message error">{authError}</div>}
+      {authMessage&&<div className="auth-inline-message success">{authMessage}</div>}
+      <button type="submit" className="abs signin" disabled={authBusy||googleBusy}>
+        {authBusy?(authMode==='forgot'?'Sending...':'Please wait...'):authMode==='forgot'?'Send reset link':authMode==='reset'?'Update password':authMode==='signup'?'Create account':'Sign In'}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+      </button>
+    </form>
+    <p className="abs foot">{authMode==='signin'?"Don’t have an account?":authMode==='signup'?'Already have an account?':'Remembered your password?'} <a href={authMode==='signin'?'#signup':'#signin'} onClick={e=>{e.preventDefault();setAuthMode(authMode==='signin'?'signup':'signin');setAuthError('');setAuthMessage('');setPassword('');}}>{authMode==='signin'?'Sign up':'Sign in'}</a></p>
+  </div>
+</main>;
 
   return <div className="app-shell">
     <aside className={`sidebar ${mobileNav?'sidebar-open':''}`}>
