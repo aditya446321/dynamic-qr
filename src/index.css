@@ -782,3 +782,63 @@ html:has(.auth-shell),body:has(.auth-shell),#root:has(.auth-shell){height:100%;m
  .login-submit{height:39px!important}
  .auth-switch{margin-top:7px}
 }
+
+
+/* KinetiQR supplied sign-in reference — isolated from dashboard styles */
+main.kineti-login{--ink:#0d1030;--muted:#4a4e63;--orange:#f26a0a;--ph:#686c7c;--bg:#fdeee1;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+main.kineti-login *,main.kineti-login *:before,main.kineti-login *:after{box-sizing:border-box}
+body:has(main.kineti-login){margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow-x:hidden;background:var(--bg);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink)}
+main.kineti-login.stage{--u:calc(100cqw / 1672);container-type:inline-size;position:relative;width:min(100vw,calc(100vh * 1672 / 941));aspect-ratio:1672/941;overflow:hidden;background:radial-gradient(circle at 0 0,#fde8d6 0 7%,transparent 7.2%),linear-gradient(120deg,#fff7ef,#fdeee1 55%,#fde5d1)}
+main.kineti-login .art{position:absolute;left:calc(var(--u)*740);top:0;width:calc(var(--u)*932);height:100%;object-fit:cover;mask-image:linear-gradient(90deg,transparent,#000 7%);user-select:none}
+main.kineti-login .abs{position:absolute}
+main.kineti-login .mark{left:calc(var(--u)*185);top:calc(var(--u)*67);width:calc(var(--u)*52);height:calc(var(--u)*50)}
+main.kineti-login .name{left:calc(var(--u)*256);top:calc(var(--u)*62);font-size:calc(var(--u)*41);font-weight:700;letter-spacing:-.02em;line-height:1.2;margin:0}
+main.kineti-login h1{left:calc(var(--u)*185);top:calc(var(--u)*152);margin:0;font-size:calc(var(--u)*72);font-weight:800;letter-spacing:-.035em;line-height:1.15;white-space:nowrap}
+main.kineti-login h1 span{color:var(--orange)}
+main.kineti-login .sub{left:calc(var(--u)*185);top:calc(var(--u)*240);margin:0;font-size:calc(var(--u)*28);color:var(--muted);white-space:nowrap}
+main.kineti-login .card{left:calc(var(--u)*150);top:calc(var(--u)*313);width:calc(var(--u)*580);height:calc(var(--u)*537);border-radius:calc(var(--u)*50);background:linear-gradient(160deg,#ffffffd1,#fff7f0b3);border:1px solid #ffffffeb;box-shadow:0 18px 45px #de8c4629,inset 0 0 20px #ffffffb3}
+main.kineti-login .google{left:calc(var(--u)*187);top:calc(var(--u)*344);width:calc(var(--u)*506);height:calc(var(--u)*65);border-radius:999px;border:1px solid #e3dad2;background:#fff;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:calc(var(--u)*14);font:600 calc(var(--u)*23)/1 Inter,sans-serif;cursor:pointer;box-shadow:0 5px 12px #78502824}
+main.kineti-login .google svg{width:calc(var(--u)*36);height:calc(var(--u)*36)}
+main.kineti-login .or{left:calc(var(--u)*187);top:calc(var(--u)*433);width:calc(var(--u)*506);height:calc(var(--u)*24);display:flex;align-items:center;justify-content:center;font-size:calc(var(--u)*21)}
+main.kineti-login .or:before,main.kineti-login .or:after{content:"";height:1px;background:#ddd2c8;flex:1}
+main.kineti-login .or:before{margin-right:12px}main.kineti-login .or:after{margin-left:12px}
+main.kineti-login .field{left:calc(var(--u)*187);width:calc(var(--u)*506);height:calc(var(--u)*59)}
+main.kineti-login .field input{width:100%;height:100%;border-radius:calc(var(--u)*20);border:1px solid #e5dcd3;background:#fffbf7e6;color:var(--ink);padding:0 calc(var(--u)*64) 0 calc(var(--u)*71);font:400 calc(var(--u)*21) Inter,sans-serif;outline:none}
+main.kineti-login .field input:focus-visible{border-color:var(--orange);box-shadow:0 0 0 3px #f26a0a38}
+main.kineti-login .field .ic{position:absolute;left:calc(var(--u)*21);top:50%;transform:translateY(-50%);width:calc(var(--u)*30);height:calc(var(--u)*30);pointer-events:none}
+main.kineti-login .eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:46px;height:46px;border:0;background:none;cursor:pointer;display:grid;place-items:center}
+main.kineti-login .check{left:calc(var(--u)*188);top:calc(var(--u)*637);display:flex;align-items:center;gap:calc(var(--u)*17);font-size:calc(var(--u)*21);height:calc(var(--u)*30)}
+main.kineti-login .forgot{right:calc(var(--u)*979);top:calc(var(--u)*637);font-size:calc(var(--u)*21)}
+main.kineti-login a{color:var(--orange);text-decoration:none}
+main.kineti-login .signin{left:calc(var(--u)*186);top:calc(var(--u)*695);width:calc(var(--u)*508);height:calc(var(--u)*67);border:0;border-radius:calc(var(--u)*24);color:#fff;background:linear-gradient(#ff8c1a,#f26a0a);font:600 calc(var(--u)*25)/1 Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer;box-shadow:0 8px 16px #f26a0a52}
+main.kineti-login .signin svg{width:27px;height:27px}
+main.kineti-login .foot{left:calc(var(--u)*278);top:calc(var(--u)*789);margin:0;font-size:calc(var(--u)*21);color:var(--muted);white-space:nowrap}
+main.kineti-login .foot a{margin-left:15px;font-weight:700}
+main.kineti-login form{display:contents}
+main.kineti-login .auth-inline-message{position:relative;margin:8px 0;padding:8px 10px;border-radius:9px;font-size:12px}
+main.kineti-login .auth-inline-message.error{background:#fff0ed;color:#a12c1b}
+main.kineti-login .auth-inline-message.success{background:#edf9ef;color:#216b38}
+@media(max-width:900px){
+body:has(main.kineti-login){display:block;background:linear-gradient(160deg,#fff7ef,#fde5d1)}
+main.kineti-login.stage{--u:1px;container-type:normal;width:100%;aspect-ratio:auto;min-height:100vh;padding:28px 20px 40px;display:flex;flex-direction:column;background:none}
+main.kineti-login .art{display:none}main.kineti-login .abs{position:static}
+main.kineti-login .brand{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+main.kineti-login .mark{width:40px;height:40px}main.kineti-login .name{font-size:30px}
+main.kineti-login h1{font-size:44px}main.kineti-login .sub{font-size:20px;margin:8px 0 22px;white-space:normal}
+main.kineti-login .card{display:none}
+main.kineti-login .box{display:block;padding:20px 16px;border-radius:30px;background:#ffffffbf;box-shadow:0 14px 34px #de8c462e}
+main.kineti-login .google{position:relative;left:auto;top:auto;width:100%;height:56px;font-size:18px}
+main.kineti-login .google svg{width:28px;height:28px}
+main.kineti-login .or{position:relative;left:auto;top:auto;width:100%;height:auto;margin:16px 0;font-size:16px}
+main.kineti-login .field{position:relative;left:auto;top:auto!important;width:100%;height:54px;margin-bottom:12px}
+main.kineti-login .field input{font-size:17px;padding-left:58px;border-radius:16px}
+main.kineti-login .field .ic{width:26px;height:26px;left:16px}
+main.kineti-login .rowm{position:relative;left:auto;top:auto;display:flex;justify-content:space-between;align-items:center;margin:14px 0 18px}
+main.kineti-login .check{position:static;height:auto;font-size:16px;gap:10px}
+main.kineti-login .forgot{position:static;font-size:16px}
+main.kineti-login .signin{position:relative;left:auto;top:auto;width:100%;height:58px;font-size:20px;border-radius:18px}
+main.kineti-login .foot{position:static;text-align:center;margin-top:20px;font-size:16px;white-space:normal}
+main.kineti-login .foot a{font-size:17px;margin-left:8px}
+}
+@media(min-width:901px){main.kineti-login .box,main.kineti-login .rowm,main.kineti-login .brand{display:contents}}
+@media(prefers-reduced-motion:reduce){main.kineti-login *{transition:none!important}}
