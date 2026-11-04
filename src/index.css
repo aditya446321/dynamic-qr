@@ -1016,3 +1016,5 @@ body:has(.app-shell){background:radial-gradient(circle at 2% 4%,#FDBE8440 0 11re
 @media(prefers-reduced-motion:reduce){
   .sidebar,.template-card,.builder-modal,.modal-backdrop{transition:none!important;animation:none!important}
 }
+
+@media(min-width:761px){.builder-step-nav{display:none!important}}
