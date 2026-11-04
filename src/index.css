@@ -103,3 +103,20 @@ tbody tr:hover{background:#fbfcff}
   .builder-modal{padding:17px;border-radius:18px}
 }
 @media(min-width:761px) and (max-width:1100px){.mini-qr{width:46px;height:46px;flex-basis:46px}.qr-name-cell strong{font-size:11px}}
+
+
+/* QR Studio refinements */
+.design-tuning-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:4px 0 8px;padding:13px;border:1px solid #e2e8f0;border-radius:14px;background:#f8f9ff}
+.design-tuning-grid>div{min-width:0}
+.design-tuning-grid .input-label{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 8px;color:#334155}
+.design-tuning-grid .input-label strong{color:#4f46e5;font-size:10px}
+.design-tuning-grid input[type=range]{width:100%;accent-color:#4f46e5}
+.design-tuning-grid small{display:block;margin-top:5px;color:#64748b;font-size:9px;line-height:1.5}
+.builder-preview-route{width:100%;display:flex;flex-direction:column;gap:5px;margin-top:14px;padding:11px 12px;border:1px solid #dfe5ff;border-radius:12px;background:#eef2ff;overflow-wrap:anywhere}
+.builder-preview-route>span:first-child{color:#64748b;font-size:8px}
+.builder-preview-route>strong{color:#3730a3;font:700 10px ui-monospace,SFMono-Regular,monospace;line-height:1.5}
+.builder-preview-route .route-active{display:flex;align-items:center;gap:6px;color:#047857;font-size:9px;font-weight:700}
+.builder-preview-route .route-active i{width:6px;height:6px;border-radius:50%;background:#10b981}
+.builder-preview>strong{font-size:13px;color:#0b1c30}
+.builder-preview>small{font-size:10px;color:#64748b}
+@media(max-width:760px){.design-tuning-grid{grid-template-columns:1fr}.builder-preview{width:100%}}
