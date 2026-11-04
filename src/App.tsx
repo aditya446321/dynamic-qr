@@ -249,6 +249,7 @@ function App(){
   const visibleTemplates=filteredTemplates.slice(0,(templatePage+1)*24);
   if(window.location.hash.startsWith('#/menu/'))return <Suspense fallback={<div className="public-menu-loading">Loading menu…</div>}><PublicMenuView record={publicMenu} loading={publicMenuLoading}/></Suspense>;
   if(!user&&window.location.pathname==='/'&&!window.location.hash.startsWith('#/menu/'))return <LandingPage/>;
+  if(!authReady&&!['/login','/signup','/forgot-password'].includes(window.location.pathname)&&authMode!=='reset')return <div className="loading-screen"><LoaderCircle className="spin"/> Loading KinetiQR...</div>;
   if(!user||authMode==='reset')return <main className="kineti-login">
   <section className="kl-content">
     <div className="kl-brand">
