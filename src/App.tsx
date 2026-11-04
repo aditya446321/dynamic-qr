@@ -85,13 +85,13 @@ function buildPayload(type:QRType,p:Record<string,string>):string {
     case 'email':return `mailto:${p.email||''}?subject=${enc(p.subject||'')}&body=${enc(p.body||'')}`;
     case 'phone':return `tel:${p.phone||''}`;
     case 'sms':return `sms:${p.phone||''}?body=${enc(p.message||'')}`;
-    case 'whatsapp':return `https://wa.me/${(p.phone||'').replace(/\\D/g,'')}?text=${enc(p.message||'')}`;
+    case 'whatsapp':return `https://wa.me/${(p.phone||'').replace(/\D/g,'')}?text=${enc(p.message||'')}`;
     case 'wifi':return `WIFI:T:${p.encryption||'WPA'};S:${escWifi(p.ssid||'')};P:${escWifi(p.password||'')};;`;
-    case 'vcard':{const fullName=[p.firstName,p.lastName].filter(Boolean).join(' ');return ['BEGIN:VCARD','VERSION:3.0',`N:${p.lastName||''};${p.firstName||''};;;`,`FN:${fullName}`,`TITLE:${p.title||''}`,`ORG:${p.organization||''}`,`TEL:${p.phone||''}`,`EMAIL:${p.email||''}`,`URL:${p.website||''}`,`ADR:;;${p.address||''};;;;`,'END:VCARD'].join('\\n');}
-    case 'event':return ['BEGIN:VCALENDAR','VERSION:2.0','BEGIN:VEVENT',`SUMMARY:${p.name||''}`,`DTSTART:${(p.start||'').replace(/[-:T]/g,'')}`,`DTEND:${(p.end||'').replace(/[-:T]/g,'')}`,`LOCATION:${p.location||''}`,`DESCRIPTION:${p.description||''}`,'END:VEVENT','END:VCALENDAR'].join('\\n');
+    case 'vcard':{const fullName=[p.firstName,p.lastName].filter(Boolean).join(' ');return ['BEGIN:VCARD','VERSION:3.0',`N:${p.lastName||''};${p.firstName||''};;;`,`FN:${fullName}`,`TITLE:${p.title||''}`,`ORG:${p.organization||''}`,`TEL:${p.phone||''}`,`EMAIL:${p.email||''}`,`URL:${p.website||''}`,`ADR:;;${p.address||''};;;;`,'END:VCARD'].join('\r\n');}
+    case 'event':return ['BEGIN:VCALENDAR','VERSION:2.0','BEGIN:VEVENT',`SUMMARY:${p.name||''}`,`DTSTART:${(p.start||'').replace(/[-:T]/g,'')}`,`DTEND:${(p.end||'').replace(/[-:T]/g,'')}`,`LOCATION:${p.location||''}`,`DESCRIPTION:${p.description||''}`,'END:VEVENT','END:VCALENDAR'].join('\r\n');
     case 'location':return `geo:${p.latitude||'0'},${p.longitude||'0'}?q=${enc(p.label||'')}`;
     case 'upi':{const q=new URLSearchParams({pa:p.upiId||'',pn:p.payee||'',cu:'INR'});if(p.amount)q.set('am',p.amount);if(p.note)q.set('tn',p.note);return `upi://pay?${q.toString()}`;}
-    case 'product':return [`Product: ${p.name||''}`,`Price: ${p.currency||'INR'} ${p.price||''}`,p.sku?`SKU: ${p.sku}`:'',p.url?`Product page: ${p.url}`:'' ].filter(Boolean).join('\\n');
+    case 'product':return [`Product: ${p.name||''}`,`Price: ${p.currency||'INR'} ${p.price||''}`,p.sku?`SKU: ${p.sku}`:'',p.url?`Product page: ${p.url}`:'' ].filter(Boolean).join('\r\n');
   }
 }
 
