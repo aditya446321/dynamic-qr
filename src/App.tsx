@@ -149,6 +149,7 @@ function App(){
   function navigateTo(view:DashboardView){setCurrentViewState(view);const nextPath=viewPaths[view];if(window.location.pathname!==nextPath)window.history.pushState({kinetiqrView:view},'',nextPath);}
   function closeBuilder(){setModal(null);const path=viewPaths[currentView];if(window.location.pathname==='/create-qr')window.history.pushState({kinetiqrView:currentView},'',path);}
   useEffect(()=>{const syncRoute=()=>{const path=window.location.pathname;if(path==='/create-qr'){setModal('create');return;}setModal(null);const view=viewFromPath(path);setCurrentViewState(view);if(path==='/')window.history.replaceState({kinetiqrView:'overview'},'','/overview');};syncRoute();window.addEventListener('popstate',syncRoute);return()=>window.removeEventListener('popstate',syncRoute);},[]);
+  useEffect(()=>{if(!authReady)return;const path=window.location.pathname;if(user){if(path==='/login'||path==='/'){window.history.replaceState({kinetiqrView:'overview'},'','/overview');setCurrentViewState('overview');}}else if(!window.location.hash.startsWith('#/menu/')&&path!=='/login'){window.history.replaceState({},'','/login');}},[authReady,user]);
   useEffect(()=>{
     supabase.auth.getSession().then(({data})=>{setUser(data.session?.user??null);setProfileName(String(data.session?.user?.user_metadata?.full_name||''));setAuthReady(true);});
     const {data:listener}=supabase.auth.onAuthStateChange((_event,session)=>{setUser(session?.user??null);setProfileName(String(session?.user?.user_metadata?.full_name||''));});
