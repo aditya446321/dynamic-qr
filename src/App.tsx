@@ -11,6 +11,7 @@ import {
 import './index.css';
 import PublicMenuView from './PublicMenu';
 import RestaurantMenuBuilder from './RestaurantMenuBuilder';
+import LandingPage from './LandingPage';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -142,17 +143,17 @@ function App(){
   const [design,setDesign]=useState<QRDesign>(defaultDesign); const [defaultQrDesign,setDefaultQrDesign]=useState<QRDesign>(()=>{try{return {...defaultDesign,...JSON.parse(localStorage.getItem('qraft-default-design')||'{}')};}catch{return defaultDesign;}}); const [logoFile,setLogoFile]=useState<File|null>(null); const [pdfFile,setPdfFile]=useState<File|null>(null);
   const [logoPreview,setLogoPreview]=useState(''); const [formError,setFormError]=useState(''); const [saving,setSaving]=useState(false); const [toast,setToast]=useState('');
   const [mobileNav,setMobileNav]=useState(false); const [menuSections,setMenuSections]=useState<MenuSection[]>([]); const [publicMenu,setPublicMenu]=useState<QRRecord|null>(null);
-  const [publicMenuLoading,setPublicMenuLoading]=useState(false); const [profileName,setProfileName]=useState(''); const [profileModal,setProfileModal]=useState(false);
+  const [publicMenuLoading,setPublicMenuLoading]=useState(false); const [profileName,setProfileName]=useState(''); const [businessName,setBusinessName]=useState(''); const [profileModal,setProfileModal]=useState(false);
   const [currentView,setCurrentViewState]=useState<DashboardView>(()=>viewFromPath(window.location.pathname));
   const [templateCategory,setTemplateCategory]=useState('All'); const [templatePage,setTemplatePage]=useState(0);
 
   function navigateTo(view:DashboardView){setCurrentViewState(view);const nextPath=viewPaths[view];if(window.location.pathname!==nextPath)window.history.pushState({kinetiqrView:view},'',nextPath);}
   function closeBuilder(){setModal(null);const path=viewPaths[currentView];if(window.location.pathname==='/create-qr')window.history.pushState({kinetiqrView:currentView},'',path);}
   useEffect(()=>{const syncRoute=()=>{const path=window.location.pathname;if(path==='/create-qr'){setModal('create');return;}setModal(null);const view=viewFromPath(path);setCurrentViewState(view);if(path==='/')window.history.replaceState({kinetiqrView:'overview'},'','/overview');};syncRoute();window.addEventListener('popstate',syncRoute);return()=>window.removeEventListener('popstate',syncRoute);},[]);
-  useEffect(()=>{if(!authReady)return;const path=window.location.pathname;if(user&&authMode!=='reset'){if(path==='/login'||path==='/'){window.history.replaceState({kinetiqrView:'overview'},'','/overview');setCurrentViewState('overview');}}else if(!window.location.hash.startsWith('#/menu/')&&path!=='/login'){window.history.replaceState({},'','/login');}},[authReady,user,authMode]);
+  useEffect(()=>{if(!authReady)return;const path=window.location.pathname;if(user&&authMode!=='reset'){if(['/login','/signup','/forgot-password','/'].includes(path)){window.history.replaceState({kinetiqrView:'overview'},'','/overview');setCurrentViewState('overview');}}else if(!window.location.hash.startsWith('#/menu/')&&!['/','/login','/signup','/forgot-password'].includes(path)){window.history.replaceState({},'','/login');setAuthMode('signin');}},[authReady,user,authMode]);
   useEffect(()=>{
-    supabase.auth.getSession().then(({data})=>{setUser(data.session?.user??null);setProfileName(String(data.session?.user?.user_metadata?.full_name||''));setAuthReady(true);});
-    const {data:listener}=supabase.auth.onAuthStateChange((event,session)=>{setUser(session?.user??null);setProfileName(String(session?.user?.user_metadata?.full_name||''));if(event==='PASSWORD_RECOVERY'){setAuthMode('reset');setPassword('');setAuthError('');setAuthMessage('Choose a new password for your account.');}});
+    supabase.auth.getSession().then(({data})=>{setUser(data.session?.user??null);setProfileName(String(data.session?.user?.user_metadata?.full_name||''));setBusinessName(String(data.session?.user?.user_metadata?.business_name||''));setAuthReady(true);});
+    const {data:listener}=supabase.auth.onAuthStateChange((event,session)=>{setUser(session?.user??null);setProfileName(String(session?.user?.user_metadata?.full_name||''));setBusinessName(String(session?.user?.user_metadata?.business_name||''));if(event==='PASSWORD_RECOVERY'){setAuthMode('reset');setPassword('');setAuthError('');setAuthMessage('Choose a new password for your account.');}});
     return()=>listener.subscription.unsubscribe();
   },[]);
   useEffect(()=>{const match=window.location.hash.match(/^#\/menu\/([A-Za-z0-9_-]{6,32})$/);if(!match)return;setPublicMenuLoading(true);supabase.from('qr_codes').select('*').eq('slug',match[1]).eq('qr_type','menu').eq('is_active',true).maybeSingle().then(({data})=>{setPublicMenu(data as QRRecord|null);setPublicMenuLoading(false);});},[]);
@@ -162,7 +163,7 @@ function App(){
   async function loadDashboard(){setLoading(true);const [a,b]=await Promise.all([supabase.from('qr_codes').select('*').order('updated_at',{ascending:false}),supabase.from('qr_scans').select('id,qr_code_id,scanned_at,referrer,device_type').order('scanned_at',{ascending:false}).limit(1500)]);if(a.error)notify(a.error.message);else setCodes((a.data||[]) as QRRecord[]);if(!b.error)setScans((b.data||[]) as ScanRecord[]);setLoading(false);}
   function notify(s:string){setToast(s);window.setTimeout(()=>setToast(''),3000);}
   function friendlyAuthError(message:string){const m=message.toLowerCase();if(m.includes('invalid login credentials'))return 'Email or password is incorrect. Please try again.';if(m.includes('email not confirmed'))return 'Please confirm your email address before signing in.';if(m.includes('user already registered'))return 'An account with this email already exists. Sign in instead.';if(m.includes('provider is not enabled')||m.includes('unsupported provider'))return 'Google sign-in is not enabled in Supabase yet. Enable Google under Authentication → Providers and add the OAuth Client ID and Secret.';if(m.includes('redirect')&&m.includes('not allowed'))return 'This website URL is not allowed by Supabase. Add this site under Authentication → URL Configuration → Redirect URLs.';if(m.includes('rate limit'))return 'Too many attempts. Please wait a little and try again.';return 'We could not sign you in. Check your details and try again.';}
-  async function handleAuth(e:FormEvent){e.preventDefault();setAuthError('');setAuthMessage('');setAuthBusy(true);try{if(authMode==='forgot'){const {error}=await supabase.auth.resetPasswordForEmail(email.trim(),{redirectTo:window.location.origin+'/login'});if(error)setAuthError(friendlyAuthError(error.message));else setAuthMessage('Password reset link sent. Check your email inbox.');}else if(password.length<8){setAuthError('Use a password with at least 8 characters.');}else if(authMode==='reset'){const {error}=await supabase.auth.updateUser({password});if(error)setAuthError(friendlyAuthError(error.message));else{setAuthMessage('Password updated successfully.');setAuthMode('signin');setPassword('');await supabase.auth.signOut();}}else{const r=authMode==='signup'?await supabase.auth.signUp({email:email.trim(),password,options:{data:{full_name:profileName.trim()}}}):await supabase.auth.signInWithPassword({email:email.trim(),password});if(r.error)setAuthError(friendlyAuthError(r.error.message));else if(authMode==='signup'&&!r.data.session){setAuthMessage('Account created. Confirm your email, then sign in.');setAuthMode('signin');}}}catch(error){setAuthError(error instanceof Error?friendlyAuthError(error.message):'Something went wrong. Please try again.');}finally{setAuthBusy(false);}}
+  async function handleAuth(e:FormEvent){e.preventDefault();setAuthError('');setAuthMessage('');setAuthBusy(true);try{if(authMode==='forgot'){const {error}=await supabase.auth.resetPasswordForEmail(email.trim(),{redirectTo:window.location.origin+'/login'});if(error)setAuthError(friendlyAuthError(error.message));else setAuthMessage('Password reset link sent. Check your email inbox.');}else if(password.length<8){setAuthError('Use a password with at least 8 characters.');}else if(authMode==='reset'){const {error}=await supabase.auth.updateUser({password});if(error)setAuthError(friendlyAuthError(error.message));else{setAuthMessage('Password updated successfully.');setAuthMode('signin');setPassword('');await supabase.auth.signOut();}}else{const r=authMode==='signup'?await supabase.auth.signUp({email:email.trim(),password,options:{data:{full_name:profileName.trim(),business_name:businessName.trim()}}}):await supabase.auth.signInWithPassword({email:email.trim(),password});if(r.error)setAuthError(friendlyAuthError(r.error.message));else if(authMode==='signup'&&!r.data.session){setAuthMessage('Account created. Confirm your email, then sign in.');setAuthMode('signin');}}}catch(error){setAuthError(error instanceof Error?friendlyAuthError(error.message):'Something went wrong. Please try again.');}finally{setAuthBusy(false);}}
   async function handleGoogleAuth(){setAuthError('');setAuthMessage('');setGoogleBusy(true);try{const {error}=await supabase.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+'/login',queryParams:{prompt:'select_account'}}});if(error){setAuthError(friendlyAuthError(error.message));setGoogleBusy(false);}}catch(error){setAuthError(error instanceof Error?friendlyAuthError(error.message):'Google sign-in could not start. Please try again.');setGoogleBusy(false);}}
   async function signOut(){await supabase.auth.signOut();setUser(null);}
   function resetForm(type:QRType='website'){window.history.pushState({kinetiqrModal:'create'},'', '/create-qr');setSelected(null);setQrType(type);setTitle('');setFields({});setDynamic(linkTypes.includes(type));setPdfFile(null);setMenuSections(type==='menu'?[newMenuSection()]:[]);setDesign(defaultQrDesign);setLogoFile(null);setLogoPreview('');setFormError('');setModal('create');}
@@ -232,7 +233,7 @@ function App(){
   const visibleTemplates=filteredTemplates.slice(0,(templatePage+1)*24);
   if(window.location.hash.startsWith('#/menu/'))return <PublicMenuView record={publicMenu} loading={publicMenuLoading}/>;
   if(!authReady)return <div className="loading-screen"><LoaderCircle className="spin"/> Loading KinetiQR...</div>;
-  if(!user||authMode==='reset')return <main className="kineti-login">
+  if(!user&&window.location.pathname==='/'&&!window.location.hash.startsWith('#/menu/'))return <LandingPage/>;\n  if(!user||authMode==='reset')return <main className="kineti-login">
   <section className="kl-content">
     <div className="kl-brand">
       <svg viewBox="0 0 52 50" aria-hidden="true"><g fill="none" stroke="#f26a0a" strokeWidth="6.5" strokeLinejoin="round"><rect x="3.5" y="3" width="16" height="15.5" rx="4"/><rect x="31.5" y="3" width="16" height="15.5" rx="4"/><rect x="3.5" y="31" width="16" height="15.5" rx="4"/><rect x="31.5" y="31" width="16" height="15.5" rx="4"/></g></svg>
@@ -264,7 +265,7 @@ function App(){
         </div>}
         {authMode==='signin'&&<div className="kl-row">
           <label className="kl-check"><input type="checkbox"/> Remember me</label>
-          <button type="button" className="kl-link" onClick={()=>{setAuthMode('forgot');setAuthError('');setAuthMessage('');}}>Forgot password?</button>
+          <button type="button" className="kl-link" onClick={()=>{setAuthMode('forgot');window.history.pushState({},'','/forgot-password');setAuthError('');setAuthMessage('');}}>Forgot password?</button>
         </div>}
         {authError&&<div className="auth-inline-message error" role="alert">{authError}</div>}
         {authMessage&&<div className="auth-inline-message success" role="status">{authMessage}</div>}
@@ -273,7 +274,7 @@ function App(){
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
         </button>
       </form>
-      <p className="kl-foot">{authMode==='signin'?"Don’t have an account?":authMode==='signup'?'Already have an account?':'Remembered your password?'} <a href={authMode==='signin'?'#signup':'#signin'} onClick={e=>{e.preventDefault();setAuthMode(authMode==='signin'?'signup':'signin');setAuthError('');setAuthMessage('');setPassword('');}}>{authMode==='signin'?'Sign up':'Sign in'}</a></p>
+      <p className="kl-foot">{authMode==='signin'?"Don’t have an account?":authMode==='signup'?'Already have an account?':'Remembered your password?'} <a href={authMode==='signin'?'#signup':'#signin'} onClick={e=>{e.preventDefault();setAuthMode(authMode==='signin'?'signup':'signin');window.history.pushState({},'',authMode==='signin'?'/signup':'/login');setAuthError('');setAuthMessage('');setPassword('');}}>{authMode==='signin'?'Sign up':'Sign in'}</a></p>
     </div>
   </section>
   <div className="kl-art"><img src="/kinetiqr-cafe-hero.jpg" width="932" height="941" alt="" draggable="false" fetchPriority="high"/></div>
