@@ -1189,3 +1189,26 @@ body:has(.app-shell){background:radial-gradient(circle at 2% 4%,#FDBE8440 0 11re
   .builder-step-panel[data-step="3"] .upload-button{width:100%!important;min-height:46px!important}
   .builder-step-panel[data-step="3"] .logo-selected{margin-top:9px!important;padding:8px!important;border:1px solid #eee5dc!important;border-radius:10px!important;background:#fff!important}
 }
+
+
+/* Remove repetitive explanatory copy throughout the signed-in workspace */
+.main-content .page-heading>div>p,
+.main-content .section-header>div>p,
+.main-content .templates-intro>div:first-child,
+.main-content .customize-intro>p,
+.main-content .premium-template>p,
+.main-content .overview-hero-copy>p,
+.main-content .analytics-side-card>p,
+.main-content .insight-card>p,
+.main-content .tip-card>p{
+  display:none!important;
+}
+.main-content .page-heading{margin-bottom:18px}
+.main-content .section-header{margin-bottom:14px}
+.main-content .templates-page{gap:14px}
+.main-content .templates-intro{min-height:0;padding:12px 16px}
+.main-content .premium-template{min-height:0}
+.main-content .premium-template h3{margin-top:10px}
+.main-content .template-card-meta{margin:10px 0}
+.main-content .customize-intro{padding-bottom:0}
+.main-content .analytics-side-card{align-content:start}
