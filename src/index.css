@@ -173,3 +173,39 @@ body{background:#f7f7fa;color:#202331;font-family:Inter,ui-sans-serif,system-ui,
  .auth-panel{min-height:0;padding:27px 22px 30px;background:transparent}.auth-form-wrap{width:100%;max-width:440px;margin:0 auto}.form-icon{width:40px;height:40px;border-radius:12px;margin-bottom:14px}.auth-form-wrap h2{font-size:26px;margin-bottom:5px}.auth-form-wrap>.muted{font-size:12px;margin-bottom:13px}.google-auth-button{margin-top:13px;min-height:49px;border-radius:12px}.auth-divider{margin:15px 0 10px}.auth-form{gap:8px}.auth-form label{margin-top:6px;font-size:11px}.auth-form input{height:48px;border-radius:11px;background:#fff}.full-button{height:49px;margin-top:10px;border-radius:11px}.auth-switch{margin-top:18px;gap:8px}.auth-switch button{min-height:39px;padding:0 13px}.secure-note{margin-top:22px;font-size:10px}.auth-foot,.auth-panel-top{display:none}.auth-copyright{padding-top:2px}
 }
 @media(max-width:380px){.auth-visual{padding:17px 18px 19px}.auth-copy{padding-top:22px}.auth-feature-list{grid-template-columns:1fr}.auth-feature-list span:last-child{grid-column:auto}.auth-panel{padding:24px 18px}.auth-copy h1{font-size:30px}}
+
+
+/* KinetiQR responsive auth and dashboard refinements */
+.auth-shell{min-height:100svh;width:100%;display:grid;place-items:center;padding:28px 18px;background:radial-gradient(ellipse at 12% 10%,#eeecff 0,transparent 42%),#f7f8fc}
+.auth-visual{display:none!important}
+.auth-panel{width:min(100%,480px);min-height:0;padding:clamp(24px,5vw,44px);border:1px solid #e9eaf2;border-radius:22px;background:#fff;box-shadow:0 22px 70px #22264a12}
+.auth-panel-top,.auth-copyright{display:none!important}
+.auth-form-wrap{width:100%;max-width:100%;margin:0 auto}
+.auth-form-wrap h2{margin-top:0}
+.auth-switch span{color:#727b8b}
+.auth-shell .google-auth-button,.auth-shell .full-button{min-height:50px}
+.overview-code-mark{display:grid;place-items:center;color:#6558d8;background:#f0efff;border-color:#e2defd}
+@media(max-width:760px){
+ .auth-shell{min-height:100svh;padding:18px 14px;align-content:center}
+ .auth-panel{width:100%;max-width:440px;min-height:0;padding:clamp(22px,7vw,34px) clamp(18px,6vw,26px);border-radius:18px}
+ .auth-form-wrap{max-width:100%}
+ .auth-form{gap:9px}
+ .auth-form input{width:100%;min-width:0}
+ .google-auth-button,.full-button{width:100%}
+ .app-shell{min-height:100svh;overflow-x:clip}
+ .main-content,.page-wrap,.section-card,.table-wrap{min-width:0;max-width:100%}
+ .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+ .table-wrap table{min-width:850px}
+ .template-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .template-card{min-width:0}
+ .templates-page{min-width:0}
+ .template-category-row{overflow-x:auto;flex-wrap:nowrap;padding-bottom:5px}
+ .template-category-chip{flex:0 0 auto}
+ .builder-modal{width:100%;max-height:calc(100svh - 14px);overflow-y:auto;overscroll-behavior:contain}
+}
+@media(max-width:420px){
+ .template-grid{grid-template-columns:1fr}
+ .auth-shell{padding:12px}
+ .auth-panel{padding:22px 17px}
+ .auth-form-wrap h2{font-size:24px}
+}
