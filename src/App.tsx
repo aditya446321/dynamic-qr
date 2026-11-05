@@ -252,7 +252,21 @@ function App(){
   const visibleTemplates=filteredTemplates.slice(0,(templatePage+1)*24);
   if(window.location.hash.startsWith('#/menu/'))return <Suspense fallback={<div className="public-menu-loading">Loading menu…</div>}><PublicMenuView record={publicMenu} loading={publicMenuLoading}/></Suspense>;
   if(!user&&window.location.pathname==='/'&&!window.location.hash.startsWith('#/menu/'))return <LandingPage/>;
-  if(!authReady&&!['/login','/signup','/forgot-password'].includes(window.location.pathname)&&authMode!=='reset')return <div className="loading-screen"><LoaderCircle className="spin"/> Loading KinetiQR...</div>;
+  if(!authReady&&!['/login','/signup','/forgot-password'].includes(window.location.pathname)&&authMode!=='reset')return <div className="kq-loading-screen" role="status" aria-live="polite">
+    <div className="kq-loader-glow" aria-hidden="true"/>
+    <div className="kq-loader-brand">
+      <div className="kq-loader-mark"><span/><span/><span/><span/></div>
+      <span>KinetiQR<span className="kq-loader-dot">.</span></span>
+    </div>
+    <div className="kq-loader-stage" aria-hidden="true">
+      <div className="kq-loader-orbit kq-orbit-one"/><div className="kq-loader-orbit kq-orbit-two"/>
+      <div className="kq-loader-center"><div className="kq-loader-qr"><i/><i/><i/><i/><b/><b/><b/></div></div>
+      <span className="kq-loader-spark kq-spark-one"/><span className="kq-loader-spark kq-spark-two"/><span className="kq-loader-spark kq-spark-three"/>
+    </div>
+    <div className="kq-loader-copy"><strong>Making every scan count</strong><span>Preparing your KinetiQR workspace</span></div>
+    <div className="kq-loader-progress"><span/></div>
+    <span className="kq-loader-foot">SMARTER QR EXPERIENCES</span>
+  </div>;
   if(!user||authMode==='reset')return <main className="kineti-login">
   <section className="kl-content">
     <div className="kl-brand">
@@ -299,7 +313,21 @@ function App(){
 
   if(user&&!pathViews[window.location.pathname]&&window.location.pathname!=='/create-qr')return <NotFoundPage/>;
 
-  if(!authReady)return <div className="loading-screen"><LoaderCircle className="spin"/> Loading KinetiQR...</div>;
+  if(!authReady)return <div className="kq-loading-screen" role="status" aria-live="polite">
+    <div className="kq-loader-glow" aria-hidden="true"/>
+    <div className="kq-loader-brand">
+      <div className="kq-loader-mark"><span/><span/><span/><span/></div>
+      <span>KinetiQR<span className="kq-loader-dot">.</span></span>
+    </div>
+    <div className="kq-loader-stage" aria-hidden="true">
+      <div className="kq-loader-orbit kq-orbit-one"/><div className="kq-loader-orbit kq-orbit-two"/>
+      <div className="kq-loader-center"><div className="kq-loader-qr"><i/><i/><i/><i/><b/><b/><b/></div></div>
+      <span className="kq-loader-spark kq-spark-one"/><span className="kq-loader-spark kq-spark-two"/><span className="kq-loader-spark kq-spark-three"/>
+    </div>
+    <div className="kq-loader-copy"><strong>Making every scan count</strong><span>Preparing your KinetiQR workspace</span></div>
+    <div className="kq-loader-progress"><span/></div>
+    <span className="kq-loader-foot">SMARTER QR EXPERIENCES</span>
+  </div>;
   return <div className="app-shell">
     <aside id="mobile-navigation" className={`sidebar ${mobileNav?'sidebar-open':''}`}>
       <div className="brand sidebar-brand"><div className="brand-mark"><QrCode size={21}/></div><span>KinetiQR<span className="brand-dot">.</span></span></div>
