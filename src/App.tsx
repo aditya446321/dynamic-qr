@@ -202,7 +202,9 @@ function App(){
     if(qrType==='social'&&!validUrl(fields.url||''))return setFormError('Enter a valid profile, page, channel or group link.');
     if(qrType==='social'&&!fields.platform)return setFormError('Choose a social platform.');
     if(qrType==='social'&&fields.platform==='Telegram'&&!fields.telegramType)return setFormError('Choose Telegram channel or group.');
-    if(qrType==='upi'&&!/^[\w.-]+@[\w.-]+$/.test((fields.upiId||'').trim()))return setFormError('Enter a valid UPI ID, for example name@bank.');\n     if(qrType==='upi'&&fields.amount&&(!/^(?:0|[1-9]\\d*)(?:\\.\\d{1,2})?$/.test(fields.amount.trim())||Number(fields.amount)<=0))return setFormError('Enter a valid payment amount greater than ₹0, with up to 2 decimal places.');\n     if(qrType==='upi'&&fields.note&&fields.note.length>80)return setFormError('Keep the payment note under 80 characters.');
+    if(qrType==='upi'&&!/^[\w.-]+@[\w.-]+$/.test((fields.upiId||'').trim()))return setFormError('Enter a valid UPI ID, for example name@bank.');
+     if(qrType==='upi'&&fields.amount&&(!/^(?:0|[1-9]\d*)(?:\.\d{1,2})?$/.test(fields.amount.trim())||Number(fields.amount)<=0))return setFormError('Enter a valid payment amount greater than ₹0, with up to 2 decimal places.');
+     if(qrType==='upi'&&fields.note&&fields.note.length>80)return setFormError('Keep the payment note under 80 characters.');
     if(qrType==='location'&&(!Number.isFinite(Number(fields.latitude))||!Number.isFinite(Number(fields.longitude))))return setFormError('Enter valid latitude and longitude.');
     if(qrType==='product'&&fields.url&&!validUrl(fields.url))return setFormError('Product page must be a valid http(s) URL.');
     if(logoFile&&(!['image/png','image/jpeg','image/webp'].includes(logoFile.type)||logoFile.size>1024*1024))return setFormError('Logo must be PNG, JPG or WebP and under 1 MB.');
