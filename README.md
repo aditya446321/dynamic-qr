@@ -1,4 +1,4 @@
-# Qraft — Standalone QR management
+# KinetiQR — QR management
 
 Qraft is a standalone React + Vite application with Supabase Auth, database and Storage. It is a standalone project. The project is configured for Vercel hosting and includes Vercel Functions for dynamic QR redirects, restaurant menu social previews, OG artwork and menu scan recording.
 
@@ -19,7 +19,7 @@ Qraft is a standalone React + Vite application with Supabase Auth, database and 
 ## Requirements
 
 - Node.js 20 or newer
-- A Supabase project with the Qraft schema, policies, buckets and `qr-redirect` Edge Function configured
+- A Supabase project with the KinetiQR schema, policies, buckets and `qr-redirect` Edge Function configured
 - A Vercel account for deployment
 
 ## Local setup
@@ -61,7 +61,7 @@ For local menu analytics, also set `SUPABASE_URL`, `SUPABASE_ANON_KEY` and `SUPA
 
 ## Supabase configuration
 
-The existing Qraft Supabase project already has the database tables, row-level security, storage buckets and `qr-redirect` Edge Function. For a fresh project, use `supabase/schema-reference.sql` as a reviewed reference, then configure the `qr-redirect` Edge Function and its server-side secrets:
+The existing KinetiQR Supabase project already has the database tables, row-level security, storage buckets and `qr-redirect` Edge Function. For a fresh project, use `supabase/schema-reference.sql` as a reviewed reference, then configure the `qr-redirect` Edge Function and its server-side secrets:
 
 - `SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
@@ -91,5 +91,5 @@ This runs TypeScript project checks and creates the production bundle in `dist/`
 
 - Supabase browser key is the publishable/anon key and is designed for browser use with RLS enabled.
 - `SUPABASE_SERVICE_ROLE_KEY` is only read inside Vercel serverless functions.
-- Public read access to active restaurant menu rows and public menu images is intentional so customer devices can open the menu without an account.
+- Public menu access is limited to the public_menu_qr_codes view and the minimum required QR columns; public menu images are served from the public asset bucket.
 - Never commit `.env` or paste service role keys into frontend source.
