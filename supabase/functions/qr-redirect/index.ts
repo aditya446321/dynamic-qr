@@ -14,8 +14,12 @@ function getDeviceType(userAgent: string): "mobile" | "tablet" | "desktop" | "un
   return "desktop";
 }
 
-async function sha256(value: string): Promise<string> {
-  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+async function rateLimitDigest(value: string): Promise<string> {
+  const secret = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  const key = await crypto.subtle.importKey(
+    "raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]
+  );
+  const digest = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(value));
   return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
@@ -27,13 +31,13 @@ Deno.serve(async (request: Request) => {
   if (!/^[A-Za-z0-9_-]{6,32}$/.test(slug)) return new Response("Invalid QR code", { status: 400 });
 
   // Supabase's edge proxy supplies the client address in these headers. Only a
-  // SHA-256 digest is stored; raw IP addresses are never persisted.
+  // Keyed HMAC digests are stored; raw IP addresses are never persisted.
   const forwarded = request.headers.get("cf-connecting-ip")
     ?? request.headers.get("x-real-ip")
     ?? request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
     ?? "unknown";
-  const ipHash = await sha256(forwarded);
-  const slugHash = await sha256(slug);
+  const ipHash = await rateLimitDigest(forwarded);
+  const slugHash = await rateLimitDigest(slug);
   const windowStart = new Date(Math.floor(Date.now() / 60_000) * 60_000).toISOString();
 
   const [ipLimit, slugLimit] = await Promise.all([
@@ -41,7 +45,7 @@ Deno.serve(async (request: Request) => {
       p_key_hash: ipHash, p_scope: "ip", p_window_start: windowStart, p_limit: 120, p_slug: null
     }),
     supabase.rpc("consume_qr_scan_rate_limit", {
-      p_key_hash: await sha256(ipHash + ":" + slugHash), p_scope: "ip_slug",
+      p_key_hash: await rateLimitDigest(ipHash + ":" + slugHash), p_scope: "ip_slug",
       p_window_start: windowStart, p_limit: 30, p_slug: slug
     })
   ]);
