@@ -14,12 +14,45 @@ function getDeviceType(userAgent: string): "mobile" | "tablet" | "desktop" | "un
   return "desktop";
 }
 
+async function sha256(value: string): Promise<string> {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
 Deno.serve(async (request: Request) => {
   const slug = new URL(request.url).searchParams.get("code") ?? "";
   if (request.method !== "GET" && request.method !== "HEAD") {
     return new Response("Method not allowed", { status: 405, headers: { Allow: "GET, HEAD" } });
   }
   if (!/^[A-Za-z0-9_-]{6,32}$/.test(slug)) return new Response("Invalid QR code", { status: 400 });
+
+  // Supabase's edge proxy supplies the client address in these headers. Only a
+  // SHA-256 digest is stored; raw IP addresses are never persisted.
+  const forwarded = request.headers.get("cf-connecting-ip")
+    ?? request.headers.get("x-real-ip")
+    ?? request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+    ?? "unknown";
+  const ipHash = await sha256(forwarded);
+  const slugHash = await sha256(slug);
+  const windowStart = new Date(Math.floor(Date.now() / 60_000) * 60_000).toISOString();
+
+  const [ipLimit, slugLimit] = await Promise.all([
+    supabase.rpc("consume_qr_scan_rate_limit", {
+      p_key_hash: ipHash, p_scope: "ip", p_window_start: windowStart, p_limit: 120, p_slug: null
+    }),
+    supabase.rpc("consume_qr_scan_rate_limit", {
+      p_key_hash: await sha256(ipHash + ":" + slugHash), p_scope: "ip_slug",
+      p_window_start: windowStart, p_limit: 30, p_slug: slug
+    })
+  ]);
+  if (ipLimit.error || slugLimit.error) {
+    console.error("QR scan rate limiter unavailable", ipLimit.error?.message ?? slugLimit.error?.message);
+    return new Response("Temporarily unavailable", { status: 503, headers: { "Retry-After": "30", "Cache-Control": "no-store" } });
+  }
+  if ((ipLimit.data ?? 0) > 120 || (slugLimit.data ?? 0) > 30) {
+    console.warn("QR scan rate limit exceeded", { scope: (ipLimit.data ?? 0) > 120 ? "ip" : "ip_slug", slug });
+    return new Response("Too many requests", { status: 429, headers: { "Retry-After": "60", "Cache-Control": "no-store" } });
+  }
 
   const { data: qrCode, error: lookupError } = await supabase
     .from("qr_codes").select("id, target_url").eq("slug", slug).eq("is_active", true)
