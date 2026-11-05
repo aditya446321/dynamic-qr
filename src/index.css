@@ -2030,3 +2030,90 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
   .builder-step-panel { padding: 13px; }
   .builder-preview .preview-paper { padding: 13px !important; }
 }
+
+
+/* Live preview sizing correction: prevent flex/grid shrink from collapsing QR art */
+.builder-preview {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  min-width: 0 !important;
+}
+.builder-preview .preview-paper {
+  box-sizing: border-box !important;
+  display: grid !important;
+  place-items: center !important;
+  flex: 0 0 auto !important;
+  align-self: center !important;
+  width: min(100%, 360px) !important;
+  max-width: 360px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  aspect-ratio: 1 / 1 !important;
+  padding: 22px !important;
+  overflow: hidden !important;
+}
+.builder-preview .preview-qr {
+  box-sizing: border-box !important;
+  display: grid !important;
+  place-items: center !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden !important;
+}
+.builder-preview .preview-qr > svg,
+.builder-preview .preview-qr > canvas,
+.builder-preview .preview-qr > div,
+.builder-preview .preview-qr svg,
+.builder-preview .preview-qr canvas {
+  box-sizing: border-box !important;
+  display: block !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: contain !important;
+}
+@media (max-width: 760px) {
+  .builder-body:has(.builder-step-panel[data-step="2"].active) .builder-preview,
+  .builder-body:has(.builder-step-panel[data-step="3"].active) .builder-preview {
+    display: flex !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 14px !important;
+    gap: 7px !important;
+  }
+  .builder-body:has(.builder-step-panel[data-step="2"].active) .builder-preview .preview-paper,
+  .builder-body:has(.builder-step-panel[data-step="3"].active) .builder-preview .preview-paper {
+    width: min(78vw, 320px) !important;
+    max-width: 320px !important;
+    flex: 0 0 auto !important;
+    aspect-ratio: 1 / 1 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 17px !important;
+    margin: 5px auto 7px !important;
+  }
+  .builder-body:has(.builder-step-panel[data-step="2"].active) .builder-preview .preview-qr,
+  .builder-body:has(.builder-step-panel[data-step="3"].active) .builder-preview .preview-qr {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+  }
+  .builder-body:has(.builder-step-panel[data-step="2"].active) .builder-preview .preview-qr svg,
+  .builder-body:has(.builder-step-panel[data-step="2"].active) .builder-preview .preview-qr canvas,
+  .builder-body:has(.builder-step-panel[data-step="3"].active) .builder-preview .preview-qr svg,
+  .builder-body:has(.builder-step-panel[data-step="3"].active) .builder-preview .preview-qr canvas {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+  }
+}
