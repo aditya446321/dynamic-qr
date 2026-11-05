@@ -5,7 +5,7 @@ import {
   ChevronRight, Eye, EyeOff, FileText, Globe2, LayoutDashboard,
   LoaderCircle, LogOut, Menu, Pencil, Plus, QrCode, Search, ShieldCheck,
   Smartphone, Trash2, X, Wifi, Mail, Phone, MessageSquare, MapPin, CreditCard,
-  Contact, CalendarDays, Package, Share2, FileImage, Copy
+  Contact, CalendarDays, Package, Share2, FileImage, Copy, Settings
 } from 'lucide-react';
 import './index.css';
 const PublicMenuView = lazy(() => import('./PublicMenu'));
@@ -313,7 +313,7 @@ function App(){
       <button className={`nav-item ${currentView==='analytics'?'active':''}`} onClick={()=>{navigateTo('analytics');setMobileNav(false);}}><BarChart3 size={18}/> Restaurant analytics</button>
       <div className="nav-label nav-label-spaced">DESIGN</div>
       <button className={`nav-item ${currentView==='templates'?'active':''}`} onClick={()=>{navigateTo('templates');setSearch('');setMobileNav(false);}}><LayoutDashboard size={18}/> QR templates</button>
-      <button className={`nav-item ${currentView==='customize'?'active':''}`} onClick={()=>{navigateTo('customize');setMobileNav(false);}}><Pencil size={18}/> Customization</button>
+      <button className={`nav-item ${currentView==='customize'?'active':''}`} onClick={()=>{navigateTo('customize');setMobileNav(false);}}><Pencil size={18}/> Customization</button><button className={`nav-item ${currentView==='settings'?'active':''}`} onClick={()=>{navigateTo('settings');setMobileNav(false);}}><Settings size={18}/> Settings</button>
       <div className="sidebar-bottom"><button className="nav-item" onClick={signOut}><LogOut size={18}/> Sign out</button><div className="profile-row"><div className="profile-avatar">{initialsFor(profileName || user.user_metadata?.full_name || user.email || 'User')}</div><div className="profile-info"><strong>{profileName||user.email?.split('@')[0]}</strong><small>{user.email}</small></div><button className="icon-button" title="Edit profile" onClick={()=>setProfileModal(true)}><Pencil size={14}/></button></div></div>
     </aside>
     <main className="main-content" id="main-content"><header className="topbar"><button className="mobile-menu icon-button" aria-label={mobileNav?"Close navigation":"Open navigation"} aria-expanded={mobileNav} aria-controls="mobile-navigation" onClick={()=>setMobileNav(!mobileNav)}><Menu size={20}/></button><div className="breadcrumb">Workspace <ChevronRight size={14}/><strong>{viewLabels[currentView]}</strong></div><div className="topbar-right"><span className="secure-pill">Personal workspace</span><div className="top-avatar">{initialsFor(profileName || user.user_metadata?.full_name || user.email || 'User')}</div></div></header>
