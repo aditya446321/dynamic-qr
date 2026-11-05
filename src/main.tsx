@@ -32,7 +32,21 @@ function Root() {
   }, []);
 
   return (
-    <Suspense fallback={<div className="loading-screen">Loading KinetiQR…</div>}>
+    <Suspense fallback={<div className="kq-loading-screen" role="status" aria-live="polite">
+    <div className="kq-loader-glow" aria-hidden="true"/>
+    <div className="kq-loader-brand">
+      <div className="kq-loader-mark"><span/><span/><span/><span/></div>
+      <span>KinetiQR<span className="kq-loader-dot">.</span></span>
+    </div>
+    <div className="kq-loader-stage" aria-hidden="true">
+      <div className="kq-loader-orbit kq-orbit-one"/><div className="kq-loader-orbit kq-orbit-two"/>
+      <div className="kq-loader-center"><div className="kq-loader-qr"><i/><i/><i/><i/><b/><b/><b/></div></div>
+      <span className="kq-loader-spark kq-spark-one"/><span className="kq-loader-spark kq-spark-two"/><span className="kq-loader-spark kq-spark-three"/>
+    </div>
+    <div className="kq-loader-copy"><strong>Making every scan count</strong><span>Preparing your KinetiQR workspace</span></div>
+    <div className="kq-loader-progress"><span/></div>
+    <span className="kq-loader-foot">SMARTER QR EXPERIENCES</span>
+  </div>}>
       {showApp ? <App /> : <LandingPage />}
     </Suspense>
   );
