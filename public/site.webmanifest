@@ -1,42 +1,17 @@
 {
   "name": "KinetiQR",
   "short_name": "KinetiQR",
-  "description": "Create, manage and track QR codes for your café or shop.",
+  "description": "Create, manage and track QR codes for your business.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FFF7EF",
-  "theme_color": "#FFF7EF",
+  "background_color": "#FFFAF5",
+  "theme_color": "#FFFAF5",
   "icons": [
     {
-      "src": "/favicon-16x16.png",
-      "sizes": "16x16",
-      "type": "image/png"
-    },
-    {
-      "src": "/favicon-32x32.png",
-      "sizes": "32x32",
-      "type": "image/png"
-    },
-    {
-      "src": "/apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png"
-    },
-    {
-      "src": "/android-chrome-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/android-chrome-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    },
-    {
-      "src": "/maskable-icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ]
 }
