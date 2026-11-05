@@ -136,7 +136,7 @@ const QrPreview=memo(function QrPreview({value,design,className=''}:{value:strin
   useEffect(()=>{
     let active=true;
     const timer=window.setTimeout(()=>{
-      createQr(value||'KinetiQR',design,230).then(qr=>{
+      createQr(value||'KinetiQR',design,420).then(qr=>{
         if(active&&ref.current){ref.current.replaceChildren();qr.append(ref.current);}
       }).catch(()=>{});
     },180);
