@@ -2382,3 +2382,15 @@ textarea:focus-visible, summary:focus-visible {
   .menu-builder { padding: 12px; gap: 13px; }
   .menu-editor-section { padding: 11px; }
 }
+
+.upi-scan-guidance {
+  margin-top: 14px;
+  padding: 14px 15px;
+  border: 1px solid #d9e9df;
+  border-radius: 12px;
+  background: #f3faf5;
+  color: #334b3c;
+}
+.upi-scan-guidance strong { display:block; margin-bottom:5px; color:#244b34; font-size:13px; }
+.upi-scan-guidance p { margin:0; font-size:12px; line-height:1.6; }
+.upi-scan-guidance small { display:block; margin-top:7px; color:#65786b; font-size:11px; line-height:1.5; }
