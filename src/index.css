@@ -2394,3 +2394,51 @@ textarea:focus-visible, summary:focus-visible {
 .upi-scan-guidance strong { display:block; margin-bottom:5px; color:#244b34; font-size:13px; }
 .upi-scan-guidance p { margin:0; font-size:12px; line-height:1.6; }
 .upi-scan-guidance small { display:block; margin-top:7px; color:#65786b; font-size:11px; line-height:1.5; }
+
+
+/* Sidebar brand mark: restore a legible QR symbol on the orange tile */
+.app-shell .sidebar .brand.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.app-shell .sidebar .brand.sidebar-brand .brand-mark {
+  flex: 0 0 42px;
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px;
+  display: grid !important;
+  place-items: center !important;
+  overflow: hidden;
+  border: 1px solid rgba(224, 91, 12, .22) !important;
+  border-radius: 13px !important;
+  background: linear-gradient(145deg, #ff963e 0%, #ed741b 58%, #dc5b0c 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 15px rgba(217, 91, 12, .2) !important;
+}
+.app-shell .sidebar .brand.sidebar-brand .brand-mark svg {
+  display: block;
+  width: 23px !important;
+  height: 23px !important;
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+  stroke-width: 2.35 !important;
+  opacity: 1 !important;
+}
+.app-shell .sidebar .brand.sidebar-brand > span {
+  color: #202838 !important;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -.9px;
+}
+.app-shell .sidebar .brand.sidebar-brand .brand-dot {
+  color: #ed741b !important;
+}
+@media (max-width: 760px) {
+  .app-shell .sidebar .brand.sidebar-brand .brand-mark {
+    flex-basis: 40px;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px;
+  }
+}
