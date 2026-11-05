@@ -1483,3 +1483,114 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
   .premium-template p{font-size:11px;min-height:0}
   .premium-template .template-use-button{min-height:46px;font-size:12px}
 }
+
+
+/* Live QR preview: restore a full-width, readable mobile preview.
+   The previous mobile rules kept a 48px thumbnail grid column, squeezing
+   the QR SVG into a narrow strip even after the preview card was re-enabled. */
+@media (max-width: 760px) {
+  .builder-body:has(.builder-step-panel[data-step="2"].active) .builder-preview,
+  .builder-body:has(.builder-step-panel[data-step="3"].active) .builder-preview {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    position: relative !important;
+    inset: auto !important;
+    order: -1 !important;
+    grid-template-columns: none !important;
+    grid-template-rows: none !important;
+    gap: 8px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 0 14px !important;
+    padding: 16px 14px !important;
+    border: 1px solid #f0e2d5 !important;
+    border-radius: 16px !important;
+    background: #fff !important;
+    box-shadow: 0 5px 18px rgba(90, 55, 25, .05) !important;
+  }
+
+  .builder-body:has(.builder-step-panel[data-step="2"].active) .builder-preview .preview-label,
+  .builder-body:has(.builder-step-panel[data-step="3"].active) .builder-preview .preview-label {
+    display: block !important;
+    align-self: flex-start !important;
+    order: 0 !important;
+  }
+
+  .builder-body:has(.builder-step-panel[data-step="2"].active) .builder-preview .preview-paper,
+  .builder-body:has(.builder-step-panel[data-step="3"].active) .builder-preview .preview-paper {
+    display: grid !important;
+    place-items: center !important;
+    order: 1 !important;
+    width: min(100%, 340px) !important;
+    max-width: 340px !important;
+    min-height: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+    height: auto !important;
+    margin: 4px auto 8px !important;
+    padding: 18px !important;
+    border: 1px solid #f1e7de !important;
+    border-radius: 14px !important;
+    background: #fff !important;
+  }
+
+  .builder-body:has(.builder-step-panel[data-step="2"].active) .builder-preview .preview-qr,
+  .builder-body:has(.builder-step-panel[data-step="3"].active) .builder-preview .preview-qr {
+    display: grid !important;
+    place-items: center !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+  }
+
+  .builder-body:has(.builder-step-panel[data-step="2"].active) .builder-preview .preview-qr > div,
+  .builder-body:has(.builder-step-panel[data-step="3"].active) .builder-preview .preview-qr > div {
+    display: grid !important;
+    place-items: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+  }
+
+  .builder-body:has(.builder-step-panel[data-step="2"].active) .builder-preview .preview-qr svg,
+  .builder-body:has(.builder-step-panel[data-step="2"].active) .builder-preview .preview-qr canvas,
+  .builder-body:has(.builder-step-panel[data-step="3"].active) .builder-preview .preview-qr svg,
+  .builder-body:has(.builder-step-panel[data-step="3"].active) .builder-preview .preview-qr canvas {
+    display: block !important;
+    width: min(100%, 280px) !important;
+    max-width: 280px !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+  }
+
+  .builder-body:has(.builder-step-panel[data-step="2"].active) .builder-preview > strong,
+  .builder-body:has(.builder-step-panel[data-step="3"].active) .builder-preview > strong {
+    order: 2 !important;
+    align-self: flex-start !important;
+    width: 100% !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    font-size: 15px !important;
+  }
+
+  .builder-body:has(.builder-step-panel[data-step="2"].active) .builder-preview > small,
+  .builder-body:has(.builder-step-panel[data-step="3"].active) .builder-preview > small {
+    display: block !important;
+    order: 3 !important;
+    align-self: flex-start !important;
+    font-size: 11px !important;
+  }
+
+  .builder-body:has(.builder-step-panel[data-step="2"].active) .builder-preview .preview-note,
+  .builder-body:has(.builder-step-panel[data-step="3"].active) .builder-preview .preview-note {
+    display: flex !important;
+    order: 4 !important;
+    align-self: stretch !important;
+    max-width: none !important;
+    width: 100% !important;
+    margin-top: 4px !important;
+    font-size: 10px !important;
+  }
+}
