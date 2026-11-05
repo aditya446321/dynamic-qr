@@ -1483,3 +1483,95 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
   .premium-template p{font-size:11px;min-height:0}
   .premium-template .template-use-button{min-height:46px;font-size:12px}
 }
+
+
+/* QR builder preview: keep the QR artwork square and readable on narrow screens. */
+.builder-preview{min-width:0;overflow:hidden}
+.builder-preview .preview-paper{width:min(100%,360px);min-height:0;aspect-ratio:1/1;padding:20px;display:grid;place-items:center;overflow:hidden}
+.builder-preview .preview-qr{width:100%;height:100%;min-height:0;aspect-ratio:1/1;display:grid;place-items:center;overflow:hidden}
+.builder-preview .preview-qr>div{width:100%!important;height:100%!important;min-width:0;min-height:0;display:grid!important;place-items:center!important}
+.builder-preview .preview-qr svg,.builder-preview .preview-qr canvas,.builder-preview .preview-qr img{display:block!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;aspect-ratio:1/1;object-fit:contain;flex:none}
+@media(max-width:760px){
+  .builder-preview{grid-row:1;width:100%;padding:16px 12px}
+  .builder-preview .preview-paper{width:min(100%,340px);min-height:0;aspect-ratio:1/1;padding:18px;margin:12px 0}
+  .builder-preview .preview-qr{width:100%;height:100%;min-height:0;aspect-ratio:1/1}
+  .builder-preview .preview-qr svg,.builder-preview .preview-qr canvas,.builder-preview .preview-qr img{width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important}
+}
+
+
+/* Final mobile QR builder layout fix: preview must span the full modal width. */
+@media (max-width: 760px) {
+  .builder-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 14px !important;
+  }
+  .builder-body {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    gap: 14px !important;
+  }
+  .builder-body > .builder-preview {
+    display: flex !important;
+    order: -1 !important;
+    position: static !important;
+    align-self: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    grid-row: auto !important;
+    align-items: center !important;
+    padding: 18px 14px !important;
+    overflow: visible !important;
+  }
+  .builder-body > .builder-preview > .preview-paper {
+    display: grid !important;
+    place-items: center !important;
+    width: min(100%, 320px) !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+    margin: 12px auto !important;
+    padding: 16px !important;
+    overflow: hidden !important;
+  }
+  .builder-body > .builder-preview .preview-qr {
+    display: grid !important;
+    place-items: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+    overflow: hidden !important;
+  }
+  .builder-body > .builder-preview .preview-qr > div {
+    display: grid !important;
+    place-items: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+  }
+  .builder-body > .builder-preview .preview-qr svg,
+  .builder-body > .builder-preview .preview-qr canvas,
+  .builder-body > .builder-preview .preview-qr img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+    object-fit: contain !important;
+  }
+  .builder-body > .builder-preview > strong,
+  .builder-body > .builder-preview > small,
+  .builder-body > .builder-preview > .preview-note {
+    width: min(100%, 320px) !important;
+  }
+}

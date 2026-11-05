@@ -29,13 +29,13 @@ export default async function handler(req: any, res: any) {
 
   try {
     const query = new URLSearchParams({
-      select: 'id,title,slug,payload,is_active,qr_type',
+      select: 'id,title,slug,payload',
       slug: `eq.${slug}`,
       qr_type: 'eq.menu',
       is_active: 'eq.true',
       limit: '1'
     });
-    const lookup = await fetch(`${supabaseUrl}/rest/v1/qr_codes?${query}`, {
+    const lookup = await fetch(`${supabaseUrl}/rest/v1/public_menu_qr_codes?${query}`, {
       headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` },
       cache: 'no-store'
     });
@@ -76,12 +76,12 @@ export default async function handler(req: any, res: any) {
       }).catch((error) => console.error('Could not record menu scan', error));
     }
 
-    const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(title)}</title><meta name="description" content="${escapeHtml(description)}"><link rel="canonical" href="${escapeHtml(canonical)}"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:type" content="website"><meta property="og:site_name" content="Qraft"><meta property="og:title" content="${escapeHtml(title)}"><meta property="og:description" content="${escapeHtml(description)}"><meta property="og:url" content="${escapeHtml(canonical)}"><meta property="og:image" content="${escapeHtml(image)}"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escapeHtml(title)}"><meta name="twitter:description" content="${escapeHtml(description)}"><meta name="twitter:image" content="${escapeHtml(image)}"><meta name="theme-color" content="#171923"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f6f4ef;color:#20232d;font:16px system-ui,sans-serif}.wrap{text-align:center;padding:32px}.mark{width:54px;height:54px;margin:0 auto 18px;border-radius:17px;background:#6558d3;color:white;display:grid;place-items:center;font-weight:800;font-size:22px}.muted{color:#777d8a;font-size:14px}</style></head><body><main class="wrap"><div class="mark">Q</div><h1>${escapeHtml(restaurant)}</h1><p class="muted">Opening the restaurant menu…</p><a href="/#/menu/${encodeURIComponent(slug)}">Open menu</a></main><script>window.location.replace('/#/menu/${encodeURIComponent(slug)}');</script></body></html>`;
+    const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(title)}</title><meta name="description" content="${escapeHtml(description)}"><link rel="canonical" href="${escapeHtml(canonical)}"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:type" content="website"><meta property="og:site_name" content="KinetiQR"><meta property="og:title" content="${escapeHtml(title)}"><meta property="og:description" content="${escapeHtml(description)}"><meta property="og:url" content="${escapeHtml(canonical)}"><meta property="og:image" content="${escapeHtml(image)}"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escapeHtml(title)}"><meta name="twitter:description" content="${escapeHtml(description)}"><meta name="twitter:image" content="${escapeHtml(image)}"><meta name="theme-color" content="#171923"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f6f4ef;color:#20232d;font:16px system-ui,sans-serif}.wrap{text-align:center;padding:32px}.mark{width:54px;height:54px;margin:0 auto 18px;border-radius:17px;background:#6558d3;color:white;display:grid;place-items:center;font-weight:800;font-size:22px}.muted{color:#777d8a;font-size:14px}</style></head><body><main class="wrap"><div class="mark">Q</div><h1>${escapeHtml(restaurant)}</h1><p class="muted">Opening the restaurant menu…</p><a href="/#/menu/${encodeURIComponent(slug)}">Open menu</a></main><script>window.location.replace('/#/menu/${encodeURIComponent(slug)}');</script></body></html>`;
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.setHeader('Cache-Control', 'no-store, max-age=0');
     res.status(200).send(html);
   } catch (error) {
-    console.error('Qraft menu preview failed', error);
+    console.error('KinetiQR menu preview failed', error);
     res.status(500).send('Unable to open this menu right now');
   }
 }
