@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { MapPin, Phone, QrCode, Search, ArrowUpRight, Clock3, Utensils } from 'lucide-react';
 
 type MenuItem = { id:string; name:string; description?:string; price:string; imageUrl?:string; available?:boolean; diet?:'veg'|'nonveg' };
@@ -16,7 +16,7 @@ export default function PublicMenuView({record,loading}:{record:MenuRecord|null;
   const currency=p.currency||'INR';
   const symbols:Record<string,string>={INR:'₹',USD:'$',EUR:'€',GBP:'£'};
   const symbol=symbols[currency]||currency+' ';
-  const visibleSections=useMemo(()=>sections.map(section=>({...section,items:section.items.filter(item=>item.available!==false&&item.name?.trim()&&(!search||item.name.toLowerCase().includes(search.toLowerCase())||(item.description||'').toLowerCase().includes(search.toLowerCase())))})).filter(section=>section.items.length>0),[sections,search]);
+  const visibleSections=sections.map(section=>({...section,items:section.items.filter(item=>item.available!==false&&item.name?.trim()&&(!search||item.name.toLowerCase().includes(search.toLowerCase())||(item.description||'').toLowerCase().includes(search.toLowerCase())))})).filter(section=>section.items.length>0);
   const totalItems=sections.reduce((n,s)=>n+s.items.filter(i=>i.available!==false&&i.name?.trim()).length,0);
   return <main className={'public-menu-page theme-'+theme}>
     <header className="public-menu-top"><span className="public-menu-brand"><span className="public-menu-brand-mark"><QrCode size={17}/></span>{p.restaurantName||record.title}<i>MENU</i></span><span className="public-menu-open">DIGITAL MENU</span></header>
