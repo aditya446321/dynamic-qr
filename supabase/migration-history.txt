@@ -11,3 +11,4 @@ The existing Supabase project has these applied migrations:
 - 20261103155606 add_public_restaurant_menu_assets_and_read_policy
 
 The original migration SQL files were not included in the source export. A current schema and policy reference is provided in `schema-reference.sql`. Do not re-run this reference script against the already-configured production database.
+20261105073041 public_menu_safe_projection
