@@ -2,3 +2,6 @@ project_id = "mjbcotgvouxqbcecvmsh"
 
 [functions.qr-redirect]
 verify_jwt = false
+
+[functions.qr-upload]
+verify_jwt = true
