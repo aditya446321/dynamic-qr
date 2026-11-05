@@ -34,7 +34,7 @@ jobs:
             const fixText = fix === true ? 'Non-breaking fix available (exact version not supplied by npm).' :
               fix && typeof fix === 'object' ? `${fix.name || name} ${fix.version || 'version not specified'}${fix.isSemVerMajor ? ' (major upgrade)' : ''}` :
               'No automatic safe fix identified; review manually.';
-            return `| ${name} | ${item.severity} | ${item.isDirect ? 'Direct' : 'Transitive'} | ${(item.range || '').replace(/\\|/g, '\\\\|')} | ${fixText.replace(/\\|/g, '\\\\|')} |`;
+            return `| ${name} | ${item.severity} | ${item.isDirect ? 'Direct' : 'Transitive'} | ${String(item.range || '').replaceAll('|', '&#124;')} | ${String(fixText).replaceAll('|', '&#124;')} |`;
           });
           const counts = audit.metadata?.vulnerabilities || {};
           const body = [
