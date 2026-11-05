@@ -2117,3 +2117,106 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
     aspect-ratio: 1 / 1 !important;
   }
 }
+
+
+/* Final mobile overflow correction: the preview must reserve its full height.
+   Keep the QR paper inside the preview card; never let the flex item shrink. */
+@media (max-width: 760px) {
+  .builder-body {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 0 !important;
+  }
+
+  .builder-left {
+    display: contents !important;
+  }
+
+  .builder-body .builder-preview {
+    display: none !important;
+    position: relative !important;
+    flex: 0 0 auto !important;
+    flex-shrink: 0 !important;
+    order: 1 !important;
+    align-self: stretch !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    margin: 0 0 16px !important;
+    padding: 16px !important;
+  }
+
+  .builder-body:has(.builder-step-panel[data-step="2"].active) .builder-preview,
+  .builder-body:has(.builder-step-panel[data-step="3"].active) .builder-preview {
+    display: flex !important;
+  }
+
+  .builder-body .builder-preview .preview-paper {
+    position: relative !important;
+    flex: 0 0 auto !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+    width: min(100%, 320px) !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+    margin: 12px auto !important;
+    overflow: hidden !important;
+  }
+
+  .builder-body .builder-preview .preview-qr {
+    display: grid !important;
+    place-items: center !important;
+    position: relative !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .builder-body .builder-preview .preview-qr > div {
+    display: grid !important;
+    place-items: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .builder-body .builder-preview .preview-qr svg,
+  .builder-body .builder-preview .preview-qr canvas {
+    display: block !important;
+    flex: 0 1 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+  }
+
+  .builder-body .builder-step-panel[data-step="2"].active,
+  .builder-body .builder-step-panel[data-step="3"].active {
+    position: relative !important;
+    flex: 0 0 auto !important;
+    flex-shrink: 0 !important;
+    order: 2 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin-top: 0 !important;
+  }
+
+  .builder-body .builder-preview > strong,
+  .builder-body .builder-preview > small,
+  .builder-body .builder-preview .preview-note {
+    flex: 0 0 auto !important;
+    max-width: 100% !important;
+  }
+}
