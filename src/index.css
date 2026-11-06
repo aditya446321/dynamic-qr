@@ -2733,3 +2733,28 @@ textarea:focus-visible, summary:focus-visible {
   .section-header .search-box{width:100%;flex:1 1 100%}
   .section-header .table-actions .secondary-button{width:100%;flex:1 1 100%}
 }
+
+/* Mobile drawer: start below the sticky workspace header so the brand is never hidden */
+@media (max-width: 760px) {
+  .app-shell .sidebar {
+    top: 60px !important;
+    bottom: auto !important;
+    height: calc(100dvh - 60px) !important;
+    max-height: calc(100dvh - 60px) !important;
+    padding-top: 18px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .app-shell .sidebar .sidebar-brand {
+    flex: 0 0 auto;
+    min-height: 42px;
+    margin-bottom: 4px;
+    padding-bottom: 22px !important;
+  }
+  .app-shell .mobile-backdrop {
+    top: 60px !important;
+    height: calc(100dvh - 60px) !important;
+  }
+}
