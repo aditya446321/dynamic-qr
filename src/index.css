@@ -2701,3 +2701,35 @@ textarea:focus-visible, summary:focus-visible {
 .restaurant-menu-dish-body{padding:12px!important}
 .restaurant-menu-dish-title h4,.restaurant-menu-dish-title strong{font-size:12px!important}
 }
+
+
+/* Mobile QR management: replace clipped desktop table with complete cards */
+.mobile-code-list{display:none}
+@media(max-width:760px){
+  .table-wrap{display:none!important}
+  .mobile-code-list{display:grid;gap:12px;padding:12px}
+  .mobile-code-card{min-width:0;padding:14px;border:1px solid #ece8e2;border-radius:15px;background:#fff;box-shadow:0 5px 18px rgba(35,28,20,.045)}
+  .mobile-code-card-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .mobile-code-card-top .qr-name-cell{min-width:0;gap:10px}
+  .mobile-code-card-top .qr-name-cell>div:last-child{min-width:0}
+  .mobile-code-card-top .qr-name-cell strong{display:block;overflow-wrap:anywhere;font-size:14px}
+  .mobile-code-card-top .qr-name-cell small{display:block;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mobile-code-card-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px;padding:12px 0;border-top:1px solid #f0eee9;border-bottom:1px solid #f0eee9}
+  .mobile-code-card-meta>div{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0}
+  .mobile-code-card-meta small,.mobile-code-destination>small{color:#9a9185;font-size:9px;font-weight:800;letter-spacing:1px}
+  .mobile-code-card-meta strong{color:#30384a;font-size:13px}
+  .mobile-code-card-meta .type-chip{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px}
+  .mobile-code-destination{display:flex;flex-direction:column;gap:5px;padding:11px 0}
+  .mobile-code-destination>span{color:#596273;font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+  .mobile-code-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;padding-top:10px;border-top:1px solid #f0eee9}
+  .mobile-code-actions button{min-width:0;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1px solid #eeeae4;border-radius:10px;background:#fffdfa;color:#60697a}
+  .mobile-code-actions button span{font-size:9px;font-weight:700}
+  .mobile-code-actions button:active{background:#fff0e4;border-color:#f4c39e;color:#bd5e21}
+  .table-footer{padding:13px 15px!important;gap:8px}
+  .table-footer span:last-child{display:none}
+  .section-card{overflow:hidden}
+  .section-header{gap:13px}
+  .section-header .table-actions{width:100%}
+  .section-header .search-box{width:100%;flex:1 1 100%}
+  .section-header .table-actions .secondary-button{width:100%;flex:1 1 100%}
+}
