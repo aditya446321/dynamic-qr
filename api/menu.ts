@@ -27,8 +27,8 @@ export default async function handler(req: any, res: any) {
   if (!supabaseUrl || !anonKey) { res.status(503).send('Menu preview is temporarily unavailable'); return; }
   try {
     const origin = canonicalOrigin();
-    const query = new URLSearchParams({ select: 'id,title,slug,payload,is_active,qr_type', slug: `eq.${slug}`, qr_type: 'eq.menu', is_active: 'eq.true', limit: '1' });
-    const lookup = await fetch(`${supabaseUrl}/rest/v1/qr_codes?${query}`, { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` }, cache: 'no-store' });
+    const query = new URLSearchParams({ select: 'id,title,slug,payload', slug: `eq.${slug}`, limit: '1' });
+    const lookup = await fetch(`${supabaseUrl}/rest/v1/public_menu_qr_codes?${query}`, { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` }, cache: 'no-store' });
     if (!lookup.ok) throw new Error(`Menu lookup failed (${lookup.status})`);
     const rows = await lookup.json(); const record = Array.isArray(rows) ? rows[0] : null;
     if (!record) { res.status(404).send('This restaurant menu is unavailable'); return; }
