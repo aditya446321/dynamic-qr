@@ -19,8 +19,8 @@ export default async function handler(req: any, res: any) {
     return;
   }
   try {
-    const query = new URLSearchParams({ select: 'title,payload', slug: `eq.${slug}`, qr_type: 'eq.menu', is_active: 'eq.true', limit: '1' });
-    const response = await fetch(`${supabaseUrl}/rest/v1/qr_codes?${query}`, { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } });
+    const query = new URLSearchParams({ select: 'title,payload', slug: `eq.${slug}`, limit: '1' });
+    const response = await fetch(`${supabaseUrl}/rest/v1/public_menu_qr_codes?${query}`, { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } });
     if (!response.ok) throw new Error(`Menu lookup failed (${response.status})`);
     const rows = await response.json();
     const record = Array.isArray(rows) ? rows[0] : null;
