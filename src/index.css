@@ -2934,3 +2934,53 @@ main.kineti-login .kl-art { display:none !important; }
 @media(max-width:1050px){.template-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:760px){.templates-intro-compact{gap:12px;padding:16px;flex-direction:column;align-items:stretch}.template-search{width:100%;height:40px}.templates-heading h2{font-size:20px}.template-toolbar{align-items:flex-start;flex-direction:column;gap:5px}.template-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.premium-template{min-height:218px;padding:12px}.template-sample{width:64px;height:64px}.template-card-top{min-height:68px}.template-feature-badge{right:74px}}
 @media(max-width:420px){.template-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.premium-template{min-height:222px;padding:10px}.template-sample{width:56px;height:56px}.template-qr-preview{width:44px;height:44px}.premium-template h3{font-size:12px}.premium-template p{min-height:42px;font-size:9px}.template-card-meta{font-size:8px;flex-wrap:wrap}.template-feature-badge{right:64px;font-size:7px}}
+
+
+/* Templates page — match the supplied KinetiQR reference (Option 2) */
+.templates-page.templates-reference-layout{gap:14px;padding:2px 0 10px}
+.templates-reference-header{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:122px;padding:20px 24px;border:1px solid #f3e7dc;border-radius:18px;background:linear-gradient(115deg,#fffdfb 0%,#fff5ec 100%);box-shadow:0 5px 18px rgba(105,64,32,.035)}
+.templates-reference-header .templates-heading{min-width:0}
+.template-ready-count{display:inline-flex;align-items:center;min-height:26px;padding:0 13px;border-radius:999px;background:#ffead9;color:#d95c0a;font-size:10px;font-weight:800}
+.templates-reference-header .templates-heading h2{margin:10px 0 3px;color:#111827;font:800 28px/1.15 'Plus Jakarta Sans',sans-serif;letter-spacing:-1px}
+.templates-reference-header .templates-heading p{margin:0;color:#293348;font-size:12px}
+.templates-reference-header .template-search{width:min(320px,38%);height:44px;flex:0 0 auto;border-color:#e8ddd4;border-radius:12px;background:#fffdfa;box-shadow:0 2px 7px rgba(80,49,27,.035)}
+.template-reference-toolbar{justify-content:flex-start;gap:12px;padding:0 2px}
+.template-reference-toolbar .template-category-row{flex:1;gap:9px;overflow-x:auto;flex-wrap:nowrap;padding:1px 1px 5px}
+.template-reference-chip{min-height:38px;padding:0 15px;border:1px solid #e9ddd3;border-radius:10px;background:#fffdfa;color:#1e293b;font-size:10px;font-weight:700;gap:8px}
+.template-reference-chip.active,.template-reference-chip.active:hover{border-color:#f26a0a;background:#f26a0a;color:#fff;box-shadow:0 4px 10px rgba(242,106,10,.16)}
+.template-reference-chip:hover{border-color:#f4b17f;background:#fff5ec;color:#c65308}
+.template-more-chip{margin-left:auto}
+.template-reference-toolbar .template-results-count{padding-right:4px;color:#92908c}
+.template-grid.template-reference-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.template-reference-card{min-height:0;padding:12px;border:1px solid #eee5dd;border-radius:15px;background:#fffdfa;box-shadow:0 4px 12px rgba(70,43,25,.055);transition:transform .18s,border-color .18s,box-shadow .18s}
+.template-reference-card:hover{transform:translateY(-2px);border-color:#f4b17f;box-shadow:0 9px 22px rgba(70,43,25,.09)}
+.template-reference-art{position:relative;display:grid;place-items:center;min-height:132px;border:1px solid;border-radius:12px;background:#fff4e9;overflow:visible}
+.template-reference-art .template-qr-preview{width:94px;height:94px;padding:7px;border-radius:12px;background:rgba(255,255,255,.74);box-shadow:0 4px 12px rgba(56,35,22,.06)}
+.template-reference-art .template-qr-preview>div{width:100%;height:100%}
+.template-reference-art .template-qr-preview svg{width:100%!important;height:100%!important;display:block}
+.template-reference-art .template-feature-badge{top:-8px;right:5px;z-index:1;padding:5px 9px;background:#ff9a00;color:#fff;font-size:9px;box-shadow:0 2px 6px rgba(90,48,10,.12)}
+.template-reference-card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 3px 0}
+.template-reference-card-footer>div{min-width:0}
+.template-reference-card-footer h3{margin:0 0 4px;color:#151b2b;font-size:13px;font-weight:800}
+.template-reference-card-footer p{min-height:0;margin:0;color:#465064;font-size:10px;line-height:1.45}
+.template-reference-preview{width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;border:0;border-radius:50%;background:#ffead9;color:#e9630a}
+.template-reference-preview:hover{background:#f26a0a;color:#fff}
+.template-reference-card .template-card-meta{display:flex;justify-content:space-between;gap:6px;margin:11px 2px 1px;padding-top:9px;border-top:1px solid #f1e9e2;font-size:8px}
+.template-reference-card .template-card-meta span{display:inline-flex;align-items:center;gap:5px}
+@media(max-width:1050px){.template-grid.template-reference-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){
+ .templates-reference-header{min-height:0;align-items:stretch;flex-direction:column;gap:14px;padding:17px}
+ .templates-reference-header .templates-heading h2{font-size:24px}
+ .templates-reference-header .template-search{width:100%;height:42px}
+ .template-reference-toolbar{align-items:stretch;flex-direction:column;gap:5px}
+ .template-reference-toolbar .template-category-row{width:100%;padding-bottom:8px}
+ .template-reference-chip{min-height:36px;padding:0 12px}
+ .template-grid.template-reference-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .template-reference-card{padding:9px}
+ .template-reference-art{min-height:112px}
+ .template-reference-art .template-qr-preview{width:78px;height:78px}
+ .template-reference-card-footer{align-items:flex-start;padding-top:10px}
+ .template-reference-card-footer h3{font-size:12px}
+ .template-reference-card-footer p{font-size:9px}
+}
+@media(max-width:390px){.template-grid.template-reference-grid{gap:8px}.template-reference-art{min-height:100px}.template-reference-art .template-qr-preview{width:68px;height:68px}}
