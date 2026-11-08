@@ -1,1 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#fff7ef"/><g fill="none" stroke="#f26a0a" stroke-width="5.5" stroke-linejoin="round"><rect x="7" y="7" width="21" height="21" rx="5"/><rect x="36" y="7" width="21" height="21" rx="5"/><rect x="7" y="36" width="21" height="21" rx="5"/><rect x="36" y="36" width="21" height="21" rx="5"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="17" fill="#fff8f1"/>
+  <rect x="3" y="3" width="58" height="58" rx="15" fill="none" stroke="#f5dfce" stroke-width="1.5"/>
+  <g fill="#1d2638">
+    <path d="M10 10h18v18H10zM14 14v10h10V14z" fill-rule="evenodd"/>
+    <path d="M36 10h18v18H36zM40 14v10h10V14z" fill-rule="evenodd"/>
+    <path d="M10 36h18v18H10zM14 40v10h10V40z" fill-rule="evenodd"/>
+    <rect x="35" y="35" width="7" height="7" rx="2"/>
+    <rect x="46" y="35" width="8" height="8" rx="2"/>
+    <rect x="35" y="47" width="8" height="7" rx="2"/>
+    <rect x="47" y="47" width="7" height="7" rx="2"/>
+  </g>
+  <path d="M32 7v50" stroke="#f27618" stroke-width="3" stroke-linecap="round" opacity=".9"/>
+</svg>
