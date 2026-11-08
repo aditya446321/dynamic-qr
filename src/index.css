@@ -3217,3 +3217,118 @@ main.kineti-login .kl-art { display:none !important; }
   .app-shell .mobile-summary-card strong{font-size:16px}
   .app-shell .template-reference-art{min-height:94px}
 }
+
+
+/* KinetiQR visual polish — unified warm ivory, ink and orange system */
+:root{
+  --ink:#172235;
+  --muted:#687386;
+  --line:#eee5dc;
+  --purple:#f26a0a;
+  --purple-dark:#d95705;
+  color:#172235;
+  background:#fbf8f4;
+}
+body{background:#fbf8f4;color:#172235}
+.brand{color:#172235}
+.brand-mark{background:linear-gradient(145deg,#ff8a25,#ed5b05);box-shadow:0 6px 16px rgba(242,106,10,.2)}
+.brand-dot{color:#f26a0a}
+.auth-shell{background:#fffaf5}
+.auth-visual{background:radial-gradient(circle at 82% 18%,rgba(242,106,10,.22),transparent 34%),linear-gradient(145deg,#172235,#243246 62%,#3a3029)}
+.auth-copy .eyebrow,.auth-feature-list svg{color:#ffad70}
+.auth-copy h1 span{color:#ff9b52}
+.form-icon{color:#e9650b;background:#fff0e4}
+.auth-form input:focus,.builder-input:focus{border-color:#f26a0a;box-shadow:0 0 0 3px rgba(242,106,10,.12)}
+.primary-button{background:#f26a0a;box-shadow:0 5px 12px rgba(242,106,10,.16)}
+.primary-button:hover{background:#df5b05}
+.auth-switch button{color:#e9650b}
+.sidebar{background:#fffdfa;border-right-color:#eee5dc}
+.sidebar-brand{color:#172235}
+.workspace-switch{border-color:#eee5dc;background:#fffaf5}
+.workspace-avatar,.profile-avatar,.top-avatar{background:#fff0e4;color:#e9650b}
+.nav-item{color:#737d8d}
+.nav-item svg{color:#9a8d82}
+.nav-item:hover,.nav-item.active{color:#d95705;background:#fff0e4}
+.nav-item.active svg{color:#e9650b}
+.help-card{background:#fff5ec}
+.help-icon{color:#e9650b}
+.help-card strong{color:#283449}
+.help-card p{color:#7f8794}
+.main-content{background:#fbf8f4}
+.topbar{background:#fffdfa;border-bottom-color:#eee5dc}
+.breadcrumb strong{color:#253248}
+.page-heading h1{color:#172235}
+.page-heading p{color:#737d8d}
+.dark-eyebrow{color:#e9650b}
+.stat-card,.section-card,.insight-card,.tip-card{border-color:#eee5dc;background:#fffdfa;box-shadow:0 3px 12px rgba(49,34,22,.025)}
+.stat-top{color:#778193}
+.stat-icon.purple{color:#e9650b;background:#fff0e4}
+.stat-icon.green{color:#26936f;background:#eaf8f2}
+.stat-icon.orange{color:#c76a20;background:#fff2e6}
+.stat-value{color:#172235}
+.section-header h2{color:#202c40}
+.search-box,.secondary-button{border-color:#e9ded3;background:#fffdfa}
+.search-box:focus-within{border-color:#f26a0a;box-shadow:0 0 0 3px rgba(242,106,10,.09)}
+.secondary-button{color:#596579}
+.secondary-button:hover{border-color:#f4c5a4;background:#fff7f0;color:#c65308}
+thead{background:#fbf7f2}
+th{color:#8e8a84}
+td{border-top-color:#f1eae3;color:#596579}
+.mini-qr{border-color:#f2e5d9;background:#fff5ec;color:#e9650b}
+.type-chip{background:#fff0e4;color:#ca5608}
+.row-actions button:hover{color:#d95705;background:#fff0e4}
+.empty-icon{background:#fff0e4;color:#e9650b}
+.insight-heading{color:#8b8c91}
+.tip-card{background:linear-gradient(130deg,#fff5ec,#fffdfa);border-color:#f2e5d9}
+.tip-icon{color:#e9650b;background:#ffead9}
+.tip-card span{color:#d96a1a}
+.tip-card h3{color:#273348}
+.modal-backdrop{background:rgba(23,34,53,.58)}
+.builder-modal{background:#fffdfa;box-shadow:0 24px 90px rgba(23,34,53,.2)}
+.modal-kicker{color:#e9650b}
+.modal-head h2{color:#202c40}
+.type-option.selected{border-color:#f26a0a;background:#fff5ec;color:#d95705;box-shadow:0 0 0 2px rgba(242,106,10,.08)}
+.type-option.selected strong{color:#c65308}
+.dynamic-toggle{border-color:#f3dfcf;background:#fff7f0}
+.dynamic-toggle input{accent-color:#f26a0a}
+.dynamic-toggle strong{color:#bd570f}
+.dynamic-toggle small{color:#887b70}
+.upload-button{border-color:#f2d5c1;background:linear-gradient(180deg,#fffdfa,#fff4e9);color:#c85b10;box-shadow:0 3px 9px rgba(242,106,10,.07)}
+.upload-button:hover{border-color:#f2a875;background:#fff0e4}
+.preview-note{background:#fff3e8;color:#9b5a2c}
+.color-field:focus-within{border-color:#f26a0a;box-shadow:0 0 0 3px rgba(242,106,10,.1)}
+.mobile-bottom-nav{background:rgba(255,253,250,.97);border-top-color:#eee5dc}
+.mobile-bottom-nav button.active{color:#e9650b}
+.templates-reference-header,.templates-intro{border-color:#f0e3d7}
+.template-reference-chip.active,.template-reference-chip.active:hover{border-color:#f26a0a;background:#f26a0a;color:#fff}
+.template-reference-chip:hover{border-color:#f4b17f;background:#fff5ec;color:#c65308}
+.template-reference-card{border-color:#eee5dc;background:#fffdfa}
+.template-reference-card:hover{border-color:#f2b184}
+.template-reference-preview{background:#ffead9;color:#e9650b}
+.template-feature-badge{background:#f26a0a}
+.builder-step-nav button.active,.builder-step-nav button[aria-current="step"]{color:#d95705;border-color:#f26a0a;background:#fff3e8}
+.status-pill.is-active{color:#23845f;background:#eaf8f2}
+.status-pill.is-paused{color:#956c2c;background:#fff5e6}
+@media(max-width:760px){
+  body,.app-shell,.app-shell .main-content{background:#fbf8f4!important}
+  .app-shell .topbar{background:rgba(255,253,250,.97)!important;border-bottom-color:#eee5dc}
+  .app-shell .mobile-menu{background:#fff0e4;border-color:#f6dfcc;color:#e9650b}
+  .app-shell .overview-hero{background:linear-gradient(135deg,#fff1e4 0%,#fffaf5 78%);border-color:#f1e2d5}
+  .app-shell .overview-hero-copy h2{color:#172235}
+  .app-shell .overview-hero-copy h2 em{color:#e9650b}
+  .app-shell .overview-hero-actions .overview-primary-action{background:linear-gradient(100deg,#ff8a25,#ed5b05);box-shadow:0 5px 12px rgba(242,106,10,.18)}
+  .app-shell .mobile-summary-card{border-color:#eee2d7;background:linear-gradient(145deg,#fffdfa,#fff6ed)}
+  .app-shell .mobile-summary-icon{background:#fff0e4;color:#e9650b}
+  .app-shell .mobile-summary-icon.green{background:#eaf8f2;color:#26936f}
+  .app-shell .mobile-quick-action-grid button{border-color:#eee5dc;background:#fffdfa;color:#e9650b}
+  .app-shell .mobile-quick-action-grid button span{color:#273348}
+  .app-shell .mobile-code-card{border-color:#eee5dc;background:#fffdfa}
+  .app-shell .mobile-code-card .mini-qr{background:#fff2e6;color:#e9650b}
+  .app-shell .mobile-code-actions button{border-color:#f0e5dc;background:#fff8f2;color:#d95705}
+  .app-shell .template-reference-header{background:linear-gradient(135deg,#fff1e5,#fffdfa);border-color:#f0e1d5}
+  .app-shell .template-reference-card{background:#fffdfa;border-color:#eee5dc}
+  .app-shell .template-reference-preview{background:#ffead9;color:#d95705}
+  .app-shell .mobile-bottom-nav{background:rgba(255,253,250,.97);border-top-color:#eee5dc}
+  .app-shell .mobile-bottom-nav button.active{color:#e9650b}
+  .app-shell .menu-intro{background:#fff3e8}
+}
