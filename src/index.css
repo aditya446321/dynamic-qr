@@ -2896,3 +2896,41 @@ main.kineti-login .kl-art { display:none !important; }
   main.kineti-login .kl-link { font-size:13px; }
   main.kineti-login .kl-foot { font-size:13px; }
 }
+
+/* KinetiQR templates page — compact, searchable library */
+.templates-page{gap:14px}
+.templates-intro-compact{align-items:center;min-height:112px;padding:18px 22px;background:linear-gradient(110deg,#fff 0%,#fff8f1 100%);border-color:#f1e5d9}
+.templates-heading h2{margin:5px 0 4px;color:#17233b;font:800 22px 'Plus Jakarta Sans',sans-serif;letter-spacing:-.7px;text-transform:none}
+.templates-heading p{max-width:560px;font-size:11px}
+.templates-intro-compact .template-tag{color:#e66a13;letter-spacing:1.2px}
+.template-search{width:min(320px,38%);height:42px;display:flex;align-items:center;gap:9px;padding:0 12px;border:1px solid #eadfd5;border-radius:11px;background:#fff;color:#8b929d;box-shadow:0 2px 8px #7c4b1910}
+.template-search:focus-within{border-color:#f2a36b;box-shadow:0 0 0 3px #f26a0a16}
+.template-search input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:#263247;font:500 11px Inter,system-ui,sans-serif}
+.template-search input::placeholder{color:#a0a5ad}
+.template-search button{display:grid;place-items:center;border:0;background:transparent;color:#8b929d}
+.template-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.template-category-row{gap:7px;overflow-x:auto;flex-wrap:nowrap;padding:1px 1px 5px;scrollbar-width:thin}
+.template-category-chip{flex:0 0 auto;min-height:32px;padding:0 13px;border-color:#eee4dc;color:#687384;background:#fff;font-size:10px}
+.template-category-chip.active,.template-category-chip.active:hover{border-color:#f26a0a;background:#f26a0a;color:#fff}
+.template-category-chip:hover,.template-category-chip:focus-visible{border-color:#f4b17f;background:#fff5ec;color:#c65308}
+.template-results-count{flex:0 0 auto;color:#9298a2;font-size:10px;font-weight:700}
+.template-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.premium-template{position:relative;min-width:0;min-height:224px;padding:14px;border-color:#eee6df;border-radius:15px;box-shadow:0 3px 12px #40240d08;transition:transform .18s,border-color .18s,box-shadow .18s}
+.premium-template:hover{transform:translateY(-2px);border-color:#f4b17f;box-shadow:0 10px 24px #40240d12}
+.template-card-top{position:relative;min-height:76px;align-items:flex-start}
+.premium-template .template-tag{color:#9a765d;font-size:8px;letter-spacing:.8px}
+.template-sample{width:74px;height:74px;border-radius:14px;flex:0 0 auto;box-shadow:0 4px 12px #3020100b}
+.template-qr-preview{width:56px;height:56px;display:grid;place-items:center;overflow:hidden}
+.template-qr-preview>div{width:100%;height:100%;display:grid;place-items:center}
+.template-qr-preview svg{width:100%!important;height:100%!important}
+.template-feature-badge{position:absolute;top:0;right:86px;padding:4px 7px;border-radius:999px;background:#fff0df;color:#c45b0b;font-size:8px;font-weight:800}
+.template-feature-badge.recommended{background:#eef7ef;color:#277247}
+.template-feature-badge.new{background:#f1edff;color:#6952b8}
+.premium-template h3{margin:10px 0 4px;color:#202b3d;font-size:13px}
+.premium-template p{min-height:32px;font-size:10px;line-height:1.5}
+.template-card-meta{margin:10px 0;color:#818996;font-size:8px}
+.template-use-button{min-height:34px;border-color:#f5d9c5;background:#fff7f0;color:#c65308;font-size:9px}
+.template-use-button:hover{border-color:#f26a0a;background:#fff0e3}
+@media(max-width:1050px){.template-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.templates-intro-compact{gap:12px;padding:16px;flex-direction:column;align-items:stretch}.template-search{width:100%;height:40px}.templates-heading h2{font-size:20px}.template-toolbar{align-items:flex-start;flex-direction:column;gap:5px}.template-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.premium-template{min-height:218px;padding:12px}.template-sample{width:64px;height:64px}.template-card-top{min-height:68px}.template-feature-badge{right:74px}}
+@media(max-width:420px){.template-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.premium-template{min-height:222px;padding:10px}.template-sample{width:56px;height:56px}.template-qr-preview{width:44px;height:44px}.premium-template h3{font-size:12px}.premium-template p{min-height:42px;font-size:9px}.template-card-meta{font-size:8px;flex-wrap:wrap}.template-feature-badge{right:64px;font-size:7px}}
