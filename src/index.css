@@ -3332,3 +3332,24 @@ td{border-top-color:#f1eae3;color:#596579}
   .app-shell .mobile-bottom-nav button.active{color:#e9650b}
   .app-shell .menu-intro{background:#fff3e8}
 }
+
+/* Template crash diagnostics: visible loading and QR failure states */
+.template-skeleton-header{display:grid;gap:10px;padding:20px;border:1px solid #eee5dc;border-radius:15px;background:#fffdfa}
+.template-skeleton-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-top:14px}
+.template-skeleton-card{display:grid;gap:10px;padding:12px;border:1px solid #eee5dc;border-radius:15px;background:#fffdfa}
+.template-skeleton-art{height:132px;border-radius:12px;background:linear-gradient(90deg,#f4eee8 25%,#fbf7f2 50%,#f4eee8 75%);background-size:200% 100%;animation:kq-skeleton-shimmer 1.2s ease-in-out infinite}
+.template-skeleton-line{height:10px;width:72%;border-radius:8px;background:#eee7df}
+.template-skeleton-line.wide{width:42%;height:16px}
+.template-skeleton-line.short{width:38%}
+@keyframes kq-skeleton-shimmer{to{background-position:-200% 0}}
+.qr-preview-error{width:100%;height:100%;min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:6px;border:1px dashed #e6b18e;border-radius:9px;background:#fff7f0;color:#5b514b;font-size:10px}
+.qr-preview-error button{border:0;background:transparent;color:#d95705;font-size:10px;font-weight:700;text-decoration:underline}
+.kq-error-screen{min-height:100dvh;display:grid;place-items:center;padding:24px;background:#fbf8f4;color:#172235}
+.kq-error-card{width:min(100%,420px);padding:26px;border:1px solid #eee5dc;border-radius:18px;background:#fffdfa;box-shadow:0 12px 35px rgba(49,34,22,.07)}
+.kq-error-eyebrow{color:#e9650b;font-size:10px;font-weight:800;letter-spacing:1.4px}
+.kq-error-card h1{margin:12px 0 8px;font-size:24px}
+.kq-error-card p{color:#687386;font-size:13px;line-height:1.6}
+.kq-error-card button{width:100%;margin-top:10px;min-height:44px}
+.template-search input{background:#fff7f0!important;color:#3f4652!important;-webkit-text-fill-color:#3f4652!important;caret-color:#d95705}
+.template-search input::placeholder{color:#8d8b87!important;-webkit-text-fill-color:#8d8b87!important;opacity:1}
+@media(max-width:760px){.template-skeleton-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.template-skeleton-art{height:100px}}

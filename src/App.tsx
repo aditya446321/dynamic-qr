@@ -130,16 +130,28 @@ async function createQr(data:string,design:QRDesign,size=1200){
 }
 const QrPreview=memo(function QrPreview({value,design,className=''}:{value:string;design:QRDesign;className?:string}){
   const ref=useRef<HTMLDivElement>(null);
+  const [failed,setFailed]=useState(false);
+  const [attempt,setAttempt]=useState(0);
   useEffect(()=>{
     let active=true;
+    setFailed(false);
     const timer=window.setTimeout(()=>{
       createQr(value||'KinetiQR',design,420).then(qr=>{
         if(active&&ref.current){ref.current.replaceChildren();qr.append(ref.current);}
-      }).catch(()=>{});
+      }).catch(error=>{
+        console.error('[KinetiQR] QR preview failed', {value, error});
+        if(active)setFailed(true);
+      });
     },180);
     return()=>{active=false;window.clearTimeout(timer);ref.current?.replaceChildren();};
-  },[value,design]);
-  return <div ref={ref} className={className}/>;
+  },[value,design,attempt]);
+  return <div className={className}>
+    <div ref={ref} hidden={failed}/>
+    {failed&&<div className="qr-preview-error" role="alert">
+      <span>QR failed</span>
+      <button type="button" onClick={()=>setAttempt(n=>n+1)}>Tap to retry</button>
+    </div>}
+  </div>;
 },(a,b)=>a.value===b.value&&a.className===b.className&&JSON.stringify(a.design)===JSON.stringify(b.design));
 function App(){
   const [user,setUser]=useState<User|null>(null); const [authReady,setAuthReady]=useState(false);
@@ -154,6 +166,14 @@ function App(){
   const [publicMenuLoading,setPublicMenuLoading]=useState(false); const [profileName,setProfileName]=useState(''); const [businessName,setBusinessName]=useState(''); const [profileModal,setProfileModal]=useState(false);
   const [currentView,setCurrentViewState]=useState<DashboardView>(()=>viewFromPath(window.location.pathname));
   const [templateCategory,setTemplateCategory]=useState('All'); const [templatePage,setTemplatePage]=useState(0); const [templateSearch,setTemplateSearch]=useState(''); const [showMoreTemplateCategories,setShowMoreTemplateCategories]=useState(false);
+  const [templatesReady,setTemplatesReady]=useState(false);
+
+  useEffect(()=>{
+    if(currentView!=='templates'){setTemplatesReady(false);return;}
+    setTemplatesReady(false);
+    const frame=window.requestAnimationFrame(()=>setTemplatesReady(true));
+    return()=>window.cancelAnimationFrame(frame);
+  },[currentView]);
 
   function navigateTo(view:DashboardView){setCurrentViewState(view);const nextPath=viewPaths[view];if(window.location.pathname!==nextPath)window.history.pushState({kinetiqrView:view},'',nextPath);}
   function closeBuilder(){setModal(null);const path=viewPaths[currentView];if(window.location.pathname==='/create-qr')window.history.pushState({kinetiqrView:currentView},'',path);}
@@ -364,7 +384,11 @@ function App(){
         <section className={`page-heading ${currentView==='overview'?'overview-page-heading':''}`}><div><div className="eyebrow dark-eyebrow">KINETIQR WORKSPACE</div><h1>{currentView==='overview'?'Your workspace, at a glance':viewLabels[currentView]}</h1><p>{viewDescriptions[currentView]}</p></div>{currentView==='menus'?<button className="primary-button" onClick={()=>resetForm('menu')}><Plus size={18}/> Create restaurant menu</button>:currentView==='templates'?null :currentView==='customize'?<button className="primary-button" onClick={()=>resetForm()}><Plus size={18}/> Create with this style</button>:currentView==='settings'?null:<button className="primary-button" onClick={()=>resetForm()}><Plus size={18}/> Create QR code</button>}</section>
         {currentView==='settings'&&<section className="section-card settings-page-card"><div className="section-header"><div><h2>Your profile</h2><p>Keep your account and business details up to date.</p></div></div><form className="profile-settings settings-page-form" onSubmit={async e=>{e.preventDefault();const {error}=await supabase.auth.updateUser({data:{full_name:profileName.trim(),business_name:businessName.trim()}});if(error)notify(error.message);else{notify('Profile saved successfully.');}}}><label className="input-label">Your name</label><input className="builder-input" value={profileName} onChange={e=>setProfileName(e.target.value)} placeholder="Your name" maxLength={60}/><label className="input-label">Business name</label><input className="builder-input" value={businessName} onChange={e=>setBusinessName(e.target.value)} placeholder="Your café or shop name" maxLength={80}/><label className="input-label">Email address</label><input className="builder-input" value={user?.email||''} disabled/><div className="builder-actions"><button type="submit" className="primary-button"><Check size={16}/> Save changes</button></div></form></section>}{currentView==='settings'&&<section className="section-card domain-overview-card"><div className="section-header"><div><h2>Public URLs & domains</h2><p>Your live links, menu routes and domain setup in one place.</p></div><span className="domain-status"><i/> PLATFORM DOMAIN ACTIVE</span></div><div className="domain-primary-row"><div><small>YOUR KINETIQR DOMAIN</small><strong>https://getkinetiqr.vercel.app</strong><span>Hosted on KinetiQR · HTTPS enabled</span></div><button type="button" className="secondary-button" onClick={()=>copyText('https://getkinetiqr.vercel.app') }><Copy size={15}/> Copy domain</button></div><div className="domain-route-grid"><div><small>PUBLIC RESTAURANT MENU</small><code>getkinetiqr.vercel.app/menu/your-slug</code><span>One shareable page per published menu</span></div><div><small>DYNAMIC QR REDIRECT</small><code>getkinetiqr.vercel.app/r/your-slug</code><span>Change destinations without reprinting</span></div><div><small>WORKSPACE OVERVIEW</small><code>getkinetiqr.vercel.app/overview</code><span>Private dashboard after sign-in</span></div></div><div className="domain-custom-note"><Globe2 size={18}/><div><strong>Want your own subdomain?</strong><p>Example: menu.yourbrand.com. A custom subdomain needs a domain you own, DNS configuration and Vercel domain verification. It is not active yet, so your current KinetiQR links keep working.</p></div></div></section>}
         {(currentView==='overview'||currentView==='analytics')&&<section className={`stats-grid ${currentView==='overview'?'overview-desktop-stats':''}`}><div className="stat-card"><div className="stat-top">{currentView==='analytics'?'Restaurant scans':'Total tracked scans'} <span className="stat-icon purple"><Activity size={18}/></span></div><div className="stat-value">{formatNumber(currentView==='analytics'?analyticsScans.length:totalScans)}</div><div className="stat-foot">{currentView==='analytics'?'Recorded menu visits':'Recorded dynamic QR visits'}</div></div><div className="stat-card"><div className="stat-top">Active QR codes <span className="stat-icon green"><QrCode size={18}/></span></div><div className="stat-value">{formatNumber(currentView==='analytics'?menuCodes.filter(c=>c.is_active).length:activeCount)}</div><div className="stat-foot">{currentView==='analytics'?'Active restaurant menus':'Of '+formatNumber(codes.length)+' created'}</div></div><div className="stat-card"><div className="stat-top">{currentView==='analytics'?'Menus created':'Scans today'} <span className="stat-icon orange"><BarChart3 size={18}/></span></div><div className="stat-value">{formatNumber(currentView==='analytics'?menuCodes.length:todayScans)}</div><div className="stat-foot">{currentView==='analytics'?'Published and draft menus':'Since midnight, local time'}</div></div></section>}
-        {currentView==='templates'&&<section className="templates-page templates-reference-layout">
+        {currentView==='templates'&&!templatesReady&&<section className="templates-page templates-loading-skeleton" role="status" aria-label="Loading templates">
+          <div className="template-skeleton-header"><div className="template-skeleton-line wide"/><div className="template-skeleton-line short"/></div>
+          <div className="template-skeleton-grid">{Array.from({length:8},(_,i)=><div className="template-skeleton-card" key={i}><div className="template-skeleton-art"/><div className="template-skeleton-line"/><div className="template-skeleton-line short"/></div>)}</div>
+        </section>}
+        {currentView==='templates'&&templatesReady&&<section className="templates-page templates-reference-layout">
           <div className="templates-intro templates-intro-compact templates-reference-header">
             <div className="templates-heading">
               <span className="template-ready-count">17 Ready-to-use Designs</span>
