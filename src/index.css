@@ -3332,3 +3332,68 @@ td{border-top-color:#f1eae3;color:#596579}
   .app-shell .mobile-bottom-nav button.active{color:#e9650b}
   .app-shell .menu-intro{background:#fff3e8}
 }
+
+
+/* KinetiQR product refresh — warm orange/cream system */
+:root{font-family:Inter,'Plus Jakarta Sans',system-ui,sans-serif;color:#28231f;background:#fffaf5;--ink:#28231f;--muted:#655e58;--line:#eee2d7;--purple:#f26a0a;--purple-dark:#c84f00;--brand:#f26a0a;--cream:#fffaf5;--surface:#fff;--shadow:0 8px 28px rgba(74,45,23,.08);--radius-sm:10px;--radius-md:16px;--radius-lg:22px}
+body{background:#fffaf5;color:#28231f;font-size:14px}
+button,input,select,textarea{font-size:14px}
+button{min-height:40px;transition:background .18s,border-color .18s,box-shadow .18s,transform .18s}
+.sidebar,.main-content,.section-card,.stat-card,.tip-card,.insight-card,.analytics-chart-card,.analytics-side-card,.analytics-recent{border-color:#eee2d7}
+.brand-mark,.overview-primary-action,.primary-button,.warm-button,.full-button{background:#f26a0a!important;color:#fff!important}
+.nav-item.active,.template-category-chip.active,.template-use-button,.text-link-button{color:#c84f00!important}
+.nav-item.active{background:#fff0e5!important}
+.overview-hero{background:linear-gradient(120deg,#fff0e5 0%,#fffaf5 65%,#fff5eb 100%);border:1px solid #f4dfce}
+.overview-hero h2 em,.auth-copy h1 em,.section-intro h2 em{color:#e65f08}
+.stat-icon.purple,.stat-icon.orange{background:#fff0e5;color:#d95700}
+.design-tuning-grid input[type=range],.customize-controls input[type=range],.gradient-options input[type=range]{accent-color:#f26a0a}
+.gradient-toggle input,.gradient-options input[type=range]{accent-color:#f26a0a}
+.template-use-button{background:#fff4eb;border-color:#f5d5bd}
+.template-use-button:hover{background:#ffeadb;border-color:#f2b98f}
+.auth-shell{background:#fffaf5}
+.auth-panel{background:#fffaf5}
+.auth-form input:focus{border-color:#f26a0a;box-shadow:0 0 0 4px #f26a0a1a}
+.form-icon{background:#fff0e5;box-shadow:inset 0 0 0 1px #f7d5bd}
+.google-auth-button:hover{border-color:#f2b98f;background:#fff8f2}
+.mobile-bottom-nav{padding-bottom:max(8px,env(safe-area-inset-bottom));background:rgba(255,250,245,.97);border-top:1px solid #eee2d7;backdrop-filter:blur(16px)}
+.mobile-bottom-nav button{min-width:44px;min-height:54px;color:#756b62}
+.mobile-bottom-nav button.active{color:#d95700}
+.mobile-bottom-nav .mobile-create-tab{width:58px;height:58px;min-height:58px;margin-top:-21px;border:4px solid #fffaf5;border-radius:50%;background:#f26a0a;color:#fff;box-shadow:0 5px 16px #d9570033}
+.mobile-bottom-nav .mobile-create-tab span{position:absolute;top:48px;color:#c84f00;font-size:10px;font-weight:800}
+.mobile-code-actions{align-items:center}
+.mobile-code-actions>button{min-width:72px;min-height:44px}
+.qr-more-actions{position:relative}
+.qr-more-actions summary{display:grid;place-items:center;min-width:44px;min-height:44px;border:1px solid #eee2d7;border-radius:10px;background:#fff;font-weight:900;cursor:pointer;list-style:none}
+.qr-more-actions summary::-webkit-details-marker{display:none}
+.qr-more-actions>div{position:absolute;z-index:20;right:0;top:48px;min-width:180px;padding:7px;border:1px solid #eee2d7;border-radius:13px;background:#fff;box-shadow:var(--shadow)}
+.qr-more-actions>div button{display:block;width:100%;padding:9px 11px;border:0;border-radius:8px;background:transparent;text-align:left;color:#39312a;font-size:13px}
+.qr-more-actions>div button:hover{background:#fff4eb}
+.qr-more-actions>div .danger-action{margin-top:6px;padding-top:12px;border-top:1px solid #f1e4dc;color:#c62828}
+.mini-qr svg{width:100%!important;height:100%!important}
+.mini-qr>div{width:100%;height:100%}
+.page-heading{padding-top:16px}
+.page-heading h1:empty{display:none}
+.page-heading:has(h1:empty){min-height:12px;margin-bottom:8px}
+.page-heading p{font-size:14px;color:#5f574f}
+.page-footer{color:#71685f}
+.toast{border-color:#f4ddcb;color:#45372c}
+.primary-button,.secondary-button,.overview-primary-action,.overview-secondary-action,.nav-item,.icon-button,.template-category-chip{min-height:44px}
+@media(min-width:761px){.template-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.template-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mobile-code-actions>button:nth-child(n+3){display:none}.qr-more-actions{display:block}.mobile-bottom-nav{grid-template-columns:repeat(5,minmax(0,1fr))}.mobile-bottom-nav .mobile-create-tab{display:flex;align-items:center;justify-content:center}}
+@media(max-width:390px){.template-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.analytics-range-switch{display:flex;gap:6px;padding:4px;margin:0 0 18px;border:1px solid #eee2d7;border-radius:12px;background:#fff8f1;width:max-content}
+.analytics-range-switch button{min-width:54px;min-height:36px;padding:0 12px;border:0;border-radius:8px;background:transparent;color:#655e58;font-size:12px;font-weight:800}
+.analytics-range-switch button.active{background:#f26a0a;color:#fff;box-shadow:0 2px 8px #f26a0a33}
+.analytics-data-note{padding-top:12px;border-top:1px solid #eee2d7;font-size:12px}
+.customize-live-preview{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px;margin:18px 0;border:1px solid #f0dfd1;border-radius:18px;background:linear-gradient(120deg,#fff4e9,#fff)}
+.customize-live-preview h3{margin:7px 0 4px;font-size:18px}
+.customize-live-preview p{margin:0;color:#655e58;font-size:13px}
+.customize-preview-qr{width:112px;height:112px;flex:0 0 112px;padding:8px;border:1px solid #eee2d7;border-radius:14px;background:#fff}
+.customize-preview-qr svg{width:100%!important;height:100%!important}
+.profile-plan-note{display:flex;flex-direction:column;gap:5px;padding:16px;margin-top:18px;border:1px solid #eee2d7;border-radius:13px;background:#fffaf5;color:#3f352d}
+.profile-plan-note span{font-size:12px;color:#655e58}
+.row-actions button:nth-child(1),.row-actions button:nth-child(3),.row-actions button:nth-child(n+5){display:none}
+.row-actions button:nth-child(2),.row-actions button:nth-child(4){min-width:44px;min-height:44px}
+.mobile-code-actions>button{min-height:44px}
+@media(max-width:520px){.customize-live-preview{padding:14px}.customize-preview-qr{width:86px;height:86px;flex-basis:86px}}
