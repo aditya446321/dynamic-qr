@@ -1,18 +1,17 @@
 import { useMemo, useState } from 'react';
 import './TemplateStudio.css';
-import { ArrowUpRight, Coffee, CreditCard, MapPin, Star, Utensils, Wifi, Ticket, Instagram, Search, X, Download, Upload, Check } from 'lucide-react';
+import { ArrowUpRight, CreditCard, MapPin, Utensils, Wifi, Instagram, Search, X, Download, Upload, Check } from 'lucide-react';
 import QRCodeStyling from 'qr-code-styling';
 
-type Design = { foreground:string; background:string; cornerColor:string; dots:string; corners:string; logoUrl?:string; logoSize?:number; margin?:number; [key:string]:any };
+type Design = { foreground:string; background:string; cornerColor:string; dots:string; corners:string; logoUrl?:string; logoSize?:number; margin?:number; gradient?:boolean; gradientStart?:string; gradientEnd?:string; gradientRotation?:number };
 type Template = { id:string; name:string; category:string; description:string; type:string; fields:Record<string,string>; design:Design; dynamic?:boolean };
-type Props = { templates:Template[]; QrPreview:React.ComponentType<{value:string;design:Design;className?:string}>; brandName?:string; brandColor?:string; onUse:(template:Template)=>void };
+type Props = { templates:Template[]; QrPreview:React.ComponentType<{value:string;design:Design;className?:string}>; brandName?:string; brandColor?:string; onUse:(template:any)=>void };
 const demo='https://getkinetiqr.vercel.app/demo';
 const swatches=['#F26A0A','#173B2F','#173B63','#54264E','#171717','#8A4B2B'];
 const dotStyles=[{id:'square',label:'Square'},{id:'rounded',label:'Rounded'},{id:'dots',label:'Dots'}];
 const titles:Record<string,string>={'restaurant-menu':'Table Tent','cafe-menu':'Table Tent','upi-pay':'Counter Pay','google-review':'Review Card','wifi-guest':'Wi-Fi Card','digital-contact':'Business Card','social-follow':'Social Follow','event-pass':'Event Ticket','location-pin':'Store Location'};
 const useCases:Record<string,string>={'restaurant-menu':'Menus for tables and takeaway','cafe-menu':'Menus for cafés and counters','upi-pay':'Fast payments at your counter','google-review':'Collect customer feedback','wifi-guest':'Guest Wi-Fi access','digital-contact':'Share your contact details','social-follow':'Grow your social community','event-pass':'Entry and event information','location-pin':'Help customers find your store'};
 function Poster({t,design,brandName,brandColor,QrPreview}:{t:Template;design:Design;brandName:string;brandColor:string;QrPreview:Props['QrPreview']}) {
- const name=titles[t.id]||t.name;
  const qr=<div className="kq-poster-qr"><QrPreview value={demo} design={design}/></div>;
  return <div className={'kq-poster kq-poster-'+(t.id==='restaurant-menu'||t.id==='cafe-menu'?'table':t.id==='upi-pay'?'pay':t.id==='google-review'?'review':t.id==='wifi-guest'?'wifi':t.id==='digital-contact'?'business':t.id==='social-follow'?'social':t.id==='event-pass'?'event':'location')} style={{'--poster-accent':brandColor,'--poster-paper':design.background} as React.CSSProperties}>
  {t.id==='restaurant-menu'||t.id==='cafe-menu'?<><div className="kq-poster-top"><Utensils/><span>MENU</span></div><h3>Scan for Menu</h3><p>Fresh flavours, made for you</p>{qr}<small>Powered by {brandName}</small></>:
@@ -30,7 +29,7 @@ export default function TemplateStudio({templates,QrPreview,brandName='Your Busi
  const cats=['All','Restaurant','Payment','Social','Business','Marketing','Events'];
  const filtered=useMemo(()=>templates.filter(t=>(category==='All'||(category==='Restaurant'&&t.category==='Hospitality')||(category==='Payment'&&t.category==='Payments')||(category==='Social'&&t.type==='social')||(category==='Business'&&t.category==='Business')||(category==='Marketing'&&t.category==='Marketing')||(category==='Events'&&t.category==='Events'))&&(!search||[t.name,t.description,t.category].join(' ').toLowerCase().includes(search.toLowerCase()))),[templates,category,search]);
  const previewDesign=(t:Template):Design=>({...t.design,foreground:'#202020',background:'#ffffff',cornerColor:color,dots,margin:24,logoUrl:logo||undefined,logoSize:.18});
- const downloadPng=async()=>{if(!selected)return;const qr=new QRCodeStyling({width:1200,height:1200,type:'canvas',data:demo,margin:4,qrOptions:{errorCorrectionLevel:'H'},dotsOptions:{color:'#202020',type:dots as any},cornersSquareOptions:{color:color,type:'extra-rounded'},cornersDotOptions:{color:color,type:'dot'},backgroundOptions:{color:'#ffffff'},image:logo||undefined,imageOptions:{imageSize:.18,margin:5,hideBackgroundDots:true}});const blob=await qr.getRawData('png');if(!blob)return;const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=(selected.id||'kinetiqr-template')+'-sample.png';a.click();URL.revokeObjectURL(url);};
+ const downloadPng=async()=>{if(!selected)return;const qr=new QRCodeStyling({width:1200,height:1200,type:'canvas',data:demo,margin:4,qrOptions:{errorCorrectionLevel:'H'},dotsOptions:{color:'#202020',type:dots as any},cornersSquareOptions:{color:color,type:'extra-rounded'},cornersDotOptions:{color:color,type:'dot'},backgroundOptions:{color:'#ffffff'},image:logo||undefined,imageOptions:{imageSize:.18,margin:5,hideBackgroundDots:true}});const blob=await qr.getRawData('png');if(!blob)return;const url=URL.createObjectURL(blob as Blob);const a=document.createElement('a');a.href=url;a.download=(selected.id||'kinetiqr-template')+'-sample.png';a.click();URL.revokeObjectURL(url);};
  const useSelected=()=>{if(!selected)return;onUse({...selected,design:previewDesign(selected)});setSelected(null);};
  return <section className="kq-template-studio">
  <div className="kq-template-head"><div><span className="kq-template-kicker">PRINT-READY QR DESIGNS</span><h2>Templates that belong on your counter.</h2><p>Choose a layout, make it yours, then add your real QR destination.</p></div><label className="kq-template-search"><Search size={16}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search templates…"/>{search&&<button onClick={()=>setSearch('')} aria-label="Clear search"><X size={14}/></button>}</label></div>
