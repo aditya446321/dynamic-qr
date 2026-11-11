@@ -148,14 +148,14 @@ function App(){
   const [authMode,setAuthMode]=useState<'signin'|'signup'|'forgot'|'reset'>('signin'); const [email,setEmail]=useState(''); const [password,setPassword]=useState('');
   const [showPassword,setShowPassword]=useState(false); const [authError,setAuthError]=useState(''); const [authMessage,setAuthMessage]=useState(''); const [authBusy,setAuthBusy]=useState(false); const [googleBusy,setGoogleBusy]=useState(false);
   const [codes,setCodes]=useState<QRRecord[]>([]); const [scans,setScans]=useState<ScanRecord[]>([]); const [loading,setLoading]=useState(false); const [search,setSearch]=useState('');
-  const [modal,setModal]=useState<'create'|'edit'|'analytics'|'preview'|'template-preview'|null>(null); const [selected,setSelected]=useState<QRRecord|null>(null); const [selectedTemplate,setSelectedTemplate]=useState<QRTemplate|null>(null);
+  const [modal,setModal]=useState<'create'|'edit'|'analytics'|'preview'|'template-preview'|null>(null); const [selected,setSelected]=useState<QRRecord|null>(null); const [selectedTemplate]=useState<QRTemplate|null>(null);
   const [qrType,setQrType]=useState<QRType>('website'); const [builderStep,setBuilderStep]=useState(1); const [title,setTitle]=useState(''); const [fields,setFields]=useState<Record<string,string>>({}); const [dynamic,setDynamic]=useState(true);
   const [design,setDesign]=useState<QRDesign>(defaultDesign); const [defaultQrDesign,setDefaultQrDesign]=useState<QRDesign>(()=>{try{return {...defaultDesign,...JSON.parse(localStorage.getItem('qraft-default-design')||'{}')};}catch{return defaultDesign;}}); const [logoFile,setLogoFile]=useState<File|null>(null); const [pdfFile,setPdfFile]=useState<File|null>(null);
   const [logoPreview,setLogoPreview]=useState(''); const [formError,setFormError]=useState(''); const [saving,setSaving]=useState(false); const [toast,setToast]=useState('');
   const [mobileNav,setMobileNav]=useState(false); const [showAllQrTypes,setShowAllQrTypes]=useState(false); const [menuSections,setMenuSections]=useState<MenuSection[]>([]); const [publicMenu,setPublicMenu]=useState<QRRecord|null>(null);
   const [publicMenuLoading,setPublicMenuLoading]=useState(false); const [profileName,setProfileName]=useState(''); const [businessName,setBusinessName]=useState(''); const [profileModal,setProfileModal]=useState(false);
   const [currentView,setCurrentViewState]=useState<DashboardView>(()=>viewFromPath(window.location.pathname));
-  const [analyticsRange,setAnalyticsRange]=useState<7|30|90>(7); const [templateCategory,setTemplateCategory]=useState('All'); const [templatePage,setTemplatePage]=useState(0); const [templateSearch,setTemplateSearch]=useState(''); const [showMoreTemplateCategories,setShowMoreTemplateCategories]=useState(false);
+  const [analyticsRange,setAnalyticsRange]=useState<7|30|90>(7);
 
   function navigateTo(view:DashboardView){setCurrentViewState(view);const nextPath=viewPaths[view];if(window.location.pathname!==nextPath)window.history.pushState({kinetiqrView:view},'',nextPath);}
   function closeBuilder(){setModal(null);const path=viewPaths[currentView];if(window.location.pathname==='/create-qr')window.history.pushState({kinetiqrView:currentView},'',path);}
@@ -252,9 +252,6 @@ function App(){
   const analyticsMax=Math.max(1,...lastSevenDays.map(d=>d.count));const analyticsDays=Array.from({length:analyticsRange},(_,i)=>{const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-(analyticsRange-1-i));return{label:analyticsRange===7?d.toLocaleDateString('en-IN',{weekday:'short'}):d.toLocaleDateString('en-IN',{day:'numeric',month:'short'}),count:analyticsScans.filter(x=>new Date(x.scanned_at).toDateString()===d.toDateString()).length};});const analyticsRangeMax=Math.max(1,...analyticsDays.map(d=>d.count));
   const topPerformingCodes=codes.map(c=>({...c,scanCount:scanCountByCode.get(c.id)||0})).filter(c=>c.scanCount>0).sort((a,b)=>b.scanCount-a.scanCount).slice(0,5);
 
-  const templateCategoryMatch=(t:QRTemplate)=>templateCategory==='All'||(templateCategory==='Restaurant'&&t.category==='Hospitality')||(templateCategory==='Payment'&&t.category==='Payments')||(templateCategory==='Social'&&t.type==='social')||(templateCategory==='Business'&&t.category==='Business')||(templateCategory==='Marketing'&&t.category==='Marketing')||t.category===templateCategory;
-  const filteredTemplates=qrTemplates.filter(t=>templateCategoryMatch(t)&&(!templateSearch||`${t.name} ${t.description} ${t.category} ${typeInfo.find(x=>x.type===t.type)?.label||t.type}`.toLowerCase().includes(templateSearch.toLowerCase())));
-  const visibleTemplates=filteredTemplates.slice(0,(templatePage+1)*24);
   if(window.location.hash.startsWith('#/menu/'))return <Suspense fallback={<div className="public-menu-loading">Loading menu…</div>}><PublicMenuView record={publicMenu} loading={publicMenuLoading}/></Suspense>;
   if(!user&&window.location.pathname==='/'&&!window.location.hash.startsWith('#/menu/'))return <LandingPage/>;
   if(!authReady&&!['/login','/signup','/forgot-password','/auth/callback'].includes(window.location.pathname)&&authMode!=='reset')return <div className="kq-loading-screen" role="status" aria-live="polite">
