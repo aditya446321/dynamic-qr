@@ -10,6 +10,10 @@ function Root() {
   const [showApp, setShowApp] = useState(!isPublicHome);
 
   useEffect(() => {
+    if ('serviceWorker' in navigator && import.meta.env.PROD) navigator.serviceWorker.register('/sw.js').catch(() => {});
+  }, []);
+
+  useEffect(() => {
     if (!isPublicHome) return;
     let cancelled = false;
     import('@supabase/supabase-js')
