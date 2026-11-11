@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import './TemplateStudio.css';
 import { ArrowUpRight, Coffee, CreditCard, MapPin, Star, Utensils, Wifi, Ticket, Instagram, Search, X, Download, Upload, Check } from 'lucide-react';
 import QRCodeStyling from 'qr-code-styling';
 
