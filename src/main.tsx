@@ -1,6 +1,7 @@
 import { StrictMode, lazy, Suspense, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
+import ErrorBoundary from './ErrorBoundary';
 
 const App = lazy(() => import('./App'));
 const LandingPage = lazy(() => import('./LandingPage'));
@@ -47,7 +48,9 @@ function Root() {
     <div className="kq-loader-progress"><span/></div>
     <span className="kq-loader-foot">SMARTER QR EXPERIENCES</span>
   </div>}>
-      {showApp ? <App /> : <LandingPage />}
+      <ErrorBoundary>
+        {showApp ? <App /> : <LandingPage />}
+      </ErrorBoundary>
     </Suspense>
   );
 }
