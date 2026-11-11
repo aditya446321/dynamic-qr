@@ -171,6 +171,8 @@ function App(){
 
   useEffect(()=>{if(!mobileNav)return;const previousOverflow=document.body.style.overflow;document.body.style.overflow='hidden';const closeOnEscape=(event:KeyboardEvent)=>{if(event.key==='Escape')setMobileNav(false);};document.addEventListener('keydown',closeOnEscape);return()=>{document.body.style.overflow=previousOverflow;document.removeEventListener('keydown',closeOnEscape);};},[mobileNav]);
   useEffect(()=>{try{localStorage.setItem('qraft-default-design',JSON.stringify(defaultQrDesign));}catch{}},[defaultQrDesign]);
+  useEffect(()=>{if(user?.user_metadata?.brand_kit&&typeof user.user_metadata.brand_kit==='object'){setDefaultQrDesign({...defaultDesign,...user.user_metadata.brand_kit});}},[user?.id]);
+  useEffect(()=>{if(!user)return;const timer=window.setTimeout(()=>{supabase.auth.updateUser({data:{brand_kit:defaultQrDesign}}).then(({error})=>{if(error)console.warn('Brand kit sync failed');});},650);return()=>window.clearTimeout(timer);},[defaultQrDesign,user?.id]);
   useEffect(()=>()=>{if(logoPreview.startsWith('blob:'))URL.revokeObjectURL(logoPreview);},[logoPreview]);
   async function loadDashboard(){setLoading(true);const [a,b]=await Promise.all([supabase.from('qr_codes').select('*').order('updated_at',{ascending:false}),supabase.from('qr_scans').select('id,qr_code_id,scanned_at,referrer,device_type').order('scanned_at',{ascending:false}).limit(1500)]);if(a.error)notify(friendlyDatabaseError(a.error.message));else setCodes((a.data||[]) as QRRecord[]);if(!b.error)setScans((b.data||[]) as ScanRecord[]);setLoading(false);}
   function notify(s:string){setToast(s);window.setTimeout(()=>setToast(''),3000);}
